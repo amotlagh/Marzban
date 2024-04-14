@@ -1,3 +1,6 @@
+
+#Install:  
+
 ```bash
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
 wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
