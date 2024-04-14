@@ -1,3 +1,18 @@
+```bash
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
+git clone https://github.com/amotlagh/Marzban.git
+cd Marzban
+python3 -m pip install -r requirements.txt
+sudo ln -s $(pwd)/marzban-cli.py /usr/bin/marzban-cli
+sudo chmod +x /usr/bin/marzban-cli
+marzban-cli completion install
+sudo chmod +x install_service.sh
+sudo ./install_service.sh
+sudo systemctl enable --now marzban.service
+marzban-cli admin create --sudo
+```
+
 <p align="center">
   <a href="https://github.com/gozargah/marzban" target="_blank" rel="noopener noreferrer">
     <picture>
