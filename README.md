@@ -1,5 +1,4 @@
-
-# Install:  
+# Install:
 
 ```bash
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
@@ -7,6 +6,7 @@ wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
 git clone https://github.com/amotlagh/Marzban.git
 cd Marzban
 python3 -m pip install -r requirements.txt
+alembic upgrade head
 sudo ln -s $(pwd)/marzban-cli.py /usr/bin/marzban-cli
 sudo chmod +x /usr/bin/marzban-cli
 marzban-cli completion install
@@ -80,8 +80,8 @@ marzban-cli admin create --sudo
 ## Table of Contents
 
 - [Overview](#overview)
-	- [Why using Marzban?](#why-using-marzban)
-		- [Features](#features)
+  - [Why using Marzban?](#why-using-marzban)
+    - [Features](#features)
 - [Installation guide](#installation-guide)
 - [Configuration](#configuration)
 - [API](#api)
@@ -154,6 +154,7 @@ marzban --help
 ```
 
 If you are eager to run the project using the source code, check the section below
+
 <details markdown="1">
 <summary><h3>Manual install (advanced)</h3></summary>
 
@@ -275,6 +276,7 @@ server {
 ```
 
 By default the app will be run on `http://localhost:8000/dashboard`. You can configure it using changing the `UVICORN_HOST` and `UVICORN_PORT` environment variables.
+
 </details>
 
 # Configuration
@@ -301,7 +303,7 @@ By default the app will be run on `http://localhost:8000/dashboard`. You can con
 | CLASH_SUBSCRIPTION_TEMPLATE       | The template that will be used for generating clash configs (default: `clash/default.yml`)            |
 | SUBSCRIPTION_PAGE_TEMPLATE        | The template used for generating subscription info page (default: `subscription/index.html`)          |
 | HOME_PAGE_TEMPLATE                | Decoy page template (default: `home/index.html`)                                                      |
-| TELEGRAM_API_TOKEN                | Telegram bot API token  (get token from [@botfather](https://t.me/botfather))                         |
+| TELEGRAM_API_TOKEN                | Telegram bot API token (get token from [@botfather](https://t.me/botfather))                          |
 | TELEGRAM_ADMIN_ID                 | Numeric Telegram ID of admin (use [@userinfobot](https://t.me/userinfobot) to found your ID)          |
 | TELEGRAM_PROXY_URL                | Run Telegram Bot over proxy                                                                           |
 | JWT_ACCESS_TOKEN_EXPIRE_MINUTES   | Expire time for the Access Tokens in minutes, `0` considered as infinite (default: `1440`)            |
