@@ -1,151 +1,869 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-    <title>Subscription Information</title>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <title>{{ user.username }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script type="text/javascript">
+      (function (c, l, a, r, i, t, y) {
+        c[a] =
+          c[a] ||
+          function () {
+            (c[a].q = c[a].q || []).push(arguments);
+          };
+        t = l.createElement(r);
+        t.async = 1;
+        t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0];
+        y.parentNode.insertBefore(t, y);
+      })(window, document, "clarity", "script", "lmq3nrfx2a");
+    </script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background: #fcfff4;
+        line-height: normal;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        direction: ltr;
+        font-family: sans-serif;
+        font-family: "Vazirmatn", sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+        direction: rtl;
+      }
+      img{
+        width:100%
+      }
+      code{
+        font-family: "Vazirmatn", sans-serif;
+        background: yellow;
+        padding: 0 5px;
+        border-radius: 10px;
+      }
+      .profile-card {
+        position: relative;
+        border: 2px solid #000;
+        border-radius: 1rem;
+        background: #fff;
+        width: 20rem;
+        margin-top: 35px;
+        margin-bottom: 100px;
+      }
+      .profile-card__avatar {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        border: 2px solid #000;
+        -o-object-fit: cover;
+        object-fit: cover;
+        box-shadow: 0 2px 0 #000;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -80%);
+        border-radius: 1rem;
+        display: none;
+      }
+      .profile-card__bio {
+        background: #f1f1f1;
+        padding: 2rem;
+        border-bottom: 2px dashed #000;
+        text-align: center;
+        border-radius: 1rem 1rem 0 0;
+        overflow: hidden;
+      }
+      .profile-card__bio-name {
+        font-size: 1.25em;
+        font-weight: 900;
+        margin-bottom: 0.8rem;
+        color: #002729;
+      }
+      .sdgsdogshoi {
+        color: #000000;
+        display: inline-block;
+        border-radius: 10px;
+        padding: 2px 10px;
+        border: 2px dotted #000538;
+        /* box-shadow: -2px -2px 0px 0 #0000002b; */
+        background-image: linear-gradient(211deg, #ffe3f9 0%, #ffcff5 100%);
+        background: white;
+      }
+      .profile-card__bio-title {
+        font-size: 0.875em;
+        font-weight: 600;
+        margin-bottom: 0.6rem;
+        color: #002729;
+      }
+      .profile-card__links {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        overflow: hidden;
+      }
+      .profile-card__header {
+        text-align: left;
+        font-size: 1em;
+        font-weight: bold;
+        color: #000;
+        display: flex;
+        -webkit-box-pack: justify;
+        cursor: pointer;
+      }
+      .profile-card__header::after {
+        content: "\276F";
+        width: 1rem;
+        height: 1rem;
+        text-align: center;
+        -webkit-transition: all 0.3s;
+        transition: all 0.3s;
+        margin-left: 1em;
+      }
+      input {
+        position: absolute;
+        opacity: 0;
+        z-index: -1;
+      }
+      .accordion {
+        width: 100%;
+        overflow: hidden;
+      }
+      .accordion:last-child {
+        margin-bottom: 0;
+      }
+      .accordion-content {
+        max-height: 0;
+        padding: 0 1rem;
+        -webkit-transition: all 0.3s;
+        transition: all 0.3s;
+      }
+      input:checked+.profile-card__header::after {
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+      }
+      input:checked~.accordion-content {
+        max-height: 100vh;
+        padding: 16px;
+      }
+      .profile-card__separator {
+        border-bottom: 2px dashed #000;
+        border-radius: 1rem 1rem 0 0;
+        overflow: hidden;
+      }
+      .profile-card__links-button {
+        padding: 1rem;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        border: 2px solid #000;
+        border-radius: 0.5rem;
+        color: #fff;
+        transition: box-shadow 200ms ease;
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+        background-color: #444444;
+      }
+      .profile-card__links-button:hover {
+        box-shadow: -3px 3px 0 #000;
+      }
+      .progressBarContainer {
+        margin-top: 15px;
+        position: relative;
+        direction: ltr;
+      }
+      .progressBar {
+        background-color: #000;
+        width: 100%;
+        height: 18px;
+        padding: 2px;
+        border-radius: 50px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+      .progressBarRect {
+        background-image: linear-gradient(270deg, #f98400 0%, #fbc118 100%);
+        height: 100%;
+        padding: 2px;
+        border-radius: inherit;
+        -webkit-animation: progressLineTransmission 2.5s 0.3s ease-in-out both;
+        animation: progressLineTransmission 2.5s 0.3s ease-in-out both;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      .progressBarCircle {
+        background-color: #000;
+        height: calc(14px - 4px);
+        width: calc(14px - 4px);
+        border-radius: 50%;
+        box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px;
+      }
+      .progressBarPoint {
+        color: #002729;
+        margin-top: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        position: absolute;
+      }
+      .progressBarPoint--start {
+        left: 0;
+      }
+      .progressBarPoint--end {
+        right: 0;
+      }
+      @-webkit-keyframes progressLineTransmission {
+        from {
+          width: 5%;
         }
+        to {
+          width: {% if user.data_limit %}{{ [(user.used_traffic / user.data_limit) * 100, 5] | max }}%{% else %}100%{% endif %};
+        }
+      }
+      @keyframes progressLineTransmission {
+        from {
+          width: 5%;
+        }
+        to {
+          width: {% if user.data_limit %}{{ [(user.used_traffic / user.data_limit) * 100, 5] | max }}%{% else %}100%{% endif %};
+        }
+      }
 
-        h1 {
-            margin-top: 0;
-        }
+      .support-div{
+        position: fixed;
+        bottom: 30px;
+      }
+      .support-a{
+        text-decoration: none;
+        color: #fff;
+        background-image: linear-gradient(100deg, #2df0bc 0%, #22cad3 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        padding: 10px 15px;
+        border:2px dashed #000538;
+        box-shadow: 2px 2px 0 0 #0000002b;
+        width: 185px;
+        height: 55px;
+      }
+      .support-svg{
+        fill: #000538;
+        width: 35px;
+      }
+      .support-svg svg{
+        fill: #fff;
+      }
+      .support-text{
+        margin-right: 10px;
+        color:#000538;
+        font-weight: 700;
+      }
 
-        .link-input {
-            margin-bottom: 10px;
-        }
+      .configs-add{
+        margin: 0;
+        padding: 16px 0px 0px 5px;
+      }
+      .configs-add li{
+        margin-bottom: 10px;
+        list-style: decimal;
+      }
+      .configs-add li::marker{
+        font-weight: 600;
+        color: #002729;
+      }
+      .configs-add li input{
+        z-index: 0;
+        opacity: 1;
+        position: relative;
+        margin-left: 0px;
+        background: #9efbff;
+        border-radius: 8px;
+        padding: 10px 10px;
+        color: #002729;
+        font-weight: 550;
+        border: none;
+        /* box-shadow: 2px 2px 0 0 #00272926; */
+        width: 65%;
+      }
+      .configs-add .link-input {
+        margin-bottom: 10px;
+      }
+      .configs-add .copy-button {
+        padding: 8px 12px;
+        font-weight: 600;
+        display: inline-block;
+        text-align: center;
+        border: 2px solid #002729;
+        border-radius: 0.5rem;
+        color: #000;
+        transition: box-shadow 200ms ease;
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+        background-color: #ffe3f9;
+        width: calc(35% - 5px);
+        font-family: "Vazirmatn", sans-serif;
+        direction: rtl;
+      }
+      .Click-here{
+        cursor: pointer;
+      }
+      .custom-model-main {
+        text-align: center;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0; /* z-index: 1050; */
+        -webkit-overflow-scrolling: touch;
+        outline: 0;
+        opacity: 0;
+        -webkit-transition: opacity 0.15s linear, z-index 0.15;
+        -o-transition: opacity 0.15s linear, z-index 0.15;
+        transition: opacity 0.15s linear, z-index 0.15;
+        z-index: -1;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
 
-        .copy-button {
-            margin-left: 10px;
-        }
+      .model-open {
+        z-index: 99999;
+        opacity: 1;
+        overflow: hidden;
+      }
+      .custom-model-inner {
+        -webkit-transform: translate(0, -25%);
+        -ms-transform: translate(0, -25%);
+        transform: translate(0, -25%);
+        -webkit-transition: -webkit-transform 0.3s ease-out;
+        -o-transition: -o-transform 0.3s ease-out;
+        transition: -webkit-transform 0.3s ease-out;
+        -o-transition: transform 0.3s ease-out;
+        transition: transform 0.3s ease-out;
+        transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+        display: inline-block;
+        vertical-align: middle;
+        width: 600px;
+        margin: 30px auto;
+        max-width: 97%;
+      }
+      .custom-model-wrap {
+        display: block;
+        width: 100%;
+        position: relative;
+        background-color: #fff;
+        border: 1px solid #999;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 6px;
+        -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+        background-clip: padding-box;
+        outline: 0;
+        padding: 20px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        max-height: calc(100vh - 70px);
+        overflow-y: auto;
+      }
+      .model-open .custom-model-inner {
+        -webkit-transform: translate(0, 0);
+        -ms-transform: translate(0, 0);
+        transform: translate(0, 0);
+        position: relative;
+        z-index: 999;
+      }
+      .model-open .bg-overlay {
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 99;
+      }
+      .bg-overlay {
+        background: rgba(0, 0, 0, 0);
+        height: 100vh;
+        width: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        -webkit-transition: background 0.15s linear;
+        -o-transition: background 0.15s linear;
+        transition: background 0.15s linear;
+      }
+      .close-btn {
+        position: absolute;
+        right: 0;
+        top: -25px;
+        cursor: pointer;
+        z-index: 99;
+        font-size: 37px;
+        color: #ffffff;
+        background: #f98400;
+        border-radius: 50px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        .status {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-weight: bold;
-            font-size: 16px;
-            line-height: 1;
+      @media screen and (min-width:800px){
+        .custom-model-main:before {
+          content: "";
+          display: inline-block;
+          height: auto;
+          vertical-align: middle;
+          margin-right: -0px;
+          height: 100%;
         }
+      }
+      @media screen and (max-width:799px){
+        .custom-model-inner{margin-top: 45px;}
+      }
 
-        .active {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .limited {
-            background-color: #F44336;
-            color: white;
-        }
-
-        .expired {
-            background-color: #FF9800;
-            color: white;
-        }
-
-        .disabled {
-            background-color: #9E9E9E;
-            color: white;
-        }
-
-        .qr-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 10px 25px 25px 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            display: none;
-            z-index: 9999;
-        }
-
-        .qr-close-button {
-            text-align: right;
-            margin-bottom: 5px;
-            margin-right: -15px;
-        }
+      .pop-up-content-wrap{
+        display: none;
+        text-align: right;
+      }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-</head>
+  </head>
 
-<body>
-    <h1>User Information</h1>
-    <p>Username: {{ user.username }}</p>
-    <p>Status: <span
-            class="status {% if user.status.value == 'active' %}active{% elif user.status.value == 'limited' %}limited{% elif user.status.value == 'expired' %}expired{% elif user.status.value == 'disabled' %}disabled{% endif %}">{{
-            user.status.value }}</span></p>
-    <p>Data Limit: {% if not user.data_limit %}∞{% else %}{{ user.data_limit | bytesformat }}{% endif %}</p>
-    <p>Data Used: {{ user.used_traffic | bytesformat }}{% if user.data_limit_reset_strategy != 'no_reset' %} (resets
-        every {{ user.data_limit_reset_strategy.value }}){% endif %}</p>
-    <p>Expiration Date:
-        {% if not user.expire %}
-        ∞
-        {% else %}
-        {% set current_timestamp = now().timestamp() %}
-        {% set remaining_days = ((user.expire - current_timestamp) // (24 * 3600)) %}
-        {{ user.expire | datetime }} ({{ remaining_days | int }} days
-        remaining)
-        {% endif %}</p>
-
-    {% if user.status == 'active' %}
-    <h2>Links:</h2>
-    <ul>
-        {% for link in user.links %}
-        <li>
-            <input type="text" value="{{ link }}" readonly>
-            <button class="copy-button" onclick="copyLink('{{ link }}', this)">Copy</button>
-            <button class="qr-button" data-link="{{ link }}">QR Code</button>
-        </li>
-        {% endfor %}
-    </ul>
-    <div class="qr-popup" id="qrPopup">
-        <div class="qr-close-button">
-            <button onclick="closeQrPopup()">X</button>
+  <body>
+    <div class="profile-card">
+      <div class="profile-card__bio">
+        <h1 class="profile-card__bio-name">نام کاربری: {{ user.username }}</h1>
+        <h1 class="sdgsdogshoi profile-card__bio-name">
+          {% if user.status.value == 'active' %}فعال{% elif user.status.value ==
+          'on_hold' %}در انتظار{% elif user.status.value == 'limited' %}محدود
+          شده{% elif user.status.value == 'expired' %}منقضی شده{% elif
+          user.status.value == 'disabled' %}غیر فعال{% endif %}
+        </h1>
+        <h2 class="profile-card__bio-title">
+          {% if not user.expire %} ∞ {% else %} {% set current_timestamp =
+          now().timestamp() %} {% set remaining_seconds = [user.expire -
+          current_timestamp, 0] | max %} {% set remaining_days =
+          remaining_seconds // (24 * 3600) %} {% set remaining_hours =
+          (remaining_seconds % (24 * 3600)) // 3600 %} {% set remaining_minutes
+          = (remaining_seconds % 3600) // 60 %} {% if remaining_days >= 1 %} {{
+          remaining_days | int }} روز باقیمانده {% else %} {{ remaining_hours |
+          int }} ساعت باقیمانده {% endif %} {% endif %}
+        </h2>
+        <div class="progressBarContainer">
+          <div class="progressBar">
+            <div class="progressBarRect">
+              <span class="progressBarCircle"></span>
+            </div>
+          </div>
+          <span class="progressBarPoint progressBarPoint--start"
+            >{{ user.used_traffic | bytesformat }}</span
+          >
+          <span class="progressBarPoint progressBarPoint--end"
+            >{% if not user.data_limit %}∞{% else %}{{ user.data_limit |
+            bytesformat }}{% endif %}</span
+          >
         </div>
-        <div id="qrCodeContainer"></div>
+      </div>
+      <div class="profile-card__links">
+        {% if user.status == 'active' or user.status == 'on_hold' %}
+        <div class="accordion">
+          <input type="checkbox" name="quick-add" id="quick-add" />
+          <label class="profile-card__header" for="quick-add">
+            افزودن سریع لینک اشتراک
+          </label>
+          <div class="accordion-content">
+            <a
+              class="profile-card__links-button"
+              href="v2rayng://install-config?url={{ user.subscription_url }}&name={{ user.username | urlencode }}"
+              rel="noopener noreferrer"
+              target="_blank"
+              >افزودن به v2rayNG</a
+            >
+            <a
+              class="profile-card__links-button"
+              href="streisand://import/{{ user.subscription_url }}"
+              rel="noopener noreferrer"
+              target="_blank"
+              >افزودن به Streisand</a
+            >
+            <a
+              class="profile-card__links-button"
+              href="v2box://install-sub?url={{ user.subscription_url }}&name={{ user.username | urlencode }}"
+              rel="noopener noreferrer"
+              target="_blank"
+              >افزودن به V2Box</a
+            >
+            <a
+              class="profile-card__links-button copy-button"
+              onclick="copyLink('{{ user.subscription_url }}', this)"
+            >
+              کپی لینک اشتراک
+            </a>
+            <a
+              class="profile-card__links-button copy-button"
+              onclick="copyOldLink('{{ user.subscription_url }}/v2ray', this)"
+            >
+              کپی لینک اشتراک قدیمی
+            </a>
+          </div>
+        </div>
+
+        <div class="profile-card__separator"></div>
+         <div class="accordion">
+          <input type="checkbox" name="copy-configs" id="copy-configs" />
+          <label class="profile-card__header" for="copy-configs">
+            کانفیگ های تکی
+          </label>
+          <div class="accordion-content">
+            <p style="direction: rtl; margin-top: 0">
+              استفاده از کانفیگ های تکی توصیه نمیشه!! اکیدا توصیه میکنم از لینک
+              اشتراک استفاده کنید.
+            </p>
+            <ul class="configs-add" style="padding: 0 0 0 1rem; direction: ltr">
+              {% for link in user.links %}
+              <li>
+                <input type="text" value="{{ link }}" readonly />
+                <button
+                  class="copy-button"
+                  onclick="copyLinkC('{{ link }}', this)"
+                >
+                  کپی
+                </button>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+        <div class="profile-card__separator"></div>
+        {% endif %}
+        <div class="accordion">
+          <input type="checkbox" name="etesal" id="etesal" />
+          <label class="profile-card__header" for="etesal"> آموزش اتصال </label>
+          <div class="accordion-content app-etesal">
+            <div class="Click-here profile-card__links-button" app="v2ray">
+              V2rayNG - Android
+            </div>
+            <div class="Click-here profile-card__links-button" app="streisand">
+              Streisand - iOS
+            </div>
+            <div class="Click-here profile-card__links-button" app="v2box">
+              V2Box - Android & iOS
+            </div>
+            <!-- <div class="Click-here profile-card__links-button" app="nekoray">
+              nekoray - Windows
+            </div> -->
+          </div>
+        </div>
+
+        <div class="profile-card__separator"></div>
+        <div class="accordion">
+          <input type="checkbox" name="android" id="android" />
+          <label class="profile-card__header" for="android">
+            برنامه مورد نیاز برای اندروید
+          </label>
+          <div class="accordion-content">
+            <a
+              class="profile-card__links-button"
+              href="https://github.com/2dust/v2rayNG/releases/download/1.8.19/v2rayNG_1.8.19.apk"
+              rel="noopener noreferrer"
+              target="_blank"
+              >v2rayNG - GitHub</a
+            >
+            <a
+              class="profile-card__links-button"
+              href="https://play.google.com/store/apps/details?id=com.v2ray.ang"
+              rel="noopener noreferrer"
+              target="_blank"
+              >v2rayNG - Google Play</a
+            >
+          </div>
+        </div>
+        <div class="profile-card__separator"></div>
+        <div class="accordion">
+          <input type="checkbox" name="ios" id="ios" />
+          <label class="profile-card__header" for="ios">
+            برنامه مورد نیاز برای iOS
+          </label>
+          <div class="accordion-content">
+            <a
+              class="profile-card__links-button"
+              href="https://apps.apple.com/us/app/streisand/id6450534064"
+              rel="noopener noreferrer"
+              target="_blank"
+              >Streisand</a
+            >
+            <a
+              class="profile-card__links-button"
+              href="https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690"
+              rel="noopener noreferrer"
+              target="_blank"
+              >V2Box</a
+            >
+            <!-- <a
+              class="profile-card__links-button"
+              href="https://apps.apple.com/us/app/foxray/id6448898396"
+              rel="noopener noreferrer"
+              target="_blank"
+              >FoXray</a
+            > -->
+          </div>
+        </div>
+        <div class="profile-card__separator"></div>
+        <div class="accordion">
+          <input type="checkbox" name="windows" id="windows" />
+          <label class="profile-card__header" for="windows">
+            برنامه مورد نیاز برای ویندوز
+          </label>
+          <div class="accordion-content">
+            <a
+              class="profile-card__links-button"
+              href="https://github.com/2dust/v2rayN/releases/download/6.42/zz_v2rayN-With-Core-SelfContained.7z"
+              rel="noopener noreferrer"
+              target="_blank"
+              >V2rayN</a
+            >
+          </div>
+        </div>
+      </div>
     </div>
-    {% endif %}
+
+    <!-- <div class="support-div">
+      <a class="support-a" href="https://t.me/vpncrypto_admin">
+        <svg
+          class="support-svg"
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          class="w-6 h-6 fill-white support-svg"
+          viewBox="0 0 50 50"
+        >
+          <path
+            d="M25,2c12.703,0,23,10.297,23,23S37.703,48,25,48S2,37.703,2,25S12.297,2,25,2z M32.934,34.375	c0.423-1.298,2.405-14.234,2.65-16.783c0.074-0.772-0.17-1.285-0.648-1.514c-0.578-0.278-1.434-0.139-2.427,0.219	c-1.362,0.491-18.774,7.884-19.78,8.312c-0.954,0.405-1.856,0.847-1.856,1.487c0,0.45,0.267,0.703,1.003,0.966	c0.766,0.273,2.695,0.858,3.834,1.172c1.097,0.303,2.346,0.04,3.046-0.395c0.742-0.461,9.305-6.191,9.92-6.693	c0.614-0.502,1.104,0.141,0.602,0.644c-0.502,0.502-6.38,6.207-7.155,6.997c-0.941,0.959-0.273,1.953,0.358,2.351	c0.721,0.454,5.906,3.932,6.687,4.49c0.781,0.558,1.573,0.811,2.298,0.811C32.191,36.439,32.573,35.484,32.934,34.375z"
+          ></path>
+        </svg>
+
+        <span class="support-text"> پشتیبانی تلگرام</span>
+      </a>
+    </div> -->
+
+    <div class="custom-model-main">
+      <div class="custom-model-inner">
+        <div class="close-btn">×</div>
+        <div class="custom-model-wrap">
+          <div class="pop-up-content-wrap" app="v2ray">
+            <h2>آموزش اتصال با V2rayNG</h2>
+            <p>ابتدا لینک اشتراک را کپی کنید و بعد از آن:</p>
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/v2rayng-1.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/v2rayng-2.jpg"
+              loading="lazy"
+            />
+            <p>
+              اگر از طریق پنل کاربری روی
+              <code>افزودن به v2rayNG</code>
+              کلیک کرده اید، مرحله ۴ به بعد را انجام دهید.
+            </p>
+          </div>
+          <div class="pop-up-content-wrap" app="streisand">
+            <h2>آموزش اتصال با Streisand</h2>
+            <p>ابتدا لینک اشتراک را کپی کنید و بعد از آن:</p>
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/Streisand-1.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/Streisand-2.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/Streisand-3.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/Streisand-4.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/Streisand-5.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/Streisand-6.jpg"
+              loading="lazy"
+            />
+          </div>
+          <div class="pop-up-content-wrap" app="v2box">
+            <h2>آموزش اتصال با V2Box</h2>
+            <p>ابتدا لینک اشتراک را کپی کنید و بعد از آن:</p>
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/v2box-1.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/v2box-2.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/v2box-3.jpg"
+              loading="lazy"
+            />
+          </div>
+          <div class="pop-up-content-wrap" app="nekoray">
+            <h2>آموزش اتصال با nekoray</h2>
+            <p>ایتدا تنظیمات صحیح nekoray را مطابق تصاویر زیر انجام دهید:</p>
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-1.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-2.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-3.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-4.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-5.jpg"
+              loading="lazy"
+            />
+            <p>
+              روی دکمه ok کلیلک کنید و بعد از آن طبق تصویر پایین روی
+              <code>Groups</code>
+              کلیک کنید:
+            </p>
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-6.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-7.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-8.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-9.jpg"
+              loading="lazy"
+            />
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-10.jpg"
+              loading="lazy"
+            />
+            <p>
+              بعد از اینکه روی
+              <code>Update Subscription</code>
+              کلیک کردید، تنظیمات فیلترشکن به شکل زیر بصورت تب جدید اضافه
+              میگردد. برای اتصال تیک
+              <code>System Proxy</code>
+              را مطابق تصویر زیر بزنید و با کلیلک روی کانفیگ های ظاهر شده رو
+              قسمت شماره ۲ کلید
+              <code>Enter</code>
+              کیبورد را بفشارید تا بعد از ۱۰ ثانیه فیلترشکن متصل گردد.
+            </p>
+            <img
+              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-11.jpg"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="bg-overlay"></div>
+    </div>
 
     <script>
-        function copyLink(link, button) {
-            const tempInput = document.createElement('input');
-            tempInput.setAttribute('value', link);
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
+      function copyLinkC(link, button) {
+        const tempInput = document.createElement("input");
+        tempInput.setAttribute("value", link);
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
 
-            button.textContent = 'Copied!';
-            setTimeout(function () {
-                button.textContent = 'Copy';
-            }, 1500);
-        }
+        button.textContent = "کپی شد!";
+        setTimeout(function () {
+          button.textContent = "کپی";
+        }, 1500);
+      }
 
-        const qrButtons = document.querySelectorAll('.qr-button');
-        const qrPopup = document.getElementById('qrPopup');
+      function copyLink(link, button) {
+        const tempInput = document.createElement("input");
+        tempInput.setAttribute("value", link);
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
 
-        qrButtons.forEach((qrButton) => {
-            qrButton.addEventListener('click', () => {
-                const link = qrButton.dataset.link;
-                while (qrCodeContainer.firstChild) {
-                    qrCodeContainer.removeChild(qrCodeContainer.firstChild);
-                }
-                const qrCode = new QRCode(qrCodeContainer, {
-                    text: link,
-                    width: 256,
-                    height: 256
-                });
-                qrPopup.style.display = 'block';
+        button.textContent = "کپی شد!";
+        setTimeout(function () {
+          button.textContent = "کپی لینک اشتراک";
+        }, 1500);
+      }
+
+      function copyOldLink(link, button) {
+        const tempInput = document.createElement("input");
+        tempInput.setAttribute("value", link);
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+
+        button.textContent = "کپی شد!";
+        setTimeout(function () {
+          button.textContent = "کپی لینک ساب قدیمی";
+        }, 1500);
+      }
+
+      document
+        .querySelector(".app-etesal")
+        .addEventListener("click", (button) => {
+          document
+            .querySelector(".custom-model-main")
+            .classList.add("model-open");
+
+          document
+            .querySelectorAll(".pop-up-content-wrap")
+            .forEach((element) => {
+              if (
+                element.getAttribute("app") == button.target.getAttribute("app")
+              ) {
+                element.style = "display: block;";
+              } else {
+                element.style = "display: none;";
+              }
             });
         });
-        function closeQrPopup() {
-            document.getElementById('qrPopup').style.display = 'none';
-        }
+      document.querySelector(".close-btn").addEventListener("click", () => {
+        document
+          .querySelector(".custom-model-main")
+          .classList.remove("model-open");
+      });
+      document.querySelector(".bg-overlay").addEventListener("click", () => {
+        document
+          .querySelector(".custom-model-main")
+          .classList.remove("model-open");
+      });
     </script>
-</body>
-
+  </body>
 </html>

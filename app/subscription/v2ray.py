@@ -30,6 +30,7 @@ class V2rayShareLink(str):
         spx="",
         ais="",
         fs="",
+        mode=""
     ):
         payload = {
             "add": address,
@@ -58,7 +59,9 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
-            payload["spx"] = spx
+            payload["spx"] = spx   
+        if net == "grpc":
+            payload["mode"] = mode
 
         return (
             "vmess://"
@@ -87,6 +90,7 @@ class V2rayShareLink(str):
               spx='',
               ais='',
               fs="",
+              mode=""
               ):
 
         payload = {
@@ -100,6 +104,7 @@ class V2rayShareLink(str):
         if net == 'grpc':
             payload['serviceName'] = path
             payload["host"] = host
+            payload["mode"] = mode
         elif net == 'quic':
             payload['key'] = path
             payload["quicSecurity"] = host
@@ -148,6 +153,7 @@ class V2rayShareLink(str):
                spx='',
                ais='',
                fs="",
+               mode=""
                ):
 
         payload = {
@@ -161,6 +167,7 @@ class V2rayShareLink(str):
         if net == 'grpc':
             payload['serviceName'] = path
             payload["host"] = host
+            payload["mode"] = mode
         elif net == 'quic':
             payload['key'] = path
             payload["quicSecurity"] = host
@@ -510,13 +517,14 @@ class V2rayJsonConfig(str):
                             sid='',
                             headers='',
                             ais='',
-                            dialer_proxy=''
+                            dialer_proxy='',
+                            multiMode=''
                             ):
 
         if net == "ws":
             network_setting = self.ws_config(path=path, host=host)
         elif net == "grpc":
-            network_setting = self.grpc_config(path=path)
+            network_setting = self.grpc_config(path=path, multiMode=True if multiMode == "True" else False)
         elif net == "h2":
             network_setting = self.h2_config(path=path, host=host)
         elif net == "kpc":
@@ -557,7 +565,7 @@ class V2rayJsonConfig(str):
         net = inbound['network']
         protocol = inbound['protocol']
         port = inbound['port']
-        tls = (inbound['tls'])
+        tls = (inbound['tls']) #amotlagh : tls = inbound['tls']
         headers = inbound['header_type']
         fragment = inbound['fragment_setting']
 
@@ -622,7 +630,8 @@ class V2rayJsonConfig(str):
             sid=inbound.get('sid', ''),
             headers=headers,
             ais=inbound.get('ais', ''),
-            dialer_proxy=dialer_proxy
+            dialer_proxy=dialer_proxy,
+            multiMode=inbound.get('multiMode','')
         )
 
         mux_json = json.loads(self.mux_template)
