@@ -524,7 +524,7 @@ class V2rayJsonConfig(str):
         if net == "ws":
             network_setting = self.ws_config(path=path, host=host)
         elif net == "grpc":
-            network_setting = self.grpc_config(path=path, multiMode=True if multiMode == "True" else False)
+            network_setting = self.grpc_config(path=path, multiMode=True if multiMode == True else False)
         elif net == "h2":
             network_setting = self.h2_config(path=path, host=host)
         elif net == "kpc":
