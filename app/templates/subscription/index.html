@@ -30,7 +30,7 @@
         box-sizing: border-box;
       }
       body {
-        background: #fcfff4;
+        background: #fff;
         line-height: normal;
         display: flex;
         align-items: center;
@@ -58,7 +58,8 @@
         background: #fff;
         width: 20rem;
         margin-top: 35px;
-        margin-bottom: 100px;
+        margin-bottom: 130px;
+        box-shadow: 6px 6px 0 0 #00000036;
       }
       .profile-card__avatar {
         width: 80px;
@@ -75,9 +76,9 @@
         display: none;
       }
       .profile-card__bio {
-        background: #f1f1f1;
+        background: #000;
         padding: 2rem;
-        border-bottom: 2px dashed #000;
+        border-bottom: 10px solid #000000;
         text-align: center;
         border-radius: 1rem 1rem 0 0;
         overflow: hidden;
@@ -86,23 +87,24 @@
         font-size: 1.25em;
         font-weight: 900;
         margin-bottom: 0.8rem;
-        color: #002729;
+        color: #fff;
       }
       .sdgsdogshoi {
         color: #000000;
         display: inline-block;
         border-radius: 10px;
         padding: 2px 10px;
-        border: 2px dotted #000538;
-        /* box-shadow: -2px -2px 0px 0 #0000002b; */
+        border: 2px solid #000538;
+        box-shadow: -2px -2px 0px 0 #0000002b;
         background-image: linear-gradient(211deg, #ffe3f9 0%, #ffcff5 100%);
         background: white;
+        box-shadow: 4px 3px 0 0 #00000036;
       }
       .profile-card__bio-title {
         font-size: 0.875em;
         font-weight: 600;
         margin-bottom: 0.6rem;
-        color: #002729;
+        color: #fff;
       }
       .profile-card__links {
         padding: 1rem;
@@ -153,7 +155,7 @@
       }
       input:checked~.accordion-content {
         max-height: 100vh;
-        padding: 16px;
+        padding-top: 15px;
       }
       .profile-card__separator {
         border-bottom: 2px dashed #000;
@@ -171,10 +173,11 @@
         transition: box-shadow 200ms ease;
         text-decoration: none;
         margin-bottom: 0.5rem;
-        background-color: #444444;
+        background-color: #000;
+        /* box-shadow: 6px 6px #0000002e; */
       }
       .profile-card__links-button:hover {
-        box-shadow: -3px 3px 0 #000;
+        box-shadow: 0 0 0 #0000002e;
       }
       .progressBarContainer {
         margin-top: 15px;
@@ -182,7 +185,7 @@
         direction: ltr;
       }
       .progressBar {
-        background-color: #000;
+        background-color: #444;
         width: 100%;
         height: 18px;
         padding: 2px;
@@ -190,11 +193,13 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        border: 2px solid #ffffff36;
       }
       .progressBarRect {
         background-image: linear-gradient(270deg, #f98400 0%, #fbc118 100%);
+        /* background-image: linear-gradient(270deg, #22cad3 0%, #000538 100%); */
         height: 100%;
-        padding: 2px;
+        /* padding: 2px; */
         border-radius: inherit;
         -webkit-animation: progressLineTransmission 2.5s 0.3s ease-in-out both;
         animation: progressLineTransmission 2.5s 0.3s ease-in-out both;
@@ -203,14 +208,14 @@
         justify-content: flex-end;
       }
       .progressBarCircle {
-        background-color: #000;
+        background-color: #000000;
         height: calc(14px - 4px);
         width: calc(14px - 4px);
         border-radius: 50%;
-        box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px;
+        box-shadow: rgb(0 0 0) 0px 0 4px 0px;
       }
       .progressBarPoint {
-        color: #002729;
+        color: #fff;
         margin-top: 8px;
         font-size: 12px;
         font-weight: 700;
@@ -241,32 +246,43 @@
 
       .support-div{
         position: fixed;
-        bottom: 30px;
+        bottom: 20px;
+      }
+
+      .support-divar{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: white;
+        height: 100px;
+        box-shadow: 0 0 7px 0 #0000005e;
       }
       .support-a{
         text-decoration: none;
         color: #fff;
-        background-image: linear-gradient(100deg, #2df0bc 0%, #22cad3 100%);
+        /* background-image: linear-gradient(100deg, #2df0bc 0%, #22cad3 100%); */
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 20px;
+        border-radius: 56px;
         padding: 10px 15px;
-        border:2px dashed #000538;
-        box-shadow: 2px 2px 0 0 #0000002b;
-        width: 185px;
-        height: 55px;
+        border: 2px dashed #000538;
+        box-shadow: 0 0 0px 3px #000000;
+        width: 290px;
+        height: 60px;
+        background-color: #000;
+        border: 3px solid #fff;
       }
       .support-svg{
-        fill: #000538;
+        fill: #fff;
         width: 35px;
       }
       .support-svg svg{
-        fill: #fff;
+        fill: #000;
       }
       .support-text{
         margin-right: 10px;
-        color:#000538;
+        color:#fff;
         font-weight: 700;
       }
 
@@ -409,14 +425,15 @@
         cursor: pointer;
         z-index: 99;
         font-size: 37px;
-        color: #ffffff;
-        background: #f98400;
+        color: #000;
+        background: #fff;
         border-radius: 50px;
         width: 50px;
         height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
+        border: 4px dotted;
       }
 
       @media screen and (min-width:800px){
@@ -437,6 +454,14 @@
         display: none;
         text-align: right;
       }
+
+      .dlapp{
+        background-color: #e6e6e6;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 0 0 15px 0;
+        border: 2px dotted;
+      }
     </style>
   </head>
 
@@ -450,7 +475,7 @@
           شده{% elif user.status.value == 'expired' %}منقضی شده{% elif
           user.status.value == 'disabled' %}غیر فعال{% endif %}
         </h1>
-        <h2 class="profile-card__bio-title">
+        <!-- <h2 class="profile-card__bio-title">
           {% if not user.expire %} ∞ {% else %} {% set current_timestamp =
           now().timestamp() %} {% set remaining_seconds = [user.expire -
           current_timestamp, 0] | max %} {% set remaining_days =
@@ -459,6 +484,16 @@
           = (remaining_seconds % 3600) // 60 %} {% if remaining_days >= 1 %} {{
           remaining_days | int }} روز باقیمانده {% else %} {{ remaining_hours |
           int }} ساعت باقیمانده {% endif %} {% endif %}
+        </h2> -->
+        <h2 class="profile-card__bio-title">
+          {% if not user.expire %} ∞ {% else %} {% set current_timestamp =
+          now().timestamp() %} {% set remaining_seconds = [user.expire -
+          current_timestamp, 0] | max %} {% set remaining_days =
+          remaining_seconds // (24 * 3600) %} {% set remaining_hours =
+          (remaining_seconds % (24 * 3600)) // 3600 %} {% set remaining_minutes
+          = (remaining_seconds % 3600) // 60 %} {% if remaining_days >= 1 %} {{
+          remaining_days | int }} روز باقیمانده {% else %} کمتر از {{
+          remaining_hours | int }} ساعت باقیمانده {% endif %} {% endif %}
         </h2>
         <div class="progressBarContainer">
           <div class="progressBar">
@@ -510,39 +545,12 @@
             >
               کپی لینک اشتراک
             </a>
-            <a
+            <!-- <a
               class="profile-card__links-button copy-button"
               onclick="copyOldLink('{{ user.subscription_url }}/v2ray', this)"
             >
               کپی لینک اشتراک قدیمی
-            </a>
-          </div>
-        </div>
-
-        <div class="profile-card__separator"></div>
-         <div class="accordion">
-          <input type="checkbox" name="copy-configs" id="copy-configs" />
-          <label class="profile-card__header" for="copy-configs">
-            کانفیگ های تکی
-          </label>
-          <div class="accordion-content">
-            <p style="direction: rtl; margin-top: 0">
-              استفاده از کانفیگ های تکی توصیه نمیشه!! اکیدا توصیه میکنم از لینک
-              اشتراک استفاده کنید.
-            </p>
-            <ul class="configs-add" style="padding: 0 0 0 1rem; direction: ltr">
-              {% for link in user.links %}
-              <li>
-                <input type="text" value="{{ link }}" readonly />
-                <button
-                  class="copy-button"
-                  onclick="copyLinkC('{{ link }}', this)"
-                >
-                  کپی
-                </button>
-              </li>
-              {% endfor %}
-            </ul>
+            </a> -->
           </div>
         </div>
 
@@ -561,9 +569,9 @@
             <div class="Click-here profile-card__links-button" app="v2box">
               V2Box - Android & iOS
             </div>
-            <!-- <div class="Click-here profile-card__links-button" app="nekoray">
-              nekoray - Windows
-            </div> -->
+            <div class="Click-here profile-card__links-button" app="nekoray">
+              V2rayN - Windows
+            </div>
           </div>
         </div>
 
@@ -571,91 +579,112 @@
         <div class="accordion">
           <input type="checkbox" name="android" id="android" />
           <label class="profile-card__header" for="android">
-            برنامه مورد نیاز برای اندروید
+            دانلود برنامه های مورد نیاز
           </label>
           <div class="accordion-content">
-            <a
-              class="profile-card__links-button"
-              href="https://github.com/2dust/v2rayNG/releases/download/1.8.19/v2rayNG_1.8.19.apk"
-              rel="noopener noreferrer"
-              target="_blank"
-              >v2rayNG - GitHub</a
-            >
-            <a
-              class="profile-card__links-button"
-              href="https://play.google.com/store/apps/details?id=com.v2ray.ang"
-              rel="noopener noreferrer"
-              target="_blank"
-              >v2rayNG - Google Play</a
-            >
-          </div>
-        </div>
-        <div class="profile-card__separator"></div>
-        <div class="accordion">
-          <input type="checkbox" name="ios" id="ios" />
-          <label class="profile-card__header" for="ios">
-            برنامه مورد نیاز برای iOS
-          </label>
-          <div class="accordion-content">
-            <a
-              class="profile-card__links-button"
-              href="https://apps.apple.com/us/app/streisand/id6450534064"
-              rel="noopener noreferrer"
-              target="_blank"
-              >Streisand</a
-            >
-            <a
-              class="profile-card__links-button"
-              href="https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690"
-              rel="noopener noreferrer"
-              target="_blank"
-              >V2Box</a
-            >
-            <!-- <a
-              class="profile-card__links-button"
-              href="https://apps.apple.com/us/app/foxray/id6448898396"
-              rel="noopener noreferrer"
-              target="_blank"
-              >FoXray</a
-            > -->
-          </div>
-        </div>
-        <div class="profile-card__separator"></div>
-        <div class="accordion">
-          <input type="checkbox" name="windows" id="windows" />
-          <label class="profile-card__header" for="windows">
-            برنامه مورد نیاز برای ویندوز
-          </label>
-          <div class="accordion-content">
-            <a
-              class="profile-card__links-button"
-              href="https://github.com/2dust/v2rayN/releases/download/6.42/zz_v2rayN-With-Core-SelfContained.7z"
-              rel="noopener noreferrer"
-              target="_blank"
-              >V2rayN</a
-            >
+            <div class="dlapp">
+              <div
+                style="
+                  direction: ltr;
+                  text-align: center;
+                  font-size: 1.2em;
+                  font-weight: 700;
+                  padding-bottom: 10px;
+                "
+              >
+                Android
+              </div>
+              <a
+                class="profile-card__links-button"
+                href="https://github.com/2dust/v2rayNG/releases/download/1.8.19/v2rayNG_1.8.19.apk"
+                rel="noopener noreferrer"
+                target="_blank"
+                >v2rayNG - GitHub</a
+              >
+              <!-- <a
+                class="profile-card__links-button"
+                href="https://play.google.com/store/apps/details?id=com.v2ray.ang"
+                rel="noopener noreferrer"
+                target="_blank"
+                >v2rayNG - Google Play</a> -->
+            </div>
+
+            <div class="dlapp">
+              <div
+                style="
+                  direction: ltr;
+                  text-align: center;
+                  font-size: 1.2em;
+                  font-weight: 700;
+                  padding-bottom: 10px;
+                "
+              >
+                iPhone
+              </div>
+              <a
+                class="profile-card__links-button"
+                href="https://apps.apple.com/us/app/streisand/id6450534064"
+                rel="noopener noreferrer"
+                target="_blank"
+                >Streisand</a
+              >
+              <a
+                class="profile-card__links-button"
+                href="https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690"
+                rel="noopener noreferrer"
+                target="_blank"
+                >V2Box</a
+              >
+            </div>
+
+            <div class="dlapp">
+              <div
+                style="
+                  direction: ltr;
+                  text-align: center;
+                  font-size: 1.2em;
+                  font-weight: 700;
+                  padding-bottom: 10px;
+                "
+              >
+                Windows
+              </div>
+
+              <a
+                class="profile-card__links-button"
+                href="https://github.com/2dust/v2rayN/releases/download/6.43/zz_v2rayN-With-Core-SelfContained.7z"
+                rel="noopener noreferrer"
+                target="_blank"
+                >V2rayN</a
+              >
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- <div class="support-div">
-      <a class="support-a" href="https://t.me/vpncrypto_admin">
-        <svg
-          class="support-svg"
-          xmlns="http://www.w3.org/2000/svg"
-          x="0px"
-          y="0px"
-          class="w-6 h-6 fill-white support-svg"
-          viewBox="0 0 50 50"
-        >
-          <path
-            d="M25,2c12.703,0,23,10.297,23,23S37.703,48,25,48S2,37.703,2,25S12.297,2,25,2z M32.934,34.375	c0.423-1.298,2.405-14.234,2.65-16.783c0.074-0.772-0.17-1.285-0.648-1.514c-0.578-0.278-1.434-0.139-2.427,0.219	c-1.362,0.491-18.774,7.884-19.78,8.312c-0.954,0.405-1.856,0.847-1.856,1.487c0,0.45,0.267,0.703,1.003,0.966	c0.766,0.273,2.695,0.858,3.834,1.172c1.097,0.303,2.346,0.04,3.046-0.395c0.742-0.461,9.305-6.191,9.92-6.693	c0.614-0.502,1.104,0.141,0.602,0.644c-0.502,0.502-6.38,6.207-7.155,6.997c-0.941,0.959-0.273,1.953,0.358,2.351	c0.721,0.454,5.906,3.932,6.687,4.49c0.781,0.558,1.573,0.811,2.298,0.811C32.191,36.439,32.573,35.484,32.934,34.375z"
-          ></path>
-        </svg>
+    <!-- <div class="support-divar"></div>
 
-        <span class="support-text"> پشتیبانی تلگرام</span>
-      </a>
+    <div class="support-div">
+      <div>
+        <a class="support-a" href="https://t.me/VPNCrypto_bot">
+          <svg
+            class="support-svg"
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            class="w-6 h-6 fill-white support-svg"
+            viewBox="0 0 50 50"
+          >
+            <path
+              d="M25,2c12.703,0,23,10.297,23,23S37.703,48,25,48S2,37.703,2,25S12.297,2,25,2z M32.934,34.375	c0.423-1.298,2.405-14.234,2.65-16.783c0.074-0.772-0.17-1.285-0.648-1.514c-0.578-0.278-1.434-0.139-2.427,0.219	c-1.362,0.491-18.774,7.884-19.78,8.312c-0.954,0.405-1.856,0.847-1.856,1.487c0,0.45,0.267,0.703,1.003,0.966	c0.766,0.273,2.695,0.858,3.834,1.172c1.097,0.303,2.346,0.04,3.046-0.395c0.742-0.461,9.305-6.191,9.92-6.693	c0.614-0.502,1.104,0.141,0.602,0.644c-0.502,0.502-6.38,6.207-7.155,6.997c-0.941,0.959-0.273,1.953,0.358,2.351	c0.721,0.454,5.906,3.932,6.687,4.49c0.781,0.558,1.573,0.811,2.298,0.811C32.191,36.439,32.573,35.484,32.934,34.375z"
+            ></path>
+          </svg>
+  
+          <span class="support-text">خرید یا تمدید اشتراک</span>
+        </a>
+  
+      </div>
     </div> -->
 
     <div class="custom-model-main">
@@ -663,129 +692,85 @@
         <div class="close-btn">×</div>
         <div class="custom-model-wrap">
           <div class="pop-up-content-wrap" app="v2ray">
-            <h2>آموزش اتصال با V2rayNG</h2>
-            <p>ابتدا لینک اشتراک را کپی کنید و بعد از آن:</p>
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/v2rayng-1.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/v2rayng-2.jpg"
-              loading="lazy"
-            />
-            <p>
-              اگر از طریق پنل کاربری روی
-              <code>افزودن به v2rayNG</code>
-              کلیک کرده اید، مرحله ۴ به بعد را انجام دهید.
-            </p>
+            <div style="direction: rtl; text-align: justify; line-height: 2">
+              <p>⚙️ آموزش برنامه V2rayNG اندروید:&nbsp;</p>
+              <b>0️⃣ مطمئن بشید آخرین نسخه V2rayNG رو نصب دارید.</b>
+              <p>
+                1️⃣ توی همین صفحه از قسمت افزودن سریع لینک اشتراک؛ دکمه «افزودن
+                به V2rayNG» رو بزنید.
+              </p>
+              <p>
+                2️⃣ بعد توی V2rayNG روی "سه تا نقطه" کلیک کنید و update
+                subscription (آخرین آیتم) رو بزنید تا کانفیگ هاتون در V2rayNG
+                ببنید.&nbsp;
+              </p>
+              <p>
+                ♻️ هر روز حداقل یک بار update subscription رو بزنید تا اشتراکتون
+                بروز باشه.
+              </p>
+              <p>
+                🔸برای پاک کردن اشتراک از توی گوشیتون؛ با کلیک روی سه خط موازیی
+                بالا، وارد subscription group setting بشید و روی مداد روبروی
+                اشتراک کلیک کنید.
+              </p>
+            </div>
           </div>
           <div class="pop-up-content-wrap" app="streisand">
-            <h2>آموزش اتصال با Streisand</h2>
-            <p>ابتدا لینک اشتراک را کپی کنید و بعد از آن:</p>
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/Streisand-1.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/Streisand-2.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/Streisand-3.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/Streisand-4.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/Streisand-5.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/Streisand-6.jpg"
-              loading="lazy"
-            />
+            <div style="direction: rtl; text-align: justify; line-height: 2">
+              <p>⚙️ آموزش برنامه Streisand آیفون:</p>
+              <b>0️⃣ مطمئن بشید آخرین نسخه Streisand رو نصب دارید.</b>
+              <p>
+                1️⃣ توی همین صفحه از قسمت افزودن سریع لینک اشتراک؛ &nbsp;دکمه
+                «افزودن به Streisand» رو بزنید.
+              </p>
+              <p>
+                ♻️ هر روز حداقل یک بار انگشتتونو روی قسمت Subscription نگه دارید
+                و Update رو بزنید تا اشتراکتون بروز باشه.
+              </p>
+            </div>
           </div>
           <div class="pop-up-content-wrap" app="v2box">
-            <h2>آموزش اتصال با V2Box</h2>
-            <p>ابتدا لینک اشتراک را کپی کنید و بعد از آن:</p>
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/v2box-1.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/v2box-2.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/v2box-3.jpg"
-              loading="lazy"
-            />
+            <div style="direction: rtl; text-align: justify; line-height: 2">
+              <p>⚙️ آموزش برنامه V2Box اندروید و آیفون:</p>
+              <b>0️⃣ مطمئن بشید آخرین نسخه V2Box رو نصب دارید.</b>
+              <p>
+                1️⃣ وارد برنامه V2Box بشید. از سه تا گزینه پایین، Configs رو
+                انتخاب کنید و حالا از بالا + رو‌ انتخاب کنید. بعدش Add
+                subscription رو بزنید؛ توی این قسمت، اسم دلخواه رو توی remarks
+                تایپ کنید و توی URL هم لینک اشتراکتون رو قرار بدید و add
+                subscription رو بزنید و به اونی که پینگ کمتری داره وصل بشید.
+              </p>
+              <p>
+                ✅ هر روز حداقل یک بار انگشتتونو روی قسمت Subscription نگه دارید
+                و Update رو بزنید تا اشتراکتون بروز باشه.
+              </p>
+            </div>
           </div>
           <div class="pop-up-content-wrap" app="nekoray">
-            <h2>آموزش اتصال با nekoray</h2>
-            <p>ایتدا تنظیمات صحیح nekoray را مطابق تصاویر زیر انجام دهید:</p>
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-1.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-2.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-3.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-4.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-5.jpg"
-              loading="lazy"
-            />
-            <p>
-              روی دکمه ok کلیلک کنید و بعد از آن طبق تصویر پایین روی
-              <code>Groups</code>
-              کلیک کنید:
-            </p>
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-6.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-7.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-8.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-9.jpg"
-              loading="lazy"
-            />
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-10.jpg"
-              loading="lazy"
-            />
-            <p>
-              بعد از اینکه روی
-              <code>Update Subscription</code>
-              کلیک کردید، تنظیمات فیلترشکن به شکل زیر بصورت تب جدید اضافه
-              میگردد. برای اتصال تیک
-              <code>System Proxy</code>
-              را مطابق تصویر زیر بزنید و با کلیلک روی کانفیگ های ظاهر شده رو
-              قسمت شماره ۲ کلید
-              <code>Enter</code>
-              کیبورد را بفشارید تا بعد از ۱۰ ثانیه فیلترشکن متصل گردد.
-            </p>
-            <img
-              src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-11.jpg"
-              loading="lazy"
-            />
+            <div style="direction: rtl; text-align: justify; line-height: 2">
+              <p>⚙️ آموزش برنامه V2rayN ویندوز:</p>
+              <b>0️⃣ مطمئن بشید آخرین نسخه V2rayN رو نصب دارید.</b>
+              <p>
+                1️⃣ وارد برنامه V2rayN بشید. از باالا دومین گزینه روی
+                Subscription group کلیک کنید. بعد روی Subscription group setting
+                کلیک کنید. و حالا روی Add کلیک کنید.
+              </p>
+              <p>
+                2️⃣ توی این قسمت؛ در remarks اسم دلخواه تایپ کنید. برای URL لینک
+                اشتراک رو قرار بدید و enable update رو هم فعال کنید. حالا روی
+                confirm کلیک کنید.
+              </p>
+              <p>
+                3️⃣ توی صفحه اصلی برنامه V2rayN دوباره از بالا دومین گزینه روی
+                Subscription group کلیک کنید. بعد روی Update subscription
+                without proxy &nbsp;کلیک کنید. حالا کانفیگ هاتون رو توی تب کنار
+                All میتونید ببینید.
+              </p>
+              <p>
+                ✅ هر روز حداقل یک بار &nbsp;Update subscription without proxy
+                رو بزنید تا اشتراکتون بروز باشه.
+              </p>
+            </div>
           </div>
         </div>
       </div>
