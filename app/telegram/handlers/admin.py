@@ -1,7 +1,6 @@
 import io
 import math
 import os
-import time
 import random
 import re
 import string
@@ -153,16 +152,6 @@ def suspend_user_command(call: types.CallbackQuery):
         parse_mode="markdown",
         reply_markup=BotKeyboard.confirm_action(
             action="suspend", username=username),
-    )
-
-
-@bot.callback_query_handler(cb_query_equals("backup"), is_admin=True)
-def backup(call: types.CallbackQuery):
-    bot.edit_message_text(
-        'Are you sure? this will send you the backup once every hour.',
-        call.message.chat.id,
-        call.message.message_id,
-        reply_markup=BotKeyboard.confirm_action(action="back_up")
     )
 
 
@@ -1529,18 +1518,6 @@ def confirm_user_command(call: types.CallbackQuery):
                     bot.send_message(TELEGRAM_LOGGER_CHANNEL_ID, text, 'HTML')
                 except:
                     pass
-
-    elif data == 'back_up':
-        chat_id=call.message.chat.id
-        hostname = os.uname().nodename
-        db_path = "/root/Marzban/db.sqlite3"
-        interval = 1 * 60 * 60
-        bot.delete_message(call.message.chat.id,call.message.message_id)
-        while True:
-            message = f"Server: {hostname}"
-            with open(db_path, "rb") as file:
-                bot.send_document(chat_id, file, caption=message)
-            time.sleep(interval)
 
     elif data == 'edit_user':
         if (username := mem_store.get(f'{call.message.chat.id}:username')) is None:

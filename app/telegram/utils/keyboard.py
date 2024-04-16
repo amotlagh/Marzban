@@ -26,9 +26,6 @@ class BotKeyboard:
             types.InlineKeyboardButton(text='👥 Users', callback_data='users:1'),
             types.InlineKeyboardButton(text='✏️ Edit All Users', callback_data='edit_all'))
         keyboard.add(
-            types.InlineKeyboardButton(text='Backup Database', callback_data='backup')
-        )
-        keyboard.add(
             types.InlineKeyboardButton(text='➕ Create User From Template', callback_data='template_add_user'))
         keyboard.add(
             types.InlineKeyboardButton(text='➕ Create User', callback_data='add_user'))
