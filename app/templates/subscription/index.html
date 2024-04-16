@@ -472,7 +472,7 @@
         <h1 class="sdgsdogshoi profile-card__bio-name">
           {% if user.status.value == 'active' %}فعال{% elif user.status.value ==
           'on_hold' %}در انتظار{% elif user.status.value == 'limited' %}محدود
-          شده{% elif user.status.value == 'expired' %}منقضی شده{% elif
+          شده{% elif user.status.value == 'expired' %}زمان منقضی شده{% elif
           user.status.value == 'disabled' %}غیر فعال{% endif %}
         </h1>
         <!-- <h2 class="profile-card__bio-title">
@@ -494,8 +494,8 @@
           remaining_seconds // (24 * 3600) %} {% set remaining_hours =
           (remaining_seconds % (24 * 3600)) // 3600 %} {% set remaining_minutes
           = (remaining_seconds % 3600) // 60 %} {% if remaining_days >= 1 %} {{
-          remaining_days | int }} روز باقیمانده {% else %} {{( remaining_hours -
-          4 ) | int }} ساعت باقیمانده {% endif %} {% endif %}
+          remaining_days | int }} روز باقیمانده {% else %} {{( remaining_hours )
+          | int }} ساعت باقیمانده {% endif %} {% endif %}
         </h2>
         {% endif %}
         <div class="progressBarContainer">
@@ -636,8 +636,7 @@
                 href="https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690"
                 rel="noopener noreferrer"
                 target="_blank"
-                >V2Box</a
-              > -->
+              >V2Box</a> -->
             </div>
 
             <div class="dlapp">
