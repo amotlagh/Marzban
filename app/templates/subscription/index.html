@@ -80,7 +80,7 @@
         padding: 2rem;
         border-bottom: 10px solid #000000;
         text-align: center;
-        border-radius: 1rem 1rem 0 0;
+        border-radius: 1rem;
         overflow: hidden;
       }
       .profile-card__bio-name {
@@ -485,6 +485,8 @@
           remaining_days | int }} روز باقیمانده {% else %} {{ remaining_hours |
           int }} ساعت باقیمانده {% endif %} {% endif %}
         </h2> -->
+        {% if user.status.value == 'active' or user.status.value == 'on_hold' or
+        user.status.value == 'limited' %}
         <h2 class="profile-card__bio-title">
           {% if not user.expire %} ∞ {% else %} {% set current_timestamp =
           now().timestamp() %} {% set remaining_seconds = [user.expire -
@@ -492,9 +494,10 @@
           remaining_seconds // (24 * 3600) %} {% set remaining_hours =
           (remaining_seconds % (24 * 3600)) // 3600 %} {% set remaining_minutes
           = (remaining_seconds % 3600) // 60 %} {% if remaining_days >= 1 %} {{
-          remaining_days | int }} روز باقیمانده {% else %} کمتر از {{
-          remaining_hours | int }} ساعت باقیمانده {% endif %} {% endif %}
+          remaining_days | int }} روز باقیمانده {% else %} {{( remaining_hours -
+          4 ) | int }} ساعت باقیمانده {% endif %} {% endif %}
         </h2>
+        {% endif %}
         <div class="progressBarContainer">
           <div class="progressBar">
             <div class="progressBarRect">
@@ -510,8 +513,8 @@
           >
         </div>
       </div>
+      {% if user.status == 'active' or user.status == 'on_hold' %}
       <div class="profile-card__links">
-        {% if user.status == 'active' or user.status == 'on_hold' %}
         <div class="accordion">
           <input type="checkbox" name="quick-add" id="quick-add" />
           <label class="profile-card__header" for="quick-add">
@@ -555,7 +558,7 @@
         </div>
 
         <div class="profile-card__separator"></div>
-        {% endif %}
+
         <div class="accordion">
           <input type="checkbox" name="etesal" id="etesal" />
           <label class="profile-card__header" for="etesal"> آموزش اتصال </label>
@@ -661,6 +664,7 @@
           </div>
         </div>
       </div>
+      {% endif %}
     </div>
 
     <!-- <div class="support-divar"></div>
