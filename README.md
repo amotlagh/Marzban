@@ -7,6 +7,8 @@ git clone https://github.com/amotlagh/Marzban.git
 cd Marzban
 python3 -m pip install -r requirements.txt
 alembic upgrade head
+cp .env.example .env
+cp xray_config.json.example xray_config.json
 sudo ln -s $(pwd)/marzban-cli.py /usr/bin/marzban-cli
 sudo chmod +x /usr/bin/marzban-cli
 marzban-cli completion install
@@ -14,6 +16,25 @@ sudo chmod +x install_service.sh
 sudo ./install_service.sh
 sudo systemctl enable --now marzban.service
 marzban-cli admin create --sudo
+```
+
+# Update:
+
+```bash
+sudo systemctl stop --now marzban.service
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
+git clone https://github.com/amotlagh/Marzban.git temp
+cp -r ~/temp/* ~/Marzban/
+cd Marzban
+python3 -m pip install -r requirements.txt
+alembic upgrade head
+sudo ln -s $(pwd)/marzban-cli.py /usr/bin/marzban-cli
+sudo chmod +x /usr/bin/marzban-cli
+marzban-cli completion install
+sudo chmod +x install_service.sh
+sudo ./install_service.sh
+sudo systemctl enable --now marzban.service
 ```
 
 <p align="center">
