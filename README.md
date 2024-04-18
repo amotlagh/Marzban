@@ -29,7 +29,6 @@ cp -r ~/temp/* ~/Marzban/
 cd Marzban
 python3 -m pip install -r requirements.txt
 alembic upgrade head
-sudo ln -s $(pwd)/marzban-cli.py /usr/bin/marzban-cli
 sudo chmod +x /usr/bin/marzban-cli
 marzban-cli completion install
 sudo chmod +x install_service.sh
