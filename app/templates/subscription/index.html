@@ -530,7 +530,7 @@
             >
             <a
               class="profile-card__links-button"
-              href="streisand://import/{{ user.subscription_url }}"
+              href="streisand://import/{{ user.subscription_url }}#{{ user.username | urlencode }}"
               rel="noopener noreferrer"
               target="_blank"
               >افزودن به Streisand</a
