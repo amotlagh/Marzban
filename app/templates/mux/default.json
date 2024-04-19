@@ -6,12 +6,12 @@
     "xudpProxyUDP443": "reject"
   },
   "sing-box": {
-    "enabled": true,
+    "enabled": false,
     "protocol": "h2mux",
     "max_streams": 8
   },
   "clash": {
-    "enabled": true,
+    "enabled": false,
     "protocol": "h2mux",
     "max_streams": 8
   }
