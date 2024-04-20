@@ -6,9 +6,9 @@ wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
 git clone https://github.com/amotlagh/Marzban.git
 cd Marzban
 python3 -m pip install -r requirements.txt
-alembic upgrade head
 cp .env.example .env
 cp xray_config.json.example xray_config.json
+alembic upgrade head
 sudo ln -s $(pwd)/marzban-cli.py /usr/bin/marzban-cli
 sudo chmod +x /usr/bin/marzban-cli
 marzban-cli completion install
