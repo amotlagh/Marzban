@@ -4,6 +4,35 @@
     "error": "",
     "loglevel": "warning"
   },
+  "dns": {
+    "tag": "dns",
+    "hosts": {
+      "cloudflare-dns.com": [
+        "172.67.73.38",
+        "104.19.155.92",
+        "172.67.73.163",
+        "104.18.155.42",
+        "104.16.124.175",
+        "104.16.248.249",
+        "104.16.249.249",
+        "104.26.13.8"
+      ]
+    },
+    "servers": [
+      "1.1.1.1",
+      "1.0.0.1",
+      "8.8.8.8",
+      "8.8.4.4",
+      {
+        "address": "https://cloudflare-dns.com/dns-query",
+        "domains": [],
+        "skipFallback": true,
+        "queryStrategy": "UseIPv4"
+      }
+    ],
+    "disableCache": true,
+    "disableFallbackIfMatch": true
+  },
   "inbounds": [
     {
       "tag": "socks",
@@ -12,11 +41,7 @@
       "protocol": "socks",
       "sniffing": {
         "enabled": true,
-        "destOverride": [
-          "http",
-          "tls"
-        ],
-        "routeOnly": false
+        "destOverride": ["http", "tls"]
       },
       "settings": {
         "auth": "noauth",
@@ -31,11 +56,7 @@
       "protocol": "http",
       "sniffing": {
         "enabled": true,
-        "destOverride": [
-          "http",
-          "tls"
-        ],
-        "routeOnly": false
+        "destOverride": ["http", "tls"]
       },
       "settings": {
         "auth": "noauth",
@@ -45,14 +66,14 @@
     }
   ],
   "outbounds": [],
-  "dns": {
-    "servers": [
-      "1.1.1.1",
-      "8.8.8.8"
-    ]
-  },
   "routing": {
     "domainStrategy": "AsIs",
-    "rules": []
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": ["socks", "http"],
+        "outboundTag": "proxy"
+      }
+    ]
   }
 }
