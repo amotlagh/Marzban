@@ -81,7 +81,7 @@
             "statsInboundDownlink": true,
             "statsInboundUplink": true
         }
-  },
+    },
     "routing": {
         "rules": [
             {
