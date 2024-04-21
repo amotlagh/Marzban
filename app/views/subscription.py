@@ -114,7 +114,7 @@ def user_subscription(token: str,
 
     elif re.match('^v2rayN/(\d+\.\d+)', user_agent):
         version_str = re.match('^v2rayN/(\d+\.\d+)', user_agent).group(1)
-        if LooseVersion(version_str) >= LooseVersion("6.40") and USE_CUSTOM_JSON_FOR_V2RAYN:
+        if LooseVersion(version_str) >= LooseVersion("6.43") and USE_CUSTOM_JSON_FOR_V2RAYN:
             conf = generate_subscription(user=user, config_format="v2ray-json", as_base64=False)
             return Response(content=conf, media_type="application/json", headers=response_headers)
         else:
@@ -123,7 +123,7 @@ def user_subscription(token: str,
 
     elif re.match('^v2rayNG/(\d+\.\d+\.\d+)', user_agent):
         version_str = re.match('^v2rayNG/(\d+\.\d+\.\d+)', user_agent).group(1)
-        if LooseVersion(version_str) >= LooseVersion("1.8.16") and USE_CUSTOM_JSON_FOR_V2RAYNG:
+        if LooseVersion(version_str) >= LooseVersion("1.8.20") and USE_CUSTOM_JSON_FOR_V2RAYNG:
             conf = generate_subscription(user=user, config_format="v2ray-json", as_base64=False)
             return Response(content=conf, media_type="application/json", headers=response_headers)
         else:
