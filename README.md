@@ -3,6 +3,7 @@
 ```bash
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
 wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
+cd ~
 git clone https://github.com/amotlagh/Marzban.git
 cd Marzban
 python3 -m pip install -r requirements.txt
@@ -24,6 +25,8 @@ marzban-cli admin create --sudo
 sudo systemctl stop --now marzban.service
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
 wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
+cd ~
+rm -rf ~/temp/
 git clone https://github.com/amotlagh/Marzban.git temp
 cp -r ~/temp/* ~/Marzban/
 cd Marzban
