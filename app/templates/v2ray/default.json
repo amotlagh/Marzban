@@ -16,7 +16,7 @@
       "1.0.0.2",
       "8.8.4.4",
       {
-        "address": "https://dns.google/dns-query",
+        "address": "https://cloudflare-dns.com/dns-query",
         "domains": [],
         "skipFallback": true,
         "queryStrategy": "UseIPv4"
