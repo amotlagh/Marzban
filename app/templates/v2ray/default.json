@@ -7,7 +7,8 @@
   "dns": {
     "tag": "dns",
     "hosts": {
-      "cloudflare-dns.com": ["104.16.248.249", "104.16.249.249"]
+      "cloudflare-dns.com": ["104.16.248.249", "104.16.249.249"],
+      "dns.google": ["8.8.8.8", "8.8.4.4"]
     },
     "servers": [
       "1.1.1.2",
@@ -15,7 +16,7 @@
       "1.0.0.2",
       "8.8.4.4",
       {
-        "address": "https://cloudflare-dns.com/dns-query",
+        "address": "https://dns.google/dns-query",
         "domains": [],
         "skipFallback": true,
         "queryStrategy": "UseIPv4"
@@ -123,7 +124,7 @@
       },
       {
         "type": "field",
-        "port": "0-65535",
+        "inboundTag": ["socks", "http"],
         "outboundTag": "proxy"
       }
     ]
