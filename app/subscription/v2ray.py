@@ -273,6 +273,7 @@ class V2rayJsonConfig(str):
         if path:
             wsSettings["path"] = path
         if host:
+            wsSettings["host"] = host
             wsSettings["headers"]["Host"] = host
 
         return wsSettings
@@ -315,7 +316,7 @@ class V2rayJsonConfig(str):
 
             tcpSettings["header"]["request"]["headers"] = {}
             tcpSettings["header"]["request"]["method"] = "GET"
-            tcpSettings["header"]["request"]["headers"]["User-Agent"] = []
+            tcpSettings["header"]["request"]["headers"]["User-Agent"] = ["Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.54 Mobile Safari/537.36","Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/124.0.6367.71 Mobile/15E148 Safari/604.1","Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0"]
             tcpSettings["header"]["request"]["headers"]["Accept-Encoding"] = ["gzip, deflate"]
             tcpSettings["header"]["request"]["headers"]["Connection"] = ["keep-alive"]
             tcpSettings["header"]["request"]["headers"]["Pragma"] = "no-cache"
