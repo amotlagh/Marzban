@@ -7,21 +7,12 @@
   "dns": {
     "tag": "dns",
     "hosts": {
-      "cloudflare-dns.com": [
-        "172.67.73.38",
-        "104.19.155.92",
-        "172.67.73.163",
-        "104.18.155.42",
-        "104.16.124.175",
-        "104.16.248.249",
-        "104.16.249.249",
-        "104.26.13.8"
-      ]
+      "cloudflare-dns.com": ["104.16.248.249", "104.16.249.249"]
     },
     "servers": [
-      "1.1.1.1",
+      "1.1.1.2",
       "8.8.8.8",
-      "1.0.0.1",
+      "1.0.0.2",
       "8.8.4.4",
       {
         "address": "https://cloudflare-dns.com/dns-query",
@@ -65,13 +56,74 @@
       }
     }
   ],
-  "outbounds": [],
+  "outbounds": [
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
+      }
+    }
+  ],
   "routing": {
     "domainStrategy": "AsIs",
     "rules": [
       {
+        "ip": ["1.1.1.2", "8.8.8.8", "1.0.0.2", "8.8.4.4"],
+        "outboundTag": "proxy",
+        "port": "53"
+      },
+      {
+        "ip": ["geoip:private"],
+        "outboundTag": "direct"
+      },
+      {
         "type": "field",
-        "inboundTag": ["socks", "http"],
+        "outboundTag": "direct",
+        "domain": [
+          "regexp:.*\\.ir$",
+          "regexp:.*\\.xn--mgba3a4f16a$",
+          "digikala",
+          "aparat",
+          "speedtest",
+          "telewebion",
+          "divarcdn.com",
+          "varzesh3",
+          "namnak.com",
+          "namasha.com",
+          "filimo.com",
+          "tapsi",
+          "eitaa",
+          "snapp",
+          "sb24.com",
+          "torob",
+          "tgju",
+          "sarzamindownload",
+          "downloadha",
+          "soft98",
+          "p30download",
+          "sanjesh",
+          "intrack",
+          "irancell",
+          "mci",
+          "wikipedia",
+          "tamasha",
+          "freeserver",
+          "speedtest.net",
+          "speedtest.ir",
+          "speedcheck.ir",
+          "fast.com",
+          "speedcheck.org",
+          "speed.io",
+          "bale",
+          "rubika",
+          "igap",
+          "fonts.gstatic.com"
+        ]
+      },
+      {
+        "type": "field",
+        "port": "0-65535",
         "outboundTag": "proxy"
       }
     ]
