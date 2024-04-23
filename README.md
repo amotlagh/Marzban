@@ -1,9 +1,3 @@
-# install docker version:
-
-```bash
-sudo bash -c "$(curl -sL https://github.com/amotlagh/Marzban-scripts/raw/master/marzban.sh)" @ install
-```
-
 # Install:
 
 ```bash
