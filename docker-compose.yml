@@ -1,6 +1,7 @@
 services:
   marzban:
-    image: amotlagh/marzban:latest
+    build: .
+    image: marzban
     restart: always
     env_file: .env
     network_mode: host
