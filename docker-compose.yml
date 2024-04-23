@@ -1,7 +1,7 @@
 services:
   marzban:
     build: .
-    image: marzban
+    image: marzban-app
     restart: always
     env_file: .env
     network_mode: host
