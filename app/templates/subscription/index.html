@@ -544,15 +544,15 @@
             > -->
             <a
               class="profile-card__links-button copy-button"
-              onclick="copyLink('{{ user.subscription_url }}', this)"
+              onclick="copyLink('{{ user.subscription_url }}/v2ray-json', this)"
             >
-              کپی لینک اشتراک
+              کپی لینک اشتراک هوشمند
             </a>
             <a
               class="profile-card__links-button copy-button"
               onclick="copyOldLink('{{ user.subscription_url }}/v2ray', this)"
             >
-              کپی لینک اشتراک قدیمی
+              کپی لینک اشتراک ساده
             </a>
           </div>
         </div>
@@ -814,7 +814,7 @@
 
         button.textContent = "کپی شد!";
         setTimeout(function () {
-          button.textContent = "کپی لینک اشتراک";
+          button.textContent = "کپی لینک اشتراک هوشمند";
         }, 1500);
       }
 
@@ -828,7 +828,7 @@
 
         button.textContent = "کپی شد!";
         setTimeout(function () {
-          button.textContent = "کپی لینک ساب قدیمی";
+          button.textContent = "کپی لینک اشتراک ساده";
         }, 1500);
       }
 
