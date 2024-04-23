@@ -1,6 +1,5 @@
 services:
   marzban:
-    build: .
     image: amotlagh/marzban:latest
     restart: always
     env_file: .env
