@@ -17,6 +17,12 @@
       "8.8.4.4",
       {
         "address": "https://cloudflare-dns.com/dns-query",
+        "domains": [],
+        "skipFallback": true,
+        "queryStrategy": "UseIPv4"
+      },
+      {
+        "address": "https://dns.google/dns-query",
         "domains": ["youtube.com"],
         "skipFallback": true,
         "queryStrategy": "UseIPv4"
@@ -55,21 +61,13 @@
       }
     }
   ],
-  "outbounds": [
-    {
-      "tag": "direct",
-      "protocol": "freedom",
-      "settings": {
-        "domainStrategy": "AsIs"
-      }
-    }
-  ],
+  "outbounds": [],
   "routing": {
     "domainStrategy": "AsIs",
     "rules": [
       {
         "type": "field",
-        "inboundTag": "dns",
+        "inboundTag": ["dns"],
         "domain": ["cloudflare-dns.com", "dns.google"],
         "outboundTag": "fragment_out"
       },
