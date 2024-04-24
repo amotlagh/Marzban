@@ -21,9 +21,7 @@
         "skipFallback": true,
         "queryStrategy": "UseIPv4"
       }
-    ],
-    "disableCache": true,
-    "disableFallbackIfMatch": true
+    ]
   },
   "inbounds": [
     {
