@@ -13,7 +13,7 @@
     "servers": [
       "1.1.1.1",
       "8.8.8.8",
-      "1.0.0.2",
+      "1.0.0.1",
       "8.8.4.4",
       {
         "address": "https://cloudflare-dns.com/dns-query",
@@ -66,17 +66,12 @@
   ],
   "routing": {
     "domainStrategy": "AsIs",
+    "domainMatcher": "hybrid",
     "rules": [
       {
         "type": "field",
-        "inboundTag": ["dns"],
-        "domain": ["cloudflare-dns.com"],
+        "domain": ["cloudflare-dns.com", "dns.google"],
         "outboundTag": "fragment_out"
-      },
-      {
-        "ip": ["1.1.1.1", "8.8.8.8", "1.0.0.2", "8.8.4.4"],
-        "outboundTag": "proxy",
-        "port": "53"
       },
       {
         "ip": ["geoip:private"],
@@ -123,13 +118,9 @@
           "bale",
           "rubika",
           "igap",
+          "vipstream",
           "fonts.gstatic.com"
         ]
-      },
-      {
-        "type": "field",
-        "inboundTag": ["socks", "http"],
-        "outboundTag": "proxy"
       }
     ]
   }
