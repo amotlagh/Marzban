@@ -11,19 +11,13 @@
       "dns.google": ["8.8.8.8", "8.8.4.4"]
     },
     "servers": [
-      "1.1.1.2",
+      "1.1.1.1",
       "8.8.8.8",
       "1.0.0.2",
       "8.8.4.4",
       {
         "address": "https://cloudflare-dns.com/dns-query",
         "domains": [],
-        "skipFallback": true,
-        "queryStrategy": "UseIPv4"
-      },
-      {
-        "address": "https://dns.google/dns-query",
-        "domains": ["youtube.com"],
         "skipFallback": true,
         "queryStrategy": "UseIPv4"
       }
@@ -61,18 +55,26 @@
       }
     }
   ],
-  "outbounds": [],
+  "outbounds": [
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
+      }
+    }
+  ],
   "routing": {
     "domainStrategy": "AsIs",
     "rules": [
       {
         "type": "field",
         "inboundTag": ["dns"],
-        "domain": ["cloudflare-dns.com", "dns.google"],
+        "domain": ["cloudflare-dns.com"],
         "outboundTag": "fragment_out"
       },
       {
-        "ip": ["1.1.1.2", "8.8.8.8", "1.0.0.2", "8.8.4.4"],
+        "ip": ["1.1.1.1", "8.8.8.8", "1.0.0.2", "8.8.4.4"],
         "outboundTag": "proxy",
         "port": "53"
       },
