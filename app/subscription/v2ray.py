@@ -514,6 +514,7 @@ class V2rayJsonConfig(str):
             },
             "streamSettings": {
                 "sockopt": {
+                    "tcpFastOpen": True,
                     "tcpNoDelay": True,
                     "tcpMptcp": True,
                     "tcpKeepAliveIdle": 100,
@@ -633,8 +634,8 @@ class V2rayJsonConfig(str):
             try:
                 length, interval, packets = fragment.split(',')
                 fragment_outbound = self.make_fragment_outbound(packets, length, interval)
-                # outbounds.append(fragment_outbound)
-                outbounds.insert(0, fragment_outbound)
+                outbounds.append(fragment_outbound)
+                # outbounds.insert(0, fragment_outbound)
                 dialer_proxy = fragment_outbound['tag']
             except ValueError:
                 pass
