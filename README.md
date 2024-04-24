@@ -9,6 +9,7 @@ cd Marzban
 python3 -m pip install -r requirements.txt
 cp .env.example .env
 cp xray_config.json.example xray_config.json
+cp send_to_telegram.sh dbbackup.sh
 alembic upgrade head
 sudo ln -s $(pwd)/marzban-cli.py /usr/bin/marzban-cli
 sudo chmod +x /usr/bin/marzban-cli

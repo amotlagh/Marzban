@@ -15,6 +15,6 @@ curl -F chat_id="$user_id" -F document=@"$file_path" $url
 
 
 
-# chmod +x send_to_telegram.sh
+# chmod +x dbbackup.sh
 # crontab -e
-# 0 * * * * /root/Marzban/send_to_telegram.sh
+# 0 * * * * /root/Marzban/dbbackup.sh
