@@ -17,12 +17,6 @@
       "8.8.4.4",
       {
         "address": "https://cloudflare-dns.com/dns-query",
-        "domains": [],
-        "skipFallback": true,
-        "queryStrategy": "UseIPv4"
-      },
-      {
-        "address": "https://dns.google/dns-query",
         "domains": ["youtube.com"],
         "skipFallback": true,
         "queryStrategy": "UseIPv4"
