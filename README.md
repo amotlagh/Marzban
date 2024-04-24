@@ -40,6 +40,33 @@ sudo ./install_service.sh
 sudo systemctl enable --now marzban.service
 ```
 
+## Optimize server:
+
+### Open the sysctl configuration file:
+
+```
+sudo nano /etc/sysctl.conf
+```
+
+### Add the following lines at the end of the file:
+
+```
+net.ipv4.tcp_syncookies = 0
+net.ipv4.tcp_congestion_control = bbr
+net.core.default_qdisc = fq
+net.ipv4.tcp_fastopen = 3
+net.ipv4.tcp_fastopen_blackhole_timeout_sec = 60
+net.core.somaxconn = 4096
+
+```
+
+### Apply the changes:
+
+```
+sudo sysctl -p
+
+```
+
 <p align="center">
   <a href="https://github.com/gozargah/marzban" target="_blank" rel="noopener noreferrer">
     <picture>
