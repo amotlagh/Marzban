@@ -57,15 +57,27 @@ net.core.default_qdisc = fq
 net.ipv4.tcp_fastopen = 3
 net.ipv4.tcp_fastopen_blackhole_timeout_sec = 60
 net.core.somaxconn = 4096
-
 ```
 
 ### Apply the changes:
 
 ```
 sudo sysctl -p
-
 ```
+
+# Donation
+
+If you found this repo useful and would like to support its development, you can make a donation in one of the following crypto networks:
+
+- TRON network (TRC20): `TALangyzvcaL25Khfdg8ntTkVMgpAKWwjW`
+- ETH, BNB, MATIC network (ERC20, BEP20): `0x3A51B09e14e01332C080e4BB2432d1DbEB3f9fC7`
+- Bitcoin network: `bc1qc9cqud5unhwdfc4a6q6kn0s5sjnk5ktf4rf85p`
+- Bitcoin Lightning network: `lnurl1dp68gurn8ghj7ampd3kx2ar0veekzar0wd5xjtnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhkzmrfwdkskl3xdk`
+- LTC network: `ltc1q4puewzjfdhvc8wrqusqewatm9fg9yw8pzptczk`
+- Solana network: `H6FxECgiv48kEwVZ51b3wj5DKEnExtVAT9zfHSmRxWqu`
+- TON network: `UQDVFB33UBnSxsoxjpNOuPiy51W8MGQDqcq28AtiVSjwHL6E`
+
+Thank you for your support!
 
 <p align="center">
   <a href="https://github.com/gozargah/marzban" target="_blank" rel="noopener noreferrer">
