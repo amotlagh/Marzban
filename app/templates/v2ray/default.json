@@ -89,6 +89,12 @@
       },
       {
         "type": "field",
+        "inboundTag": ["dns"],
+        "ip": ["1.1.1.1", "8.8.8.8"],
+        "outboundTag": "proxy"
+      },
+      {
+        "type": "field",
         "outboundTag": "direct",
         "domain": [
           "regexp:.*\\.ir$",
