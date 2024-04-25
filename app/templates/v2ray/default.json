@@ -7,14 +7,11 @@
   "dns": {
     "tag": "dns",
     "hosts": {
-      "cloudflare-dns.com": ["104.16.248.249", "104.16.249.249"],
-      "dns.google": ["8.8.8.8", "8.8.4.4"]
+      "cloudflare-dns.com": ["104.16.248.249", "104.16.249.249"]
     },
     "servers": [
       "1.1.1.1",
       "8.8.8.8",
-      "1.0.0.1",
-      "8.8.4.4",
       {
         "address": "https://cloudflare-dns.com/dns-query",
         "domains": [],
@@ -62,6 +59,22 @@
       "settings": {
         "domainStrategy": "AsIs"
       }
+    },
+    {
+      "tag": "dns_out",
+      "protocol": "freedom",
+      "settings": {
+        "fragment": {
+          "packets": "tlshello",
+          "length": "10-30",
+          "interval": "1-2"
+        }
+      },
+      "streamSettings": {
+        "sockopt": {
+          "domainStrategy": "UseIP"
+        }
+      }
     }
   ],
   "routing": {
@@ -70,12 +83,9 @@
     "rules": [
       {
         "type": "field",
-        "domain": ["cloudflare-dns.com", "dns.google"],
-        "outboundTag": "fragment_out"
-      },
-      {
-        "ip": ["geoip:private"],
-        "outboundTag": "direct"
+        "inboundTag": ["dns"],
+        "domain": ["cloudflare-dns.com"],
+        "outboundTag": "dns_out"
       },
       {
         "type": "field",
