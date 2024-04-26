@@ -3,6 +3,5 @@
   "protocol": "h2mux",
   "padding": false,
   "max_connections": 1,
-  "min_streams": 4,
-  "padding": false
+  "min_streams": 4
 }
