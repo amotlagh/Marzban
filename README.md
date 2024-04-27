@@ -49,6 +49,10 @@ apt install mysql-server sqlite3
 ```
 
 ```
+sudo mysql_secure_installation
+```
+
+```
 mysql
 ```
 
