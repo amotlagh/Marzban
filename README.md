@@ -40,6 +40,70 @@ sudo ./install_service.sh
 sudo systemctl enable --now marzban.service
 ```
 
+---
+
+## Change to mysql:
+
+```
+apt install mysql-server sqlite3
+```
+
+```
+mysql
+```
+
+```
+SET GLOBAL validate_password.policy = LOW;
+```
+
+```
+CREATE DATABASE db_name;
+```
+
+```
+CREATE USER 'db_user'@'%' IDENTIFIED WITH mysql_native_password BY 'db_password';
+```
+
+```
+GRANT ALL ON db_name.* TO 'db_user'@'%';
+```
+
+```
+exit
+```
+
+```
+nano ~/Marzban/.env
+```
+
+```
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://db_user:db_password@127.0.0.1/db_name"
+MYSQL_ROOT_PASSWORD = "db_password"
+```
+
+```
+sqlite3 /root/Marzban/db.sqlite3 '.dump --data-only' | sed "s/INSERT INTO \([^ ]*\)/REPLACE INTO \`\\1\`/g" > /tmp/dump.sql
+```
+
+```
+systemctl restart marzban
+```
+
+```
+cd ~/Marzban/
+alembic upgrade head
+```
+
+```
+mysql -u alish -p -h 127.0.0.1 marzban -e "SET FOREIGN_KEY_CHECKS = 0; SET NAMES utf8mb4; SOURCE /tmp/dump.sql;"
+```
+
+```
+rm /tmp/dump.sql
+```
+
+---
+
 ## Optimize server:
 
 ### Open the sysctl configuration file:
@@ -54,9 +118,6 @@ sudo nano /etc/sysctl.conf
 net.ipv4.tcp_syncookies = 0
 net.ipv4.tcp_congestion_control = bbr
 net.core.default_qdisc = fq
-net.ipv4.tcp_fastopen = 3
-net.ipv4.tcp_fastopen_blackhole_timeout_sec = 60
-net.core.somaxconn = 4096
 ```
 
 ### Apply the changes:
