@@ -95,7 +95,7 @@ alembic upgrade head
 ```
 
 ```
-mysql -u alish -p -h 127.0.0.1 marzban -e "SET FOREIGN_KEY_CHECKS = 0; SET NAMES utf8mb4; SOURCE /tmp/dump.sql;"
+mysql -u db_user -p -h 127.0.0.1 marzban -e "SET FOREIGN_KEY_CHECKS = 0; SET NAMES utf8mb4; SOURCE /tmp/dump.sql;"
 ```
 
 ```
