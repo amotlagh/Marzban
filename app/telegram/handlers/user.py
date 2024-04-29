@@ -28,7 +28,8 @@ def usage_command(message):
             'active': '✅',
             'expired': '🕰',
             'limited': '📵',
-            'disabled': '❌'}
+            'disabled': '❌',
+            'on_hold': '🔌'}
 
         text = f'''\
 ┌─{statuses[user.status]} <b>Status:</b> <code>{user.status.title()}</code>
