@@ -81,8 +81,8 @@ nano ~/Marzban/.env
 ```
 
 ```
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://db_user:db_password@127.0.0.1/db_name"
-MYSQL_ROOT_PASSWORD = "db_password"
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://DB_USER:DB_PASS@127.0.0.1/DB_NAME"
+MYSQL_ROOT_PASSWORD = "DB_PASS"
 ```
 
 ```
