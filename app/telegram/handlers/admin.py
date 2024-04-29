@@ -476,7 +476,8 @@ def users_command(call: types.CallbackQuery):
 ✅ Active
 ❌ Disabled
 🕰 Expired
-🪫 Limited""".format(page=page, total_pages=total_pages)
+🪫 Limited
+🔌 OnHold""".format(page=page, total_pages=total_pages)
 
     bot.edit_message_text(
         text,
