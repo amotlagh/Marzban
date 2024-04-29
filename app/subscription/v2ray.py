@@ -214,11 +214,8 @@ class V2rayJsonConfig(str):
         self.template = render_template(V2RAY_SUBSCRIPTION_TEMPLATE)
         self.mux_template = render_template(MUX_TEMPLATE)
 
-    def add_config(self, remarks, outbounds, dns_address):
+    def add_config(self, remarks, outbounds):
         json_template = json.loads(self.template)
-        for server in json_template["dns"]["servers"]:
-            if isinstance(server, dict) and "domains" in server:
-                server["domains"].append(dns_address)
         json_template["remarks"] = remarks
         json_template["outbounds"] = outbounds + json_template["outbounds"]
         self.config.insert(0, (json_template))
@@ -498,28 +495,11 @@ class V2rayJsonConfig(str):
         outbound = {
             "tag": "fragment_out",
             "protocol": "freedom",
-            "sniffing": {
-                "enabled": True,
-                "destOverride": [
-                    "http",
-                    "tls"
-                ]
-            },
             "settings": {
                 "fragment": {
                     "packets": packets,
                     "length": length,
                     "interval": interval
-                }
-            },
-            "streamSettings": {
-                "sockopt": {
-                    "tcpFastOpen": True,
-                    "tcpNoDelay": True,
-                    "tcpMptcp": True,
-                    "tcpKeepAliveIdle": 100,
-                    "mark": 255,
-                    "domainStrategy": "UseIP"
                 }
             }
         }
@@ -635,7 +615,6 @@ class V2rayJsonConfig(str):
                 length, interval, packets = fragment.split(',')
                 fragment_outbound = self.make_fragment_outbound(packets, length, interval)
                 outbounds.append(fragment_outbound)
-                # outbounds.insert(0, fragment_outbound)
                 dialer_proxy = fragment_outbound['tag']
             except ValueError:
                 pass
@@ -664,4 +643,4 @@ class V2rayJsonConfig(str):
         if outbound["mux"]["enabled"]:
             outbound["mux"]["enabled"] = bool(inbound.get('mux_enable', False))
 
-        self.add_config(remarks=remark, outbounds=outbounds, dns_address=address)
+        self.add_config(remarks=remark, outbounds=outbounds)

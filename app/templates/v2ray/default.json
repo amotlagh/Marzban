@@ -2,22 +2,13 @@
   "log": {
     "access": "",
     "error": "",
-    "loglevel": "warning"
+    "loglevel": "error"
   },
   "dns": {
     "tag": "dns",
-    "hosts": {
-      "cloudflare-dns.com": ["104.16.248.249", "104.16.249.249"]
-    },
     "servers": [
-      "1.1.1.1",
       "8.8.8.8",
-      {
-        "address": "https://cloudflare-dns.com/dns-query",
-        "domains": [],
-        "skipFallback": true,
-        "queryStrategy": "UseIPv4"
-      }
+      "1.1.1.1"
     ]
   },
   "inbounds": [
@@ -59,41 +50,12 @@
       "settings": {
         "domainStrategy": "AsIs"
       }
-    },
-    {
-      "tag": "dns_out",
-      "protocol": "freedom",
-      "settings": {
-        "fragment": {
-          "packets": "tlshello",
-          "length": "10-30",
-          "interval": "1-2"
-        }
-      },
-      "streamSettings": {
-        "sockopt": {
-          "domainStrategy": "UseIP"
-        }
-      }
     }
   ],
   "routing": {
     "domainStrategy": "AsIs",
     "domainMatcher": "hybrid",
     "rules": [
-      {
-        "type": "field",
-        "inboundTag": ["dns"],
-        "domain": ["cloudflare-dns.com"],
-        "outboundTag": "dns_out"
-      },
-      {
-        "type": "field",
-        "inboundTag": ["dns"],
-        "ip": ["1.1.1.1", "8.8.8.8"],
-        "port": "53",
-        "outboundTag": "proxy"
-      },
       {
         "type": "field",
         "outboundTag": "direct",
@@ -112,6 +74,11 @@
           "tapsi",
           "eitaa",
           "snapp",
+          "microsoft",
+          "windows",
+          "apple.com",
+          "cafebazaar",
+          "farsroid.com",
           "sb24.com",
           "torob",
           "tgju",
@@ -122,6 +89,13 @@
           "sanjesh",
           "intrack",
           "irancell",
+          "mellat",
+          "bsi",
+          "zarinpal",
+          "nobitex",
+          "virgool",
+          "bitpin",
+          "bmi",
           "mci",
           "wikipedia",
           "tamasha",
