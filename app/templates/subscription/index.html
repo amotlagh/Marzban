@@ -25,6 +25,12 @@
         y.parentNode.insertBefore(t, y);
       })(window, document, "clarity", "script", "lmq3nrfx2a");
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+      const userlinks = {{ user.links }};
+      const userlinksC = userlinks.join('\n');
+      const userlinksCEncoded = btoa(userlinksC);
+    </script>
     <style>
       * {
         box-sizing: border-box;
@@ -43,7 +49,10 @@
         direction: rtl;
       }
       img{
-        width:100%
+        width:100% !important;
+      }
+      canvas{
+        width:100% !important;
       }
       code{
         font-family: "Vazirmatn", sans-serif;
@@ -434,6 +443,7 @@
         align-items: center;
         justify-content: center;
         border: 4px dotted;
+        box-shadow: 0 0 10px 2px #00000061;
       }
 
       @media screen and (min-width:800px){
@@ -469,6 +479,26 @@
         margin: auto;
         display: block;
         margin: 20px auto;
+      }
+      .divcopyLinkC{
+        padding: 1.5rem 2rem 1rem;
+      }
+      .copyLinkC{
+        padding: 1rem;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        border: 2px solid #ffffff;
+        border-radius: 0.5rem;
+        color: #ffffff;
+        transition: box-shadow 200ms ease;
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+        background-color: #000000;
+        font-family: "Vazirmatn", sans-serif;
+        font-size: 17px;
+        font-weight: 400;
+        box-shadow: 0 0 0px 2px #000000;
       }
     </style>
   </head>
@@ -522,13 +552,23 @@
         </div>
       </div>
       {% if user.status == 'active' or user.status == 'on_hold' %}
+      <div class="divcopyLinkC">
+        <button class="copyLinkC copy-button" onclick="copyLinkC(userlinksCEncoded, this)">کپی همه کانفیگ‌ها</button>
+      </div>
+
+      <div class="profile-card__separator"></div>
       <div class="profile-card__links">
         <div class="accordion">
           <input type="checkbox" name="quick-add" id="quick-add" />
           <label class="profile-card__header" for="quick-add">
-            افزودن سریع لینک اشتراک
+             اتصال با لینک اشتراک هوشمند
           </label>
           <div class="accordion-content">
+
+            <p style="margin: 0 0 30px;
+                      font-size: 15px;">
+              با اتصال به وسیله لینک اشتراک هوشمند، نیاز نیست برای سایت‌ها یا برنامه‌های داخلی فیلترشکن خود را قطع کنید و بسته اینترنت شما نیز نیم‌بها محاسبه می‌گردد.
+            </p>
             <a
               class="profile-card__links-button"
               href="v2rayng://install-config?url={{ user.subscription_url }}&name={{ user.username | urlencode }}"
@@ -562,6 +602,8 @@
             >
               کپی لینک اشتراک ساده
             </a> -->
+
+            <div style="padding: 40px 0;" id="qrcode"></div>
           </div>
         </div>
 
@@ -569,7 +611,7 @@
 
         <div class="accordion">
           <input type="checkbox" name="etesal" id="etesal" />
-          <label class="profile-card__header" for="etesal"> آموزش اتصال </label>
+          <label class="profile-card__header" for="etesal"> آموزش اتصال با لینک اشتراک</label>
           <div class="accordion-content app-etesal">
             <div class="Click-here profile-card__links-button" app="v2ray">
               V2rayNG - Android
@@ -577,11 +619,14 @@
             <div class="Click-here profile-card__links-button" app="streisand">
               Streisand - iOS
             </div>
-            <!-- <div class="Click-here profile-card__links-button" app="v2box">
+            <div class="Click-here profile-card__links-button" app="v2box">
               V2Box - Android & iOS
-            </div> -->
-            <div class="Click-here profile-card__links-button" app="nekoray">
+            </div>
+            <div class="Click-here profile-card__links-button" app="v2rayn">
               V2rayN - Windows
+            </div>
+            <div class="Click-here profile-card__links-button" app="nekoray">
+              Nekoray - Windows & Linux
             </div>
           </div>
         </div>
@@ -590,7 +635,7 @@
         <div class="accordion">
           <input type="checkbox" name="android" id="android" />
           <label class="profile-card__header" for="android">
-            دانلود برنامه های مورد نیاز
+            دانلود برنامه‌های مورد نیاز
           </label>
           <div class="accordion-content">
             <div class="dlapp">
@@ -639,12 +684,12 @@
                 target="_blank"
                 >Streisand</a
               >
-              <!-- <a
+              <a
                 class="profile-card__links-button"
                 href="https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690"
                 rel="noopener noreferrer"
                 target="_blank"
-              >V2Box</a> -->
+              >V2Box</a>
             </div>
 
             <div class="dlapp">
@@ -667,6 +712,14 @@
                 target="_blank"
                 >V2rayN</a
               >
+
+              <a
+              class="profile-card__links-button"
+              href="https://github.com/MatsuriDayo/nekoray/releases/download/3.26/nekoray-3.26-2023-12-09-windows64.zip"
+              rel="noopener noreferrer"
+              target="_blank"
+              >Nekoray</a
+            >
             </div>
           </div>
         </div>
@@ -712,12 +765,12 @@
               <video src="https://fandogh-4qb.pages.dev/v2rayNG.mp4" type="video/mp4" controls>
 
                 <p>
-                  1️⃣ توی همین صفحه از قسمت افزودن سریع لینک اشتراک؛ دکمه «افزودن
+                  1️⃣ توی همین صفحه از قسمت اتصال با لینک اشتراک؛ دکمه «افزودن
                   به V2rayNG» رو بزنید.
                 </p>
                 <p>
                   2️⃣ بعد توی V2rayNG روی "سه تا نقطه" کلیک کنید و update
-                  subscription (آخرین آیتم) رو بزنید تا کانفیگ هاتون در V2rayNG
+                  subscription (آخرین آیتم) رو بزنید تا کانفیگ‌هاتون در V2rayNG
                   ببنید.&nbsp;
                 </p>
                 </p>
@@ -743,7 +796,7 @@
                 1.6.18 و بالاتر باشد)</b
               >
               <p>
-                1️⃣ توی همین صفحه از قسمت افزودن سریع لینک اشتراک؛ &nbsp;دکمه
+                1️⃣ توی همین صفحه از قسمت اتصال با لینک اشتراک؛ &nbsp;دکمه
                 «افزودن به Streisand» رو بزنید.
               </p>
               <p>
@@ -751,6 +804,77 @@
               </p>
             </div>
           </div>
+
+          <div class="pop-up-content-wrap" app="nekoray">
+            <div style="direction: rtl; text-align: justify; line-height: 2">
+
+              <h2>آموزش اتصال با nekoray</h2>
+              <p>ایتدا تنظیمات صحیح nekoray را مطابق تصاویر زیر انجام دهید:</p>
+              <img
+                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-1.jpg"
+                loading="lazy"
+              />
+              <img
+                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-2.jpg"
+                loading="lazy"
+              />
+              <img
+                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-3.jpg"
+                loading="lazy"
+              />
+              <img
+                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-4.jpg"
+                loading="lazy"
+              />
+              <img
+                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-5.jpg"
+                loading="lazy"
+              />
+              <p>
+                روی دکمه ok کلیلک کنید و بعد از آن طبق تصویر پایین روی
+                <code>Groups</code>
+                کلیک کنید:
+              </p>
+              <img
+                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-6.jpg"
+                loading="lazy"
+              />
+              <img
+                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-7.jpg"
+                loading="lazy"
+              />
+              <img
+                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-8.jpg"
+                loading="lazy"
+              />
+              <img
+                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-9.jpg"
+                loading="lazy"
+              />
+              <img
+                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-10.jpg"
+                loading="lazy"
+              />
+              <p>
+                بعد از اینکه روی
+                <code>Update Subscription</code>
+                کلیک کردید، تنظیمات فیلترشکن به شکل زیر بصورت تب جدید اضافه
+                میگردد. برای اتصال تیک
+                <code>System Proxy</code>
+                را مطابق تصویر زیر بزنید و با کلیلک روی کانفیگ‌های ظاهر شده رو
+                قسمت شماره ۲ کلید
+                <code>Enter</code>
+                کیبورد را بفشارید تا بعد از ۱۰ ثانیه فیلترشکن متصل گردد.
+              </p>
+              <img
+                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-11.jpg"
+                loading="lazy"
+              />
+
+            </div>
+          </div>
+
+
           <div class="pop-up-content-wrap" app="v2box">
             <div style="direction: rtl; text-align: justify; line-height: 2">
               <h3>⚙️ آموزش برنامه V2Box اندروید و آیفون:</h3>
@@ -768,7 +892,7 @@
               </p>
             </div>
           </div>
-          <div class="pop-up-content-wrap" app="nekoray">
+          <div class="pop-up-content-wrap" app="v2rayn">
             <div style="direction: rtl; text-align: justify; line-height: 2">
               <h3>⚙️ آموزش برنامه V2rayN ویندوز:</h3>
               <b
@@ -788,7 +912,7 @@
               <p>
                 3️⃣ توی صفحه اصلی برنامه V2rayN دوباره از بالا دومین گزینه روی
                 Subscription group کلیک کنید. بعد روی Update subscription
-                without proxy &nbsp;کلیک کنید. حالا کانفیگ هاتون رو توی تب کنار
+                without proxy &nbsp;کلیک کنید. حالا کانفیگ‌هاتون رو توی تب کنار
                 All میتونید ببینید.
               </p>
               <p>
@@ -802,9 +926,10 @@
     </div>
 
     <script>
+
       function copyLinkC(link, button) {
-        const tempInput = document.createElement("input");
-        tempInput.setAttribute("value", link);
+        const tempInput = document.createElement("textarea");
+        tempInput.value = link;
         document.body.appendChild(tempInput);
         tempInput.select();
         document.execCommand("copy");
@@ -812,7 +937,7 @@
 
         button.textContent = "کپی شد!";
         setTimeout(function () {
-          button.textContent = "کپی";
+          button.textContent = "کپی همه کانفیگ‌ها";
         }, 1500);
       }
 
@@ -872,6 +997,17 @@
         document
           .querySelector(".custom-model-main")
           .classList.remove("model-open");
+      });
+      
+    </script>
+    <script type="text/javascript">
+      var qrcode = new QRCode(document.getElementById("qrcode"), {
+        text: "{{ user.subscription_url }}",
+        width: 504,
+        height: 504,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
       });
     </script>
   </body>
