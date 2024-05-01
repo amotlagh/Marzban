@@ -10,6 +10,13 @@
     ],
     "tag": "api"
   },
+  "dns": {
+    "servers": [
+      "1.1.1.1",
+      "8.8.8.8"
+    ],
+    "tag": "dns_inbound"
+  },
   "inbounds": [
     {
       "listen": "127.0.0.1",
@@ -249,8 +256,10 @@
   "outbounds": [
     {
       "protocol": "freedom",
-      "sendThrough": "ServerIP",
-      "tag": "direct"
+      "tag": "direct",
+      "settings": {
+        "domainStrategy": "UseIPv4"
+      }
     },
     {
       "protocol": "blackhole",
