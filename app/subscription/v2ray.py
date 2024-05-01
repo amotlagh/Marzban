@@ -40,7 +40,6 @@ class V2rayShareLink(str):
             "net": net,
             "path": path,
             "port": port,
-            "fragment": fs,
             "ps": remark,
             "scy": "auto",
             "tls": tls,
@@ -52,6 +51,8 @@ class V2rayShareLink(str):
             payload["sni"] = sni
             payload["fp"] = fp
             payload["alpn"] = alpn
+            if fs:
+                payload["fragment"] = fs
             if ais:
                 payload["allowInsecure"] = 1
         elif tls == "reality":
@@ -59,7 +60,8 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
-            payload["spx"] = spx   
+            if spx:
+                payload["spx"] = spx 
         if net == "grpc":
             payload["mode"] = mode
 
@@ -116,7 +118,8 @@ class V2rayShareLink(str):
             payload["sni"] = sni
             payload["fp"] = fp
             payload["alpn"] = alpn
-            payload["fragment"] = fs
+            if fs:
+                payload["fragment"] = fs
             if ais:
                 payload["allowInsecure"] = 1
         elif tls == "reality":
@@ -124,7 +127,8 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
-            payload["spx"] = spx
+            if spx:
+                payload["spx"] = spx
 
         return (
             "vless://"
@@ -179,7 +183,8 @@ class V2rayShareLink(str):
             payload["sni"] = sni
             payload["fp"] = fp
             payload["alpn"] = alpn
-            payload["fragment"] = fs
+            if fs:
+                payload["fragment"] = fs
             if ais:
                 payload["allowInsecure"] = 1
         elif tls == "reality":
@@ -187,7 +192,8 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
-            payload["spx"] = spx
+            if spx:
+                payload["spx"] = spx
 
         return (
             "trojan://"
@@ -243,7 +249,7 @@ class V2rayJsonConfig(str):
         return tlsSettings
 
     @staticmethod
-    def reality_config(sni=None, fp=None, pbk=None, sid=None):
+    def reality_config(sni=None, fp=None, pbk=None, sid=None, spx=None):
 
         realitySettings = {}
         if sni is not None:
@@ -257,8 +263,8 @@ class V2rayJsonConfig(str):
             realitySettings["publicKey"] = pbk
         if sid:
             realitySettings["shortId"] = sid
-
-        realitySettings["spiderX"] = ""
+        if spx:
+            realitySettings["spiderX"] = spx
 
         return realitySettings
 
@@ -352,16 +358,18 @@ class V2rayJsonConfig(str):
         else:
             quicSettings["key"] = ""
         if host:
-            quicSettings["security"] = [host]
+            quicSettings["security"] = host
         else:
-            quicSettings["security"] = ""
+            quicSettings["security"] = "none"
         if header:
             quicSettings["header"]["type"] = header
+        else:
+            quicSettings["header"]["type"] = "none"
 
         return quicSettings
 
     @staticmethod
-    def kpc_config(path=None, host=None, header=None):
+    def kcp_config(path=None, host=None, header=None):
 
         kcpSettings = {}
         kcpSettings["header"] = {}
@@ -405,7 +413,7 @@ class V2rayJsonConfig(str):
             streamSettings["grpcSettings"] = network_setting
         elif network == "h2":
             streamSettings["httpSettings"] = network_setting
-        elif network == "kpc":
+        elif network == "kcp":
             streamSettings["kcpSettings"] = network_setting
         elif network == "tcp" and network_setting:
             streamSettings["tcpSettings"] = network_setting
@@ -516,6 +524,7 @@ class V2rayJsonConfig(str):
                             alpn='',
                             pbk='',
                             sid='',
+                            spx='',
                             headers='',
                             ais='',
                             dialer_proxy='',
@@ -528,8 +537,8 @@ class V2rayJsonConfig(str):
             network_setting = self.grpc_config(path=path, multiMode=True if multiMode == True else False)
         elif net == "h2":
             network_setting = self.h2_config(path=path, host=host)
-        elif net == "kpc":
-            network_setting = self.kpc_config(
+        elif net == "kcp":
+            network_setting = self.kcp_config(
                 path=path, host=host, header=headers)
         elif net == "tcp":
             network_setting = self.tcp_http_config(path=path, host=host)
@@ -543,7 +552,7 @@ class V2rayJsonConfig(str):
             tls_settings = self.tls_config(sni=sni, fp=fp, alpn=alpn, ais=ais)
         elif tls == "reality":
             tls_settings = self.reality_config(
-                sni=sni, fp=fp, pbk=pbk, sid=sid)
+                sni=sni, fp=fp, pbk=pbk, sid=sid, spx=spx)
         else:
             tls_settings = None
 
@@ -630,6 +639,7 @@ class V2rayJsonConfig(str):
             fp=inbound.get('fp', ''),
             pbk=inbound.get('pbk', ''),
             sid=inbound.get('sid', ''),
+            spx=inbound.get('spx', ''),
             headers=headers,
             ais=inbound.get('ais', ''),
             dialer_proxy=dialer_proxy,
