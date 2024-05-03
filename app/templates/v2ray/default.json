@@ -2,17 +2,56 @@
   "log": {
     "access": "",
     "error": "",
-    "loglevel": "error"
+    "loglevel": "none",
+    "dnsLog": false
   },
   "dns": {
+    "hosts": {
+      "cloudflare-dns.com": [
+        "172.67.73.38",
+        "104.19.155.92",
+        "172.67.73.163",
+        "104.18.155.42",
+        "104.16.124.175",
+        "104.16.248.249",
+        "104.16.249.249",
+        "104.26.13.8"
+      ],
+      "domain:youtube.com": ["google.com"]
+    },
     "tag": "dns",
     "servers": [
+      {
+        "address": "https://cloudflare-dns.com/dns-query",
+        "domains": [
+          "googlevideo.com",
+          "ytimg.com",
+          "ggpht.com",
+          "googleapis.com",
+          "doubleclick.net",
+          "youtubeeducation.com",
+          "gvt1.com",
+          "1e100.net",
+          "appspot.com",
+          "mtalk.google.com",
+          "ggpht.com",
+          "gvt2.com",
+          "gvt3.com",
+          "twimg.com",
+          "phncdn.com",
+          "xvideos-cdn.com",
+          "rdtcdn.com"
+        ],
+        "skipFallback": true,
+        "queryStrategy": "UseIPv4"
+      },
       "8.8.8.8",
       "1.1.1.1"
     ]
   },
   "inbounds": [
     {
+      "domainOverride": ["http", "tls"],
       "tag": "socks",
       "port": 10808,
       "listen": "0.0.0.0",
@@ -50,12 +89,93 @@
       "settings": {
         "domainStrategy": "AsIs"
       }
+    },
+    {
+      "protocol": "freedom",
+      "tag": "fragment_dns",
+      "domainStrategy": "UseIP",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      },
+      "settings": {
+        "fragment": {
+          "packets": "tlshello",
+          "length": "10-30",
+          "interval": "1-2"
+        }
+      },
+      "streamSettings": {
+        "sockopt": {
+          "tcpNoDelay": true,
+          "tcpKeepAliveIdle": 100,
+          "mark": 255,
+          "domainStrategy": "UseIP"
+        }
+      }
+    },
+    {
+      "protocol": "dns",
+      "tag": "dns_out"
     }
   ],
+  "policy": {
+    "levels": {
+      "8": {
+        "connIdle": 300,
+        "downlinkOnly": 1,
+        "handshake": 4,
+        "uplinkOnly": 1
+      }
+    },
+    "system": {
+      "statsOutboundUplink": true,
+      "statsOutboundDownlink": true
+    }
+  },
   "routing": {
     "domainStrategy": "AsIs",
     "domainMatcher": "hybrid",
     "rules": [
+      {
+        "inboundTag": ["dns", "socks", "http"],
+        "type": "field",
+        "domain": ["cloudflare-dns.com"],
+        "outboundTag": "fragment_dns",
+        "enabled": true
+      },
+      {
+        "inboundTag": ["socks", "http"],
+        "type": "field",
+        "domain": [
+          "googlevideo.com",
+          "ytimg.com",
+          "ggpht.com",
+          "googleapis.com",
+          "doubleclick.net",
+          "youtubeeducation.com",
+          "gvt1.com",
+          "1e100.net",
+          "appspot.com",
+          "mtalk.google.com",
+          "ggpht.com",
+          "gvt2.com",
+          "gvt3.com",
+          "twimg.com",
+          "phncdn.com",
+          "xvideos-cdn.com",
+          "rdtcdn.com"
+        ],
+        "outboundTag": "fragment_dns",
+        "enabled": true
+      },
+      {
+        "inboundTag": ["socks", "http"],
+        "type": "field",
+        "port": "53",
+        "outboundTag": "dns_out",
+        "enabled": true
+      },
       {
         "type": "field",
         "outboundTag": "direct",
