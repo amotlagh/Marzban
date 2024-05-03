@@ -18,6 +18,13 @@
         "104.26.13.8"
       ],
       "domain:youtube.com": ["google.com"],
+      "domain:cdninstagram.com": [
+        "57.144.112.33",
+        "57.144.112.34",
+        "57.144.112.35",
+        "57.144.112.192",
+        "57.144.112.195"
+      ],
       "domain:pbs.twimg.com": [
         "146.75.120.159",
         "192.229.233.50",
@@ -176,7 +183,8 @@
           "twimg.com",
           "phncdn.com",
           "xvideos-cdn.com",
-          "rdtcdn.com"
+          "rdtcdn.com",
+          "cdninstagram.com"
         ],
         "outboundTag": "fragment_dns",
         "enabled": true
