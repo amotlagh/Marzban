@@ -3,6 +3,9 @@
 ```bash
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
 wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
+wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
+wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat
+wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/latest/download/iran.dat
 cd ~
 git clone https://github.com/amotlagh/Marzban.git
 cd Marzban
@@ -26,6 +29,9 @@ marzban-cli admin create --sudo
 sudo systemctl stop --now marzban.service
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
 wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
+wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
+wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat
+wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/latest/download/iran.dat
 cd ~
 rm -rf ~/temp/
 git clone https://github.com/amotlagh/Marzban.git temp
