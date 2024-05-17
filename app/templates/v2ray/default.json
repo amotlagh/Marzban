@@ -24,18 +24,6 @@
         "57.144.112.35",
         "57.144.112.192",
         "57.144.112.195"
-      ],
-      "domain:pbs.twimg.com": [
-        "146.75.120.159",
-        "192.229.233.50",
-        "93.184.220.70",
-        "146.75.52.159",
-        "93.184.220.70"
-      ],
-      "domain:abs.twimg.com": [
-        "152.199.21.141",
-        "199.232.148.159",
-        "152.199.43.83"
       ]
     },
     "tag": "dns",
@@ -56,9 +44,7 @@
           "ggpht.com",
           "gvt2.com",
           "gvt3.com",
-          "twimg.com",
           "phncdn.com",
-          "xvideos-cdn.com",
           "rdtcdn.com"
         ],
         "skipFallback": true,
@@ -180,9 +166,7 @@
           "ggpht.com",
           "gvt2.com",
           "gvt3.com",
-          "twimg.com",
           "phncdn.com",
-          "xvideos-cdn.com",
           "rdtcdn.com",
           "cdninstagram.com"
         ],
