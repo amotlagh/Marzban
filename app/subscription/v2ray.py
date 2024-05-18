@@ -4,6 +4,9 @@ import urllib.parse as urlparse
 from typing import Union
 from uuid import UUID
 
+import random # spiderX
+import string # spiderX
+
 from app.templates import render_template
 
 from config import (MUX_TEMPLATE, V2RAY_SUBSCRIPTION_TEMPLATE)
@@ -264,7 +267,7 @@ class V2rayJsonConfig(str):
         if sid:
             realitySettings["shortId"] = sid
         if spx:
-            realitySettings["spiderX"] = spx
+            realitySettings["spiderX"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
 
         return realitySettings
 
