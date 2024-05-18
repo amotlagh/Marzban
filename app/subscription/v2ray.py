@@ -557,7 +557,7 @@ class V2rayJsonConfig(str):
             tls_settings = self.tls_config(sni=sni, fp=fp, alpn=alpn, ais=ais)
         elif tls == "reality":
             tls_settings = self.reality_config(
-                sni=sni, fp=fp, pbk=pbk, sid=sid, spx=spx)
+                sni=sni, fp=fp, pbk=pbk, sid=sid)
         else:
             tls_settings = None
 
