@@ -252,7 +252,7 @@ class V2rayJsonConfig(str):
         return tlsSettings
 
     @staticmethod
-    def reality_config(sni=None, fp=None, pbk=None, sid=None, spx=None):
+    def reality_config(sni=None, fp=None, pbk=None, sid=None):
 
         realitySettings = {}
         if sni is not None:
