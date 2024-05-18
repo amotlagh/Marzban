@@ -266,8 +266,10 @@ class V2rayJsonConfig(str):
             realitySettings["publicKey"] = pbk
         if sid:
             realitySettings["shortId"] = sid
-        if spx:
-            realitySettings["spiderX"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
+        # if spx:
+        #     realitySettings["spiderX"] = spx + "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
+        
+        realitySettings["spiderX"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
 
         return realitySettings
 
