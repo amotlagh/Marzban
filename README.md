@@ -1,6 +1,7 @@
 # Install:
 
 ```bash
+apt update && apt upgrade -y
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
 wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
 wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
