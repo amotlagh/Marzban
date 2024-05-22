@@ -63,8 +63,8 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
-            if spx:
-                payload["spx"] = spx 
+            payload["spx"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
+            
         if net == "grpc":
             payload["mode"] = mode
 
@@ -130,8 +130,7 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
-            if spx:
-                payload["spx"] = spx
+            payload["spx"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))                
 
         return (
             "vless://"
@@ -195,8 +194,7 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
-            if spx:
-                payload["spx"] = spx
+            payload["spx"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
 
         return (
             "trojan://"
@@ -266,8 +264,6 @@ class V2rayJsonConfig(str):
             realitySettings["publicKey"] = pbk
         if sid:
             realitySettings["shortId"] = sid
-        # if spx:
-        #     realitySettings["spiderX"] = spx + "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
         
         realitySettings["spiderX"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
 
