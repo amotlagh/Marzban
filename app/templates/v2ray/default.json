@@ -17,14 +17,7 @@
         "104.16.249.249",
         "104.26.13.8"
       ],
-      "domain:youtube.com": ["google.com"],
-      "domain:cdninstagram.com": [
-        "57.144.112.33",
-        "57.144.112.34",
-        "57.144.112.35",
-        "57.144.112.192",
-        "57.144.112.195"
-      ]
+      "domain:youtube.com": ["google.com"]
     },
     "tag": "dns",
     "servers": [
@@ -43,9 +36,7 @@
           "mtalk.google.com",
           "ggpht.com",
           "gvt2.com",
-          "gvt3.com",
-          "phncdn.com",
-          "rdtcdn.com"
+          "gvt3.com"
         ],
         "skipFallback": true,
         "queryStrategy": "UseIPv4"
@@ -165,10 +156,7 @@
           "mtalk.google.com",
           "ggpht.com",
           "gvt2.com",
-          "gvt3.com",
-          "phncdn.com",
-          "rdtcdn.com",
-          "cdninstagram.com"
+          "gvt3.com"
         ],
         "outboundTag": "fragment_dns",
         "enabled": true

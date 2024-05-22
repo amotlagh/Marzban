@@ -5,6 +5,9 @@ from copy import deepcopy
 from pathlib import PosixPath
 from typing import Union
 
+import random # spiderX
+import string # spiderX
+
 import commentjson
 
 from app.db import GetDB, crud
@@ -204,6 +207,7 @@ class XRayConfig(dict):
                 elif security == 'reality':
                     settings['fp'] = 'chrome'
                     settings['tls'] = 'reality'
+                    settings['spx'] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
                     settings['sni'] = tls_settings.get('serverNames', [])
 
                     try:
