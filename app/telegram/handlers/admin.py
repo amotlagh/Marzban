@@ -491,7 +491,7 @@ def users_command(call: types.CallbackQuery):
 
 def get_user_info_text(
         status: str, username: str, sub_url: str, data_limit: int = None,
-        usage: int = None, expire: int = None, note: str = None) -> str:
+        usage: int = None, expire: int = None, on_hold_expire_duration: int = None, note: str = None) -> str:
     statuses = {
         'active': '✅',
         'expired': '🕰',
@@ -507,7 +507,7 @@ def get_user_info_text(
 │          └─<b>Data Used:</b> <code>{readable_size(usage) if usage else "-"}</code>
 │
 ├─📅 <b>Expiry Date:</b> <code>{datetime.fromtimestamp(expire).date() if expire else 'Never'}</code>
-│           └─<b>Days left:</b> <code>{(datetime.fromtimestamp(expire or 0) - datetime.now()).days if expire else '-'}</code>
+│           └─<b>Days left:</b> <code>{(datetime.fromtimestamp(expire or 0) - datetime.now()).days if expire else int(on_hold_expire_duration / 86400)}</code>
 │
 '''
     if note:
@@ -575,6 +575,7 @@ def edit_note_step(message: types.Message):
             username=user.username,
             sub_url=user.subscription_url,
             expire=user.expire,
+            on_hold_expire_duration=user.on_hold_expire_duration,
             data_limit=user.data_limit,
             usage=user.used_traffic,
             note=note or ' ')
@@ -616,7 +617,8 @@ def user_command(call: types.CallbackQuery):
         note = None
     text = get_user_info_text(
         status=user.status, username=username, sub_url=user.subscription_url,
-        data_limit=user.data_limit, usage=user.used_traffic, expire=user.expire, note=note),
+        data_limit=user.data_limit, usage=user.used_traffic, expire=user.expire,
+        on_hold_expire_duration=user.on_hold_expire_duration, note=note),
     bot.edit_message_text(
         text,
         call.message.chat.id, call.message.message_id, parse_mode="HTML",
@@ -699,7 +701,8 @@ def genqr_command(call: types.CallbackQuery):
                 sub_url=user.subscription_url,
                 data_limit=user.data_limit,
                 usage=user.used_traffic,
-                expire=user.expire
+                expire=user.expire,
+                on_hold_expire_duration=user.on_hold_expire_duration
             ),
             parse_mode="HTML",
             reply_markup=BotKeyboard.subscription_page(user.subscription_url)
@@ -753,6 +756,7 @@ def template_charge_command(call: types.CallbackQuery):
                 expire=int(
                     ((datetime.fromtimestamp(user.expire) if user.expire else today) +
                      relativedelta(seconds=template.expire_duration)).timestamp()),
+                on_hold_expire_duration=user.on_hold_expire_duration,
                 data_limit=(user.data_limit - user.used_traffic + template.data_limit)
                 if user.data_limit else template.data_limit, usage=0, note=note)
             bot.edit_message_text(
@@ -785,6 +789,7 @@ def template_charge_command(call: types.CallbackQuery):
                 username=username,
                 sub_url=user.subscription_url,
                 expire=int(expire_date.timestamp()),
+                on_hold_expire_duration=user.on_hold_expire_duration,
                 data_limit=template.data_limit,
                 usage=0, note=note)
             bot.edit_message_text(
@@ -827,6 +832,7 @@ def template_charge_command(call: types.CallbackQuery):
                 expire=int(
                     ((datetime.fromtimestamp(user.expire) if user.expire else today) +
                      relativedelta(seconds=template.expire_duration)).timestamp()),
+                on_hold_expire_duration=user.on_hold_expire_duration,
                 data_limit=(user.data_limit - user.used_traffic + template.data_limit)
                 if user.data_limit else template.data_limit, usage=0, note=note)
             bot.edit_message_text(
@@ -1122,7 +1128,7 @@ def add_user_data_limit_step(message: types.Message, username: str):
     cleanup_messages(message.chat.id)
     msg = bot.send_message(
         message.chat.id,
-        '⬆️ Enter Expire Date (YYYY-MM-DD)\nOr You Can Use Regex Symbol: ^[0-9]{1,3}(M|D) :\n⚠️ Send 0 for never expire.',
+        '⬆️ Enter Days left\nYou Can Use Regex Symbol: ^[0-9]{1,3}(M|D) :\n⚠️ Send 0 for never expire.',
         reply_markup=BotKeyboard.inline_cancel_action())
     schedule_delete_message(message.chat.id, msg.id)
     bot.register_next_step_handler(msg, add_user_expire_step, username=username, data_limit=data_limit)
@@ -1130,39 +1136,21 @@ def add_user_data_limit_step(message: types.Message, username: str):
 
 def add_user_expire_step(message: types.Message, username: str, data_limit: int):
     try:
-        now = datetime.now()
-        today = datetime(
-            year=now.year,
-            month=now.month,
-            day=now.day,
-            hour=23,
-            minute=59,
-            second=59
-        )
         if re.match(r'^[0-9]{1,3}(M|m|D|d)$', message.text):
-            expire_date = today
             number_pattern = r'^[0-9]{1,3}'
             number = int(re.findall(number_pattern, message.text)[0])
             symbol_pattern = r'(M|m|D|d)$'
             symbol = re.findall(symbol_pattern, message.text)[0].upper()
             if symbol == 'M':
-                expire_date = today + relativedelta(months=number)
+                expire_date = number * 30 * 86400
             elif symbol == 'D':
-                expire_date = today + relativedelta(days=number)
-        elif message.text != '0':
-            expire_date = datetime.strptime(message.text, "%Y-%m-%d")
+                expire_date = number * 86400
         else:
             expire_date = None
-        if expire_date and expire_date < today:
-            wait_msg = bot.send_message(message.chat.id, '❌ Expire date must be greater than today.')
-            schedule_delete_message(message.chat.id, wait_msg.id)
-            schedule_delete_message(message.chat.id, message.id)
-            return bot.register_next_step_handler(
-                wait_msg, add_user_expire_step, username=username, data_limit=data_limit)
     except ValueError:
         wait_msg = bot.send_message(
             message.chat.id,
-            '❌ Expire date must be in YYYY-MM-DD format.\nOr You Can Use Regex Symbol: ^[0-9]{1,3}(M|D)')
+            '❌ Days left must be in Regex format.\nYou Can Use Regex Symbol: ^[0-9]{1,3}(M|D)')
         schedule_delete_message(message.chat.id, wait_msg.id)
         schedule_delete_message(message.chat.id, message.id)
         return bot.register_next_step_handler(wait_msg, add_user_expire_step, username=username, data_limit=data_limit)
@@ -1172,14 +1160,15 @@ def add_user_expire_step(message: types.Message, username: str, data_limit: int)
 
     schedule_delete_message(message.chat.id, message.id)
     cleanup_messages(message.chat.id)
+    expiry_date_seconds = mem_store.get(f'{message.chat.id}:expire_date')
+    expiry_date_days = expiry_date_seconds // 86400 if expiry_date_seconds else 'Never'
     bot.send_message(
         message.chat.id,
-        'Select Protocols:\nUsernames: {}\nData Limit: {}\nExpiry Date {}'.format(
+        'Select Protocols:\nUsernames: {}\nData Limit: {}\nDays left: {}'.format(
             mem_store.get(f'{message.chat.id}:username'),
             readable_size(mem_store.get(f'{message.chat.id}:data_limit'))
             if mem_store.get(f'{message.chat.id}:data_limit') else "Unlimited",
-            mem_store.get(f'{message.chat.id}:expire_date').strftime("%Y-%m-%d")
-            if mem_store.get(f'{message.chat.id}:expire_date') else 'Never'
+            expiry_date_days
         ),
         reply_markup=BotKeyboard.select_protocols({}, action="create")
     )
@@ -1317,6 +1306,7 @@ def confirm_user_command(call: types.CallbackQuery):
                 data_limit=db_user.data_limit,
                 usage=db_user.used_traffic,
                 expire=db_user.expire,
+                on_hold_expire_duration=user.on_hold_expire_duration,
                 note=note
             ),
             call.message.chat.id,
@@ -1357,6 +1347,7 @@ def confirm_user_command(call: types.CallbackQuery):
                 data_limit=db_user.data_limit,
                 usage=db_user.used_traffic,
                 expire=db_user.expire,
+                on_hold_expire_duration=user.on_hold_expire_duration,
                 note=note
             ),
             call.message.chat.id,
@@ -1395,6 +1386,7 @@ def confirm_user_command(call: types.CallbackQuery):
                 data_limit=user.data_limit,
                 usage=user.used_traffic,
                 expire=user.expire,
+                on_hold_expire_duration=user.on_hold_expire_duration,
                 note=note
             ),
             call.message.chat.id,
@@ -1483,6 +1475,7 @@ def confirm_user_command(call: types.CallbackQuery):
                 username=username,
                 sub_url=user.subscription_url,
                 expire=db_user.expire,
+                on_hold_expire_duration=user.on_hold_expire_duration,
                 data_limit=db_user.data_limit,
                 usage=db_user.used_traffic,
                 note=note)
@@ -1585,6 +1578,7 @@ def confirm_user_command(call: types.CallbackQuery):
             data_limit=user.data_limit,
             usage=user.used_traffic,
             expire=user.expire,
+            on_hold_expire_duration=user.on_hold_expire_duration,
             note=note
         )
         bot.edit_message_text(
@@ -1662,12 +1656,13 @@ def confirm_user_command(call: types.CallbackQuery):
 
         new_user = UserCreate(
             username=mem_store.get(f'{call.message.chat.id}:username'),
-            expire=int(mem_store.get(f'{call.message.chat.id}:expire_date').timestamp())
+            on_hold_expire_duration=int(mem_store.get(f'{call.message.chat.id}:expire_date'))
             if mem_store.get(f'{call.message.chat.id}:expire_date') else None,
             data_limit=mem_store.get(f'{call.message.chat.id}:data_limit')
             if mem_store.get(f'{call.message.chat.id}:data_limit') else None,
             proxies=proxies,
-            inbounds=inbounds)
+            inbounds=inbounds,
+            status="on_hold")
 
         for proxy_type in new_user.proxies:
             if not xray.config.inbounds_by_protocol.get(proxy_type):
@@ -1703,6 +1698,7 @@ def confirm_user_command(call: types.CallbackQuery):
             data_limit=user.data_limit,
             usage=user.used_traffic,
             expire=user.expire,
+            on_hold_expire_duration=user.on_hold_expire_duration,
             note=note
         )
         bot.edit_message_text(
@@ -1946,6 +1942,7 @@ def confirm_user_command(call: types.CallbackQuery):
             username=user.username,
             sub_url=user.subscription_url,
             expire=user.expire,
+            on_hold_expire_duration=user.on_hold_expire_duration,
             data_limit=user.data_limit,
             usage=user.used_traffic,
             note=note)
@@ -1997,6 +1994,7 @@ def search_user(message: types.Message):
                 username=user.username,
                 sub_url=user.subscription_url,
                 expire=user.expire,
+                on_hold_expire_duration=user.on_hold_expire_duration,
                 data_limit=user.data_limit,
                 usage=user.used_traffic,
                 note=note)
