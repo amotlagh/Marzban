@@ -556,7 +556,7 @@ export const NodesDialog: FC = () => {
             </Icon>
           </ModalHeader>
           <ModalCloseButton mt={3} />
-          <ModalBody w="440px" pb={6} pt={3}>
+          <ModalBody pb={6} pt={3}>
             <Text mb={3} opacity={0.8} fontSize="sm">
               {t("nodes.title")}
             </Text>
