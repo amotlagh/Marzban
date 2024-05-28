@@ -144,10 +144,15 @@ const getDefaultValues = (): FormType => {
   for (const key in defaultInbounds) {
     inbounds[key] = defaultInbounds[key].map((i) => i.tag);
   }
+
+  const now = new Date();
+  const thirtyDaysLater = new Date(now.getTime() + 31 * 24 * 60 * 60 * 1000);
+  const expireTimestamp = Math.floor(thirtyDaysLater.getTime() / 1000);
+
   return {
     selected_proxies: Object.keys(defaultInbounds) as ProxyKeys,
     data_limit: null,
-    expire: null,
+    expire: expireTimestamp,
     username: "",
     data_limit_reset_strategy: "no_reset",
     status: "active",
@@ -478,6 +483,56 @@ export const UserDialog: FC<UserDialogProps> = () => {
                             }
                             const { status, time } = relativeExpiryDate(
                               field.value
+                            );
+                            return (
+                              <>
+                                <ReactDatePicker
+                                  locale={i18n.language.toLocaleLowerCase()}
+                                  dateFormat={t("dateFormat")}
+                                  minDate={new Date()}
+                                  selected={
+                                    field.value
+                                      ? createDateAsUTC(field.value)
+                                      : undefined
+                                  }
+                                  onChange={(date: Date) => {
+                                    field.onChange({
+                                      target: {
+                                        value: date
+                                          ? dayjs(
+                                              dayjs(date)
+                                                .set("hour", 23)
+                                                .set("minute", 59)
+                                                .set("second", 59)
+                                            )
+                                              .utc()
+                                              .valueOf() / 1000
+                                          : 0,
+                                        name: "expire",
+                                      },
+                                    });
+                                  }}
+                                  customInput={
+                                    <Input
+                                      size="sm"
+                                      type="text"
+                                      borderRadius="6px"
+                                      clearable
+                                      disabled={disabled}
+                                      error={
+                                        form.formState.errors.expire?.message
+                                      }
+                                    />
+                                  }
+                                />
+                                {field.value ? (
+                                  <FormHelperText>
+                                    {t(status, { time: time })}
+                                  </FormHelperText>
+                                ) : (
+                                  ""
+                                )}
+                              </>
                             );
                           }}
                         />
