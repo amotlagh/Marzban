@@ -384,6 +384,7 @@ const RadioCard: FC<
                   fontSize="xs"
                   size="sm"
                   borderRadius="6px"
+                  defaultValue="xtls-rprx-vision"
                   {...form.register("proxies.vless.flow")}
                 >
                   {XTLSFlows.map((entry) => (

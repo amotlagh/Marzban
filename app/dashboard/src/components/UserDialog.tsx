@@ -154,7 +154,7 @@ const getDefaultValues = (): FormType => {
     note: "",
     inbounds,
     proxies: {
-      vless: { id: "", flow: "" },
+      vless: { id: "", flow: "xtls-rprx-vision" },
       vmess: { id: "" },
       trojan: { password: "" },
       shadowsocks: { password: "", method: "chacha20-ietf-poly1305" },
@@ -478,56 +478,6 @@ export const UserDialog: FC<UserDialogProps> = () => {
                             }
                             const { status, time } = relativeExpiryDate(
                               field.value
-                            );
-                            return (
-                              <>
-                                <ReactDatePicker
-                                  locale={i18n.language.toLocaleLowerCase()}
-                                  dateFormat={t("dateFormat")}
-                                  minDate={new Date()}
-                                  selected={
-                                    field.value
-                                      ? createDateAsUTC(field.value)
-                                      : undefined
-                                  }
-                                  onChange={(date: Date) => {
-                                    field.onChange({
-                                      target: {
-                                        value: date
-                                          ? dayjs(
-                                              dayjs(date)
-                                                .set("hour", 23)
-                                                .set("minute", 59)
-                                                .set("second", 59)
-                                            )
-                                              .utc()
-                                              .valueOf() / 1000
-                                          : 0,
-                                        name: "expire",
-                                      },
-                                    });
-                                  }}
-                                  customInput={
-                                    <Input
-                                      size="sm"
-                                      type="text"
-                                      borderRadius="6px"
-                                      clearable
-                                      disabled={disabled}
-                                      error={
-                                        form.formState.errors.expire?.message
-                                      }
-                                    />
-                                  }
-                                />
-                                {field.value ? (
-                                  <FormHelperText>
-                                    {t(status, { time: time })}
-                                  </FormHelperText>
-                                ) : (
-                                  ""
-                                )}
-                              </>
                             );
                           }}
                         />
