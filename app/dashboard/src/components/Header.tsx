@@ -15,7 +15,6 @@ import {
   Bars3Icon,
   ChartPieIcon,
   Cog6ToothIcon,
-  CurrencyDollarIcon,
   DocumentMinusIcon,
   LinkIcon,
   MoonIcon,
@@ -23,10 +22,7 @@ import {
   SunIcon,
 } from "@heroicons/react/24/outline";
 import { useDashboard } from "contexts/DashboardContext";
-import differenceInDays from "date-fns/differenceInDays";
-import isValid from "date-fns/isValid";
 import { FC, ReactNode, useState } from "react";
-import GitHubButton from "react-github-btn";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { updateThemeColor } from "utils/themeColor";
@@ -51,17 +47,6 @@ const HostsIcon = chakra(LinkIcon, iconProps);
 const NodesIcon = chakra(SquaresPlusIcon, iconProps);
 const NodesUsageIcon = chakra(ChartPieIcon, iconProps);
 const ResetUsageIcon = chakra(DocumentMinusIcon, iconProps);
-const NotificationCircle = chakra(Box, {
-  baseStyle: {
-    bg: "yellow.500",
-    w: "2",
-    h: "2",
-    rounded: "full",
-    position: "absolute",
-  },
-});
-
-const NOTIFICATION_KEY = "marzban-menu-notification";
 
 export const Header: FC<HeaderProps> = ({ actions }) => {
   const {
