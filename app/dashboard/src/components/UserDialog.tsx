@@ -332,7 +332,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
+      <ModalOverlay bg="blackAlpha.300" />
       <FormProvider {...form}>
         <ModalContent mx="3">
           <form onSubmit={form.handleSubmit(submit)}>
