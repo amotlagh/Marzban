@@ -112,6 +112,15 @@ const schema = z.object({
       return 0;
     }),
   expire: z.number().nullable(),
+  on_hold_expire_duration: z
+    .string()
+    .min(0, "The minimum number is 0")
+    .or(z.number())
+    .nullable()
+    .transform((str) => {
+      if (str) return Number((parseFloat(String(str)) * 24 * 3600).toFixed(5));
+      return 0;
+    }),
   data_limit_reset_strategy: z.string(),
   status: z.string(),
   inbounds: z.record(z.string(), z.array(z.string())).transform((ins) => {
@@ -138,24 +147,21 @@ const formatUser = (user: User): FormType => {
     selected_proxies: Object.keys(user.proxies) as ProxyKeys,
   };
 };
-const getDefaultValues = (): FormType => {
+const getDefaultValues = (isEditing: boolean): FormType => {
   const defaultInbounds = Object.fromEntries(useDashboard.getState().inbounds);
   const inbounds: UserInbounds = {};
   for (const key in defaultInbounds) {
     inbounds[key] = defaultInbounds[key].map((i) => i.tag);
   }
 
-  const now = new Date();
-  const thirtyDaysLater = new Date(now.getTime() + 31 * 24 * 60 * 60 * 1000);
-  const expireTimestamp = Math.floor(thirtyDaysLater.getTime() / 1000);
-
-  return {
+  const formValues: FormType = {
     selected_proxies: Object.keys(defaultInbounds) as ProxyKeys,
     data_limit: null,
-    expire: expireTimestamp,
     username: "",
+    status: isEditing ? "active" : "on_hold",
+    on_hold_expire_duration: null,
+    expire: null,
     data_limit_reset_strategy: "no_reset",
-    status: "active",
     note: "",
     inbounds,
     proxies: {
@@ -165,6 +171,7 @@ const getDefaultValues = (): FormType => {
       shadowsocks: { password: "", method: "chacha20-ietf-poly1305" },
     },
   };
+  return formValues;
 };
 
 const mergeProxies = (
@@ -209,7 +216,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
   };
 
   const form = useForm<FormType>({
-    defaultValues: getDefaultValues(),
+    defaultValues: getDefaultValues(isEditing),
     resolver: zodResolver(schema),
   });
 
@@ -218,7 +225,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
       useDashboard.subscribe(
         (state) => state.inbounds,
         () => {
-          form.reset(getDefaultValues());
+          form.reset(getDefaultValues(isEditing));
         }
       ),
     []
@@ -265,15 +272,21 @@ export const UserDialog: FC<UserDialogProps> = () => {
     let body: UserCreate = {
       ...rest,
       data_limit: values.data_limit,
+      on_hold_expire_duration: isEditing
+        ? null
+        : values.on_hold_expire_duration,
+      expire: isEditing ? values.expire : null,
       proxies: mergeProxies(selected_proxies, values.proxies),
       data_limit_reset_strategy:
         values.data_limit && values.data_limit > 0
           ? values.data_limit_reset_strategy
           : "no_reset",
       status:
-        values.status === "active" || values.status === "disabled"
+        values.status === "disabled"
           ? values.status
-          : "active",
+          : isEditing
+          ? "active"
+          : "on_hold",
     };
 
     methods[method](body)
@@ -297,7 +310,12 @@ export const UserDialog: FC<UserDialogProps> = () => {
           Object.keys(err.response._data.detail).forEach((key) => {
             setError(err?.response._data.detail[key] as string);
             form.setError(
-              key as "proxies" | "username" | "data_limit" | "expire",
+              key as
+                | "proxies"
+                | "username"
+                | "data_limit"
+                | "expire"
+                | "on_hold_expire_duration",
               {
                 type: "custom",
                 message: err.response._data.detail[key],
@@ -312,7 +330,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
   };
 
   const onClose = () => {
-    form.reset(getDefaultValues());
+    form.reset(getDefaultValues(isEditing));
     onCreateUser(false);
     onEditingUser(null);
     setError(null);
@@ -469,75 +487,102 @@ export const UserDialog: FC<UserDialogProps> = () => {
                           />
                         </FormControl>
                       </Collapse>
-                      <FormControl mb={"10px"}>
-                        <FormLabel>{t("userDialog.expiryDate")}</FormLabel>
-                        <Controller
-                          name="expire"
-                          control={form.control}
-                          render={({ field }) => {
-                            function createDateAsUTC(num: number) {
-                              return dayjs(
-                                dayjs(num * 1000).utc()
-                                // .format("MMMM D, YYYY") // exception with: dayjs.locale(lng);
-                              ).toDate();
-                            }
-                            const { status, time } = relativeExpiryDate(
-                              field.value
-                            );
-                            return (
-                              <>
-                                <ReactDatePicker
-                                  locale={i18n.language.toLocaleLowerCase()}
-                                  dateFormat={t("dateFormat")}
-                                  minDate={new Date()}
-                                  selected={
-                                    field.value
-                                      ? createDateAsUTC(field.value)
-                                      : undefined
-                                  }
-                                  onChange={(date: Date) => {
-                                    field.onChange({
-                                      target: {
-                                        value: date
-                                          ? dayjs(
-                                              dayjs(date)
-                                                .set("hour", 23)
-                                                .set("minute", 59)
-                                                .set("second", 59)
-                                            )
-                                              .utc()
-                                              .valueOf() / 1000
-                                          : 0,
-                                        name: "expire",
-                                      },
-                                    });
-                                  }}
-                                  customInput={
-                                    <Input
-                                      size="sm"
-                                      type="text"
-                                      borderRadius="6px"
-                                      clearable
-                                      disabled={disabled}
-                                      error={
-                                        form.formState.errors.expire?.message
-                                      }
-                                    />
-                                  }
-                                />
-                                {field.value ? (
-                                  <FormHelperText>
-                                    {t(status, { time: time })}
-                                  </FormHelperText>
-                                ) : (
-                                  ""
-                                )}
-                              </>
-                            );
-                          }}
-                        />
-                      </FormControl>
 
+                      {isEditing ? (
+                        <FormControl mb={"10px"}>
+                          <FormLabel>{t("userDialog.expiryDate")}</FormLabel>
+                          <Controller
+                            name="expire"
+                            control={form.control}
+                            render={({ field }) => {
+                              function createDateAsUTC(num: number) {
+                                return dayjs(
+                                  dayjs(num * 1000).utc()
+                                  // .format("MMMM D, YYYY") // exception with: dayjs.locale(lng);
+                                ).toDate();
+                              }
+                              const { status, time } = relativeExpiryDate(
+                                field.value
+                              );
+                              return (
+                                <>
+                                  <ReactDatePicker
+                                    locale={i18n.language.toLocaleLowerCase()}
+                                    dateFormat={t("dateFormat")}
+                                    minDate={new Date()}
+                                    selected={
+                                      field.value
+                                        ? createDateAsUTC(field.value)
+                                        : undefined
+                                    }
+                                    onChange={(date: Date) => {
+                                      field.onChange({
+                                        target: {
+                                          value: date
+                                            ? dayjs(
+                                                dayjs(date)
+                                                  .set("hour", 23)
+                                                  .set("minute", 59)
+                                                  .set("second", 59)
+                                              )
+                                                .utc()
+                                                .valueOf() / 1000
+                                            : 0,
+                                          name: "expire",
+                                        },
+                                      });
+                                    }}
+                                    customInput={
+                                      <Input
+                                        size="sm"
+                                        type="text"
+                                        borderRadius="6px"
+                                        clearable
+                                        disabled={disabled}
+                                        error={
+                                          form.formState.errors.expire?.message
+                                        }
+                                      />
+                                    }
+                                  />
+                                  {field.value ? (
+                                    <FormHelperText>
+                                      {t(status, { time: time })}
+                                    </FormHelperText>
+                                  ) : (
+                                    ""
+                                  )}
+                                </>
+                              );
+                            }}
+                          />
+                        </FormControl>
+                      ) : (
+                        <FormControl mb={"10px"}>
+                          <FormLabel>{t("userDialog.daysLeft")}</FormLabel>
+                          <Controller
+                            control={form.control}
+                            name="on_hold_expire_duration"
+                            render={({ field }) => {
+                              return (
+                                <Input
+                                  endAdornment="Days"
+                                  type="number"
+                                  size="sm"
+                                  borderRadius="6px"
+                                  onChange={field.onChange}
+                                  disabled={disabled}
+                                  error={
+                                    form.formState.errors
+                                      .on_hold_expire_duration?.message
+                                  }
+                                  value={field.value ? String(field.value) : ""}
+                                />
+                              );
+                            }}
+                          />
+                        </FormControl>
+                      )}
                       <FormControl
                         mb={"10px"}
                         isInvalid={!!form.formState.errors.note}
