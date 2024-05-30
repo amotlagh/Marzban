@@ -154,7 +154,7 @@ const getDefaultValues = (isEditing: boolean): FormType => {
     inbounds[key] = defaultInbounds[key].map((i) => i.tag);
   }
 
-  const formValues: FormType = {
+  return {
     selected_proxies: Object.keys(defaultInbounds) as ProxyKeys,
     data_limit: null,
     username: "",
@@ -171,7 +171,6 @@ const getDefaultValues = (isEditing: boolean): FormType => {
       shadowsocks: { password: "", method: "chacha20-ietf-poly1305" },
     },
   };
-  return formValues;
 };
 
 const mergeProxies = (
