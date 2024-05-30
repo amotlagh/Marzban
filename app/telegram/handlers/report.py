@@ -31,7 +31,7 @@ def report_new_user(user_id: int, username: str, by: str, expire_date: int, data
     text = '''\
 🆕 <b>#Created</b>
 ➖➖➖➖➖➖➖➖➖
-<b>Username :</b> <code>{username}</code>
+<b>Username :</b> #{username}
 <b>Traffic Limit :</b> <code>{data_limit}</code>
 <b>Expire Date :</b> <code>{expire_date}</code>
 <b>Proxies :</b> <code>{proxies}</code>
@@ -64,7 +64,7 @@ def report_user_modification(username: str, expire_date: int, data_limit: int, p
     text = '''\
 ✏️ <b>#Modified</b>
 ➖➖➖➖➖➖➖➖➖
-<b>Username :</b> <code>{username}</code>
+<b>Username :</b> #{username}
 <b>Traffic Limit :</b> <code>{data_limit}</code>
 <b>Expire Date :</b> <code>{expire_date}</code>
 <b>Protocols :</b> <code>{protocols}</code>
@@ -95,7 +95,7 @@ def report_user_deletion(username: str, by: str, admin: Admin = None):
     text = '''\
 🗑 <b>#Deleted</b>
 ➖➖➖➖➖➖➖➖➖
-<b>Username</b> : <code>{username}</code>
+<b>Username</b> : #{username}
 ➖➖➖➖➖➖➖➖➖
 <b>Belongs To :</b> <code>{belong_to}</code>
 <b>By</b> : <b>#{by}</b>\
@@ -120,7 +120,7 @@ def report_status_change(username: str, status: str, admin: Admin = None):
     text = '''\
 {status}
 ➖➖➖➖➖➖➖➖➖
-<b>Username</b> : <code>{username}</code>
+<b>Username</b> : #{username}
 <b>Belongs To :</b> <code>{belong_to}</code>\
     '''.format(
         belong_to=escape_html(admin.username) if admin else None,
@@ -137,7 +137,7 @@ def report_user_usage_reset(username: str, by: str, admin: Admin = None):
     text = """  
 🔁 <b>#Reset</b>
 ➖➖➖➖➖➖➖➖➖
-<b>Username</b> : <code>{username}</code>
+<b>Username</b> :#{username}
 ➖➖➖➖➖➖➖➖➖
 <b>Belongs To :</b> <code>{belong_to}</code>
 <b>By</b> : <b>#{by}</b>\
@@ -157,7 +157,7 @@ def report_user_subscription_revoked(username: str, by: str, admin: Admin = None
     text = """  
 🔁 <b>#Revoked</b>
 ➖➖➖➖➖➖➖➖➖
-<b>Username</b> : <code>{username}</code>
+<b>Username</b> : #{username}
 ➖➖➖➖➖➖➖➖➖
 <b>Belongs To :</b> <code>{belong_to}</code>
 <b>By</b> : <b>#{by}</b>\
