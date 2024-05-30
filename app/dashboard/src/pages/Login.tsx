@@ -75,7 +75,8 @@ export const Login: FC = () => {
   return (
     <VStack justifyContent="space-between" minH="100vh" p="6" w="full">
       <Box w="full">
-        <HStack justifyContent="end" w="full"></HStack>
+        <HStack justifyContent="end" w="full">
+        </HStack>
         <HStack w="full" justifyContent="center" alignItems="center">
           <Box w="full" maxW="340px" mt="6">
             <VStack alignItems="center" w="full">

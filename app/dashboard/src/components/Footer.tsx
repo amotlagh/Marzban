@@ -5,5 +5,8 @@ import { FC } from "react";
 
 export const Footer: FC<BoxProps> = (props) => {
   const { version } = useDashboard();
-  return <HStack w="full" py="0" position="relative" {...props}></HStack>;
+  return (
+    <HStack w="full" py="0" position="relative" {...props}>
+    </HStack>
+  );
 };

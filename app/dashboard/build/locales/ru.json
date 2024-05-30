@@ -35,6 +35,7 @@
   "userDialog.warningNoProtocol": "Пожалуйста, выберите хотя бы один протокол",
   "userDialog.expiryDate": "Дата истечения срока",
   "userDialog.note": "Примечание",
+  "userDialog.daysLeft": "Days Left",
   "userDialog.resetUsage": "Сбросить трафик",
   "userDialog.usage": "Потребление",
   "userDialog.protocols": "Протоколы",

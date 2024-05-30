@@ -40,6 +40,7 @@
   "userDialog.warningNoProtocol": "لطفا حداقل یک پروتکل انتخاب کنید",
   "userDialog.note": "توضیحات",
   "userDialog.expiryDate": "تاریخ پایان",
+  "userDialog.daysLeft": "Days Left",
   "userDialog.resetUsage": "بازنشانی مصرف",
   "userDialog.usage": "مصرف",
   "userDialog.protocols": "پروتکل‌ها",

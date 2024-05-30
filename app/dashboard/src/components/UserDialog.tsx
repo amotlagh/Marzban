@@ -113,14 +113,14 @@ const schema = z.object({
     }),
   expire: z.number().nullable(),
   on_hold_expire_duration: z
-    .string()
-    .min(0, "The minimum number is 0")
-    .or(z.number())
-    .nullable()
-    .transform((str) => {
-      if (str) return Number((parseFloat(String(str)) * 24 * 3600).toFixed(5));
-      return 0;
-    }),
+  .string()
+  .min(0, "The minimum number is 0")
+  .or(z.number())
+  .nullable()
+  .transform((str) => {
+    if (str) return Number((parseFloat(String(str)) * 24 * 3600).toFixed(5));
+    return 0;
+  }),
   data_limit_reset_strategy: z.string(),
   status: z.string(),
   inbounds: z.record(z.string(), z.array(z.string())).transform((ins) => {
@@ -271,9 +271,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
     let body: UserCreate = {
       ...rest,
       data_limit: values.data_limit,
-      on_hold_expire_duration: isEditing
-        ? null
-        : values.on_hold_expire_duration,
+      on_hold_expire_duration: isEditing ? null : values.on_hold_expire_duration,
       expire: isEditing ? values.expire : null,
       proxies: mergeProxies(selected_proxies, values.proxies),
       data_limit_reset_strategy:
@@ -283,9 +281,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
       status:
         values.status === "disabled"
           ? values.status
-          : isEditing
-          ? "active"
-          : "on_hold",
+          : isEditing ? "active" : "on_hold",
     };
 
     methods[method](body)
@@ -309,12 +305,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
           Object.keys(err.response._data.detail).forEach((key) => {
             setError(err?.response._data.detail[key] as string);
             form.setError(
-              key as
-                | "proxies"
-                | "username"
-                | "data_limit"
-                | "expire"
-                | "on_hold_expire_duration",
+              key as "proxies" | "username" | "data_limit" | "expire" | "on_hold_expire_duration",
               {
                 type: "custom",
                 message: err.response._data.detail[key],
@@ -487,7 +478,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
                         </FormControl>
                       </Collapse>
 
-                      {isEditing ? (
+                      {isEditing ?
                         <FormControl mb={"10px"}>
                           <FormLabel>{t("userDialog.expiryDate")}</FormLabel>
                           <Controller
@@ -556,7 +547,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
                             }}
                           />
                         </FormControl>
-                      ) : (
+                        :
                         <FormControl mb={"10px"}>
                           <FormLabel>{t("userDialog.daysLeft")}</FormLabel>
                           <Controller
@@ -572,8 +563,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
                                   onChange={field.onChange}
                                   disabled={disabled}
                                   error={
-                                    form.formState.errors
-                                      .on_hold_expire_duration?.message
+                                    form.formState.errors.on_hold_expire_duration?.message
                                   }
                                   value={field.value ? String(field.value) : ""}
                                 />
@@ -581,7 +571,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
                             }}
                           />
                         </FormControl>
-                      )}
+                      }
                       <FormControl
                         mb={"10px"}
                         isInvalid={!!form.formState.errors.note}

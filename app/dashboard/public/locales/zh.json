@@ -33,6 +33,7 @@
   "userDialog.dataLimit": "流量限制",
   "userDialog.periodicUsageReset": "定期重置流量",
   "userDialog.expiryDate": "过期日期",
+  "userDialog.daysLeft": "Days Left",
   "userDialog.resetUsage": "重置流量",
   "userDialog.usage": "流量详情",
   "userDialog.protocols": "协议",

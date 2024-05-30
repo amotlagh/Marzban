@@ -106,7 +106,7 @@ function StatsCard(props: StatsCardProps) {
       boxShadow="none"
       borderRadius="12px"
       width="full"
-      margin="0"
+      sx={{ margin: '0 !important' }}
       justifyContent="space-between"
       flexDirection="row"
       px={{ base: 2, md: 2 }}
