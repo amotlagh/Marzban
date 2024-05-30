@@ -214,21 +214,6 @@ export const UsersTable: FC<UsersTableProps> = (props) => {
 
   const isFiltered = users.length !== totalUsers.total;
 
-  const handleSort = (column: string) => {
-    let newSort = filters.sort;
-    if (newSort.includes(column)) {
-      if (newSort.startsWith("-")) {
-        newSort = "-created_at";
-      } else {
-        newSort = "-" + column;
-      }
-    } else {
-      newSort = column;
-    }
-    onFilterChange({
-      sort: newSort,
-    });
-  };
   const handleStatusFilter = (e: any) => {
     onFilterChange({
       status: e.target.value.length > 0 ? e.target.value : undefined,
@@ -249,18 +234,9 @@ export const UsersTable: FC<UsersTableProps> = (props) => {
         <Table orientation="vertical" zIndex="docked" {...props}>
           <Thead zIndex="docked" position="relative">
             <Tr>
-              <Th
-                position="sticky"
-                top={top}
-                minW="120px"
-                pl={4}
-                pr={4}
-                cursor={"pointer"}
-                onClick={handleSort.bind(null, "username")}
-              >
+              <Th position="sticky" top={top} minW="120px" pl={4} pr={4}>
                 <HStack>
                   <span>{t("users")}</span>
-                  <Sort sort={filters.sort} column="username" />
                 </HStack>
               </Th>
               <Th
@@ -314,17 +290,9 @@ export const UsersTable: FC<UsersTableProps> = (props) => {
                   </Select>
                 </HStack>
               </Th>
-              <Th
-                position="sticky"
-                top={top}
-                minW="100px"
-                cursor={"pointer"}
-                pr={0}
-                onClick={handleSort.bind(null, "used_traffic")}
-              >
+              <Th position="sticky" top={top} minW="100px" pr={0}>
                 <HStack>
                   <span>{t("usersTable.dataUsage")}</span>
-                  <Sort sort={filters.sort} column="used_traffic" />
                 </HStack>
               </Th>
               <Th
@@ -492,16 +460,9 @@ export const UsersTable: FC<UsersTableProps> = (props) => {
       >
         <Thead zIndex="docked" position="relative">
           <Tr>
-            <Th
-              position="sticky"
-              top={{ base: "unset", md: top }}
-              minW="140px"
-              cursor={"pointer"}
-              onClick={handleSort.bind(null, "username")}
-            >
+            <Th position="sticky" top={{ base: "unset", md: top }} minW="140px">
               <HStack>
                 <span>{t("username")}</span>
-                <Sort sort={filters.sort} column="username" />
               </HStack>
             </Th>
             <Th
@@ -558,12 +519,9 @@ export const UsersTable: FC<UsersTableProps> = (props) => {
               top={{ base: "unset", md: top }}
               width="350px"
               minW="230px"
-              cursor={"pointer"}
-              onClick={handleSort.bind(null, "used_traffic")}
             >
               <HStack>
                 <span>{t("usersTable.dataUsage")}</span>
-                <Sort sort={filters.sort} column="used_traffic" />
               </HStack>
             </Th>
             <Th
