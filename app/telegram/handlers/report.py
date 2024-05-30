@@ -26,24 +26,24 @@ def report(admin_id: int, message: str, parse_mode="html", keyboard=None):
             logger.error(e)
 
 
-def report_new_user(user_id: int, username: str, by: str, expire_date: int, data_limit: int, proxies: list, 
+def report_new_user(user_id: int, username: str, by: str, expire_date: int, on_hold_expire_duration: int, data_limit: int, proxies: list, 
                     data_limit_reset_strategy:UserDataLimitResetStrategy, admin: Admin = None):
     text = '''\
-🆕 <b>#Created</b>
+🆕 <b>#Created</b> #{username}
 ➖➖➖➖➖➖➖➖➖
-<b>Username :</b> #{username}
-<b>Traffic Limit :</b> <code>{data_limit}</code>
-<b>Expire Date :</b> <code>{expire_date}</code>
-<b>Proxies :</b> <code>{proxies}</code>
-<b>Data Limit Reset Strategy :</b> <code>{data_limit_reset_strategy}</code>
+<b>Username :</b> <code>{username}</code>
+<b>Traffic Limit :</b> {data_limit}
+<b>Expire :</b> {expire}
+<b>Proxies :</b> {proxies}
+<b>Data Limit Reset Strategy :</b> {data_limit_reset_strategy}
 ➖➖➖➖➖➖➖➖➖
-<b>Belongs To :</b> <code>{belong_to}</code>
+<b>Belongs To :</b> {belong_to}
 <b>By :</b> <b>#{by}</b>'''.format(
         belong_to=escape_html(admin.username) if admin else None,
         by=escape_html(by),
         username=escape_html(username),
         data_limit=readable_size(data_limit) if data_limit else "Unlimited",
-        expire_date=datetime.fromtimestamp(expire_date).strftime("%H:%M:%S %Y-%m-%d") if expire_date else "Never",
+        expire=datetime.fromtimestamp(expire_date).strftime("%Y-%m-%d %H:%M:%S") if expire_date else (f"{int(on_hold_expire_duration/(24 * 3600))} Days #On_hold" if on_hold_expire_duration else "Never"),
         proxies="" if not proxies else ", ".join([escape_html(proxy) for proxy in proxies]),
         data_limit_reset_strategy=escape_html(data_limit_reset_strategy),
     )
@@ -62,22 +62,22 @@ def report_new_user(user_id: int, username: str, by: str, expire_date: int, data
 def report_user_modification(username: str, expire_date: int, data_limit: int, proxies: list, by: str, 
                              data_limit_reset_strategy:UserDataLimitResetStrategy, admin: Admin = None):
     text = '''\
-✏️ <b>#Modified</b>
+✏️ <b>#Modified</b> #{username}
 ➖➖➖➖➖➖➖➖➖
-<b>Username :</b> #{username}
-<b>Traffic Limit :</b> <code>{data_limit}</code>
-<b>Expire Date :</b> <code>{expire_date}</code>
-<b>Protocols :</b> <code>{protocols}</code>
-<b>Data Limit Reset Strategy :</b> <code>{data_limit_reset_strategy}</code>
+<b>Username :</b> <code>{username}</code>
+<b>Traffic Limit :</b> {data_limit}
+<b>Expire Date :</b> {expire_date}
+<b>Protocols :</b> {protocols}
+<b>Data Limit Reset Strategy :</b> {data_limit_reset_strategy}
 ➖➖➖➖➖➖➖➖➖
-<b>Belongs To :</b> <code>{belong_to}</code>
+<b>Belongs To :</b> {belong_to}
 <b>By :</b> <b>#{by}</b>\
     '''.format(
         belong_to=escape_html(admin.username) if admin else None,
         by=escape_html(by),
         username=escape_html(username),
         data_limit=readable_size(data_limit) if data_limit else "Unlimited",
-        expire_date=datetime.fromtimestamp(expire_date).strftime("%H:%M:%S %Y-%m-%d") if expire_date else "Never",
+        expire_date=datetime.fromtimestamp(expire_date).strftime("%Y-%m-%d %H:%M:%S") if expire_date else "Never",
         protocols=', '.join([p for p in proxies]),
         data_limit_reset_strategy=escape_html(data_limit_reset_strategy),
     )
@@ -93,11 +93,11 @@ def report_user_modification(username: str, expire_date: int, data_limit: int, p
 
 def report_user_deletion(username: str, by: str, admin: Admin = None):
     text = '''\
-🗑 <b>#Deleted</b>
+🗑 <b>#Deleted</b> #{username}
 ➖➖➖➖➖➖➖➖➖
-<b>Username</b> : #{username}
+<b>Username</b> : <code>{username}</code>
 ➖➖➖➖➖➖➖➖➖
-<b>Belongs To :</b> <code>{belong_to}</code>
+<b>Belongs To :</b> {belong_to}
 <b>By</b> : <b>#{by}</b>\
     '''.format(
         belong_to=escape_html(admin.username) if admin else None,
@@ -118,9 +118,9 @@ def report_status_change(username: str, status: str, admin: Admin = None):
         'expired': '🕔 <b>#Expired</b>'
     }
     text = '''\
-{status}
+{status} #{username}
 ➖➖➖➖➖➖➖➖➖
-<b>Username</b> : #{username}
+<b>Username</b> : <code>{username}</code>
 <b>Belongs To :</b> <code>{belong_to}</code>\
     '''.format(
         belong_to=escape_html(admin.username) if admin else None,
@@ -135,11 +135,11 @@ def report_status_change(username: str, status: str, admin: Admin = None):
 
 def report_user_usage_reset(username: str, by: str, admin: Admin = None):
     text = """  
-🔁 <b>#Reset</b>
+🔁 <b>#Reset</b> #{username}
 ➖➖➖➖➖➖➖➖➖
-<b>Username</b> :#{username}
+<b>Username</b> :<code>{username}</code>
 ➖➖➖➖➖➖➖➖➖
-<b>Belongs To :</b> <code>{belong_to}</code>
+<b>Belongs To :</b> {belong_to}
 <b>By</b> : <b>#{by}</b>\
     """.format(
         belong_to=escape_html(admin.username) if admin else None,
@@ -155,11 +155,11 @@ def report_user_usage_reset(username: str, by: str, admin: Admin = None):
 
 def report_user_subscription_revoked(username: str, by: str, admin: Admin = None):
     text = """  
-🔁 <b>#Revoked</b>
+🔁 <b>#Revoked</b> #{username}
 ➖➖➖➖➖➖➖➖➖
-<b>Username</b> : #{username}
+<b>Username</b> : <code>{username}</code>
 ➖➖➖➖➖➖➖➖➖
-<b>Belongs To :</b> <code>{belong_to}</code>
+<b>Belongs To :</b> {belong_to}
 <b>By</b> : <b>#{by}</b>\
     """.format(
         belong_to=escape_html(admin.username) if admin else None,
