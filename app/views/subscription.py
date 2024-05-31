@@ -12,7 +12,7 @@ from app.templates import render_template
 from app.utils.jwt import get_subscription_payload
 from app.subscription.share import encode_title, generate_subscription
 from config import (
-    SUB_PROFILE_TITLE,
+    # SUB_PROFILE_TITLE,
     SUB_SUPPORT_URL,
     SUB_UPDATE_INTERVAL,
     SUBSCRIPTION_PAGE_TEMPLATE,
@@ -68,7 +68,8 @@ def user_subscription(token: str,
         "content-disposition": f'attachment; filename="{user.username}"',
         "profile-web-page-url": str(request.url),
         "support-url": SUB_SUPPORT_URL,
-        "profile-title": encode_title(SUB_PROFILE_TITLE),
+        # "profile-title": encode_title(SUB_PROFILE_TITLE),
+        "profile-title": encode_title(user.username),
         "profile-update-interval": SUB_UPDATE_INTERVAL,
         "subscription-userinfo": "; ".join(
             f"{key}={val}"
@@ -220,7 +221,8 @@ def user_subscription_with_client_type(
         "content-disposition": f'attachment; filename="{user.username}"',
         "profile-web-page-url": str(request.url),
         "support-url": SUB_SUPPORT_URL,
-        "profile-title": encode_title(SUB_PROFILE_TITLE),
+        # "profile-title": encode_title(SUB_PROFILE_TITLE),
+        "profile-title": encode_title(user.username),
         "profile-update-interval": SUB_UPDATE_INTERVAL,
         "subscription-userinfo": "; ".join(
             f"{key}={val}"
