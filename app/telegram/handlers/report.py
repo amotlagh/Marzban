@@ -26,24 +26,29 @@ def report(admin_id: int, message: str, parse_mode="html", keyboard=None):
             logger.error(e)
 
 
-def report_new_user(user_id: int, username: str, by: str, expire_date: int, on_hold_expire_duration: int, data_limit: int, proxies: list, 
+def report_new_user(user_id: int, username: str, by: str, expire_date: int, on_hold_expire_duration: int,
+                    note: str, data_limit: int, proxies: list, 
                     data_limit_reset_strategy:UserDataLimitResetStrategy, admin: Admin = None):
     text = '''\
 🆕 <b>#Created</b> #{username}
 ➖➖➖➖➖➖➖➖➖
-<b>Username :</b> <code>{username}</code>
+<b>Account Username :</b> <code>{username}</code>
 <b>Traffic Limit :</b> {data_limit}
 <b>Expire :</b> {expire}
 <b>Proxies :</b> {proxies}
 <b>Data Limit Reset Strategy :</b> {data_limit_reset_strategy}
 ➖➖➖➖➖➖➖➖➖
 <b>Belongs To :</b> {belong_to}
-<b>By :</b> <b>#{by}</b>'''.format(
+<b>By User :</b> <b>#{by}</b>
+➖➖➖➖➖➖➖➖➖
+<b>Note :</b>
+{note}'''.format(
         belong_to=escape_html(admin.username) if admin else None,
         by=escape_html(by),
         username=escape_html(username),
+        note=escape_html(note),
         data_limit=readable_size(data_limit) if data_limit else "Unlimited",
-        expire=datetime.fromtimestamp(expire_date).strftime("%Y-%m-%d %H:%M:%S") if expire_date else (f"{int(on_hold_expire_duration/(24 * 3600))} Days #On_hold" if on_hold_expire_duration else "Never"),
+        expire=datetime.fromtimestamp(expire_date).strftime("%Y-%m-%d %H:%M:%S") if expire_date else (f"{int(on_hold_expire_duration/(24 * 3600))} Days (On_hold)" if on_hold_expire_duration else "Never"),
         proxies="" if not proxies else ", ".join([escape_html(proxy) for proxy in proxies]),
         data_limit_reset_strategy=escape_html(data_limit_reset_strategy),
     )
