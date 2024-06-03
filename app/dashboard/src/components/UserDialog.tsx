@@ -35,6 +35,7 @@ import {
   ChartPieIcon,
   PencilIcon,
   UserPlusIcon,
+  InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resetStrategy } from "constants/UserSettings";
@@ -67,6 +68,13 @@ const AddUserIcon = chakra(UserPlusIcon, {
   },
 });
 
+const MoreDetailsIcon = chakra(InformationCircleIcon, {
+  baseStyle: {
+    w: 5,
+    h: 5,
+  },
+});
+
 const EditUserIcon = chakra(PencilIcon, {
   baseStyle: {
     w: 5,
@@ -87,6 +95,8 @@ const schema = z.object({
     message: "userDialog.selectOneProtocol",
   }),
   note: z.string().nullable(),
+  sub_updated_at: z.string().nullable(),
+  sub_last_user_agent: z.string().nullable(),
   proxies: z
     .record(z.string(), z.record(z.string(), z.any()))
     .transform((ins) => {
@@ -113,14 +123,14 @@ const schema = z.object({
     }),
   expire: z.number().nullable(),
   on_hold_expire_duration: z
-  .string()
-  .min(0, "The minimum number is 0")
-  .or(z.number())
-  .nullable()
-  .transform((str) => {
-    if (str) return Number((parseFloat(String(str)) * 24 * 3600).toFixed(5));
-    return 0;
-  }),
+    .string()
+    .min(1, "The minimum number is 0")
+    .or(z.number())
+    .nullable()
+    .transform((str) => {
+      if (str) return Number((parseFloat(String(str)) * 24 * 3600).toFixed(0));
+      return 0;
+    }),
   data_limit_reset_strategy: z.string(),
   status: z.string(),
   inbounds: z.record(z.string(), z.array(z.string())).transform((ins) => {
@@ -163,6 +173,8 @@ const getDefaultValues = (isEditing: boolean): FormType => {
     expire: null,
     data_limit_reset_strategy: "no_reset",
     note: "",
+    sub_updated_at: null,
+    sub_last_user_agent: "",
     inbounds,
     proxies: {
       vless: { id: "", flow: "xtls-rprx-vision" },
@@ -210,6 +222,8 @@ export const UserDialog: FC<UserDialogProps> = () => {
   const { colorMode } = useColorMode();
 
   const [usageVisible, setUsageVisible] = useState(false);
+  const [isDetailsVisible, setIsDetailsVisible] = useState(false);
+
   const handleUsageToggle = () => {
     setUsageVisible((current) => !current);
   };
@@ -271,7 +285,9 @@ export const UserDialog: FC<UserDialogProps> = () => {
     let body: UserCreate = {
       ...rest,
       data_limit: values.data_limit,
-      on_hold_expire_duration: isEditing ? null : values.on_hold_expire_duration,
+      on_hold_expire_duration: isEditing
+        ? null
+        : values.on_hold_expire_duration,
       expire: isEditing ? values.expire : null,
       proxies: mergeProxies(selected_proxies, values.proxies),
       data_limit_reset_strategy:
@@ -281,7 +297,9 @@ export const UserDialog: FC<UserDialogProps> = () => {
       status:
         values.status === "disabled"
           ? values.status
-          : isEditing ? "active" : "on_hold",
+          : isEditing
+          ? "active"
+          : "on_hold",
     };
 
     methods[method](body)
@@ -305,7 +323,12 @@ export const UserDialog: FC<UserDialogProps> = () => {
           Object.keys(err.response._data.detail).forEach((key) => {
             setError(err?.response._data.detail[key] as string);
             form.setError(
-              key as "proxies" | "username" | "data_limit" | "expire" | "on_hold_expire_duration",
+              key as
+                | "proxies"
+                | "username"
+                | "data_limit"
+                | "expire"
+                | "on_hold_expire_duration",
               {
                 type: "custom",
                 message: err.response._data.detail[key],
@@ -326,6 +349,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
     setError(null);
     setUsageVisible(false);
     setUsageFilter("1m");
+    setIsDetailsVisible(false);
   };
 
   const handleResetUsage = () => {
@@ -478,7 +502,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
                         </FormControl>
                       </Collapse>
 
-                      {isEditing ?
+                      {isEditing ? (
                         <FormControl mb={"10px"}>
                           <FormLabel>{t("userDialog.expiryDate")}</FormLabel>
                           <Controller
@@ -547,7 +571,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
                             }}
                           />
                         </FormControl>
-                        :
+                      ) : (
                         <FormControl mb={"10px"}>
                           <FormLabel>{t("userDialog.daysLeft")}</FormLabel>
                           <Controller
@@ -563,7 +587,8 @@ export const UserDialog: FC<UserDialogProps> = () => {
                                   onChange={field.onChange}
                                   disabled={disabled}
                                   error={
-                                    form.formState.errors.on_hold_expire_duration?.message
+                                    form.formState.errors
+                                      .on_hold_expire_duration?.message
                                   }
                                   value={field.value ? String(field.value) : ""}
                                 />
@@ -571,7 +596,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
                             }}
                           />
                         </FormControl>
-                      }
+                      )}
                       <FormControl
                         mb={"10px"}
                         isInvalid={!!form.formState.errors.note}
@@ -582,6 +607,36 @@ export const UserDialog: FC<UserDialogProps> = () => {
                           {form.formState.errors?.note?.message}
                         </FormErrorMessage>
                       </FormControl>
+                      {isEditing && isDetailsVisible && (
+                        <>
+                          <FormLabel style={{ marginTop: "10px" }}>
+                            {t("userDialog.subUpdatedAt")}
+                          </FormLabel>
+                          <Input
+                            size="sm"
+                            type="text"
+                            borderRadius="6px"
+                            error={
+                              form.formState.errors.sub_updated_at?.message
+                            }
+                            disabled={true}
+                            {...form.register("sub_updated_at")}
+                          />
+                          <FormLabel style={{ marginTop: "10px" }}>
+                            {t("userDialog.subLastUserAgent")}
+                          </FormLabel>
+                          <Input
+                            size="sm"
+                            type="text"
+                            borderRadius="6px"
+                            error={
+                              form.formState.errors.sub_last_user_agent?.message
+                            }
+                            disabled={true}
+                            {...form.register("sub_last_user_agent")}
+                          />
+                        </>
+                      )}
                     </Flex>
                     {error && (
                       <Alert
@@ -712,6 +767,18 @@ export const UserDialog: FC<UserDialogProps> = () => {
                           onClick={handleUsageToggle}
                         >
                           <UserUsageIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip
+                        label={t("userDialog.moreDetails")}
+                        placement="top"
+                      >
+                        <IconButton
+                          aria-label="more details"
+                          size="sm"
+                          onClick={() => setIsDetailsVisible(!isDetailsVisible)}
+                        >
+                          <MoreDetailsIcon />
                         </IconButton>
                       </Tooltip>
                       <Button onClick={handleResetUsage} size="sm">

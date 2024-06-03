@@ -553,7 +553,24 @@
       </div>
       {% if user.status == 'active' or user.status == 'on_hold' %}
       <div class="divcopyLinkC">
-        <button class="copyLinkC copy-button" onclick="copyLinkC(userlinksCEncoded, this)">کپی همه کانفیگ‌ها</button>
+        <p style="color: green;
+        background-color: #f0ffeb;
+        border: 1px solid;
+        border-radius: 12px;
+        padding: 10px;
+        text-align: center;">
+          اگر اولین بار است از لینک اشتراک استفاده می‌کنید، لطفا قبل از هر چیز بخش
+          <span style="color: #000;">
+            آموزش اتصال با لینک اشتراک
+          </span>
+          را در دو سطر پایینتر مشاهده فرمایید. ممنون از توجه‌تون.
+          <span style="color: #000;
+          display: block;
+          font-size: 0.9em;">
+            با اتصال به لینک اشتراک هوشمند، مصرف بسته اینترنتی شما کمتر میشود و همچنین دیگر نیاز نیست فیلترشکن خود را برای سایت های داخلی خاموش کنید.
+          </span>
+        </p>
+        <!-- <button class="copyLinkC copy-button" onclick="copyLinkC(userlinksCEncoded, this)">کپی همه کانفیگ‌ها</button> -->
       </div>
 
       <div class="profile-card__separator"></div>
@@ -611,7 +628,7 @@
 
         <div class="accordion">
           <input type="checkbox" name="etesal" id="etesal" />
-          <label class="profile-card__header" for="etesal"> آموزش اتصال با لینک اشتراک</label>
+          <label style="color: blue;" class="profile-card__header" for="etesal"> آموزش اتصال با لینک اشتراک</label>
           <div class="accordion-content">
 
             <p style="margin: 0 0 30px;
@@ -765,7 +782,7 @@
           <div class="pop-up-content-wrap" app="v2ray">
             <div style="direction: rtl; text-align: justify; line-height: 2">
               <h3>⚙️ آموزش برنامه V2rayNG اندروید:&nbsp;</h3>
-              <b
+              <b style="color: red;"
                 >0️⃣ مطمئن بشید آخرین نسخه V2rayNG رو نصب دارید. (باید ورژن
                 1.8.20 و بالاتر باشد)</b
               >
