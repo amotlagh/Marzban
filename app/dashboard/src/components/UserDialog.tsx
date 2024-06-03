@@ -126,7 +126,6 @@ const schema = z.object({
     .string()
     .min(1, "The minimum number is 1")
     .or(z.number())
-    .nullable()
     .transform((str) => {
       if (str) return Number((parseFloat(String(str)) * 24 * 3600).toFixed(0));
       return 0;
