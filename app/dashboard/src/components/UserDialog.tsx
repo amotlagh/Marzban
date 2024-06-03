@@ -124,7 +124,7 @@ const schema = z.object({
   expire: z.number().nullable(),
   on_hold_expire_duration: z
     .string()
-    .min(1, "The minimum number is 0")
+    .min(1, "The minimum number is 1")
     .or(z.number())
     .nullable()
     .transform((str) => {
