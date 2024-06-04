@@ -7,10 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
     <script type="text/javascript">
       (function (c, l, a, r, i, t, y) {
         c[a] =
@@ -42,8 +39,7 @@
         align-items: center;
         justify-content: center;
         direction: ltr;
-        font-family: sans-serif;
-        font-family: "Vazirmatn", sans-serif;
+        font-family: "Inter", "Vazirmatn", sans-serif;
         font-optical-sizing: auto;
         font-style: normal;
         direction: rtl;
@@ -62,13 +58,12 @@
       }
       .profile-card {
         position: relative;
-        border: 2px solid #000;
         border-radius: 1rem;
         background: #fff;
         width: 20rem;
         margin-top: 35px;
         margin-bottom: 130px;
-        box-shadow: 6px 6px 0 0 #00000036;
+        box-shadow: 0px 13px 14px -2px #00000036;
       }
       .profile-card__avatar {
         width: 80px;
@@ -85,35 +80,36 @@
         display: none;
       }
       .profile-card__bio {
-        background: #000;
-        padding: 2rem;
-        border-bottom: 10px solid #000000;
+        background: #081211;
+        padding: 2rem 2rem 3rem;
         text-align: center;
         border-radius: 1rem;
         overflow: hidden;
       }
       .profile-card__bio-name {
         font-size: 1.25em;
-        font-weight: 900;
+        font-weight: 200;
         margin-bottom: 0.8rem;
-        color: #fff;
+        color: #bdccd3;
+      }
+      .profile-card__bio-name>span{
+        font-weight: 500;
+        display: block;
+        margin-top: 4px;
       }
       .sdgsdogshoi {
-        color: #000000;
-        display: inline-block;
-        border-radius: 10px;
-        padding: 2px 10px;
-        border: 2px solid #000538;
-        box-shadow: -2px -2px 0px 0 #0000002b;
-        background-image: linear-gradient(211deg, #ffe3f9 0%, #ffcff5 100%);
-        background: white;
-        box-shadow: 4px 3px 0 0 #00000036;
+        color: #334245;
+    display: inline-block;
+    border-radius: 10px;
+    padding: 2px 10px;
+    background: #ffffff;
+    font-weight: 300;
       }
       .profile-card__bio-title {
         font-size: 0.875em;
-        font-weight: 600;
+        font-weight: 500;
         margin-bottom: 0.6rem;
-        color: #fff;
+        color: #1DE9B6;
       }
       .profile-card__links {
         padding: 1rem;
@@ -125,20 +121,23 @@
       .profile-card__header {
         text-align: left;
         font-size: 1em;
-        font-weight: bold;
+        font-weight: 600;
         color: #000;
         display: flex;
         -webkit-box-pack: justify;
         cursor: pointer;
+        position: relative;
       }
       .profile-card__header::after {
-        content: "\276F";
+        content: "\00BB";
         width: 1rem;
         height: 1rem;
         text-align: center;
         -webkit-transition: all 0.3s;
         transition: all 0.3s;
         margin-left: 1em;
+        font-weight: 300;
+        position: relative;
       }
       input {
         position: absolute;
@@ -163,11 +162,11 @@
         transform: rotate(90deg);
       }
       input:checked~.accordion-content {
-        max-height: fit-content;
+        max-height: 1500px;
         padding-top: 30px;
       }
       .profile-card__separator {
-        border-bottom: 2px dashed #000;
+        border-bottom: 2px dashed #0000001a;
         border-radius: 1rem 1rem 0 0;
         overflow: hidden;
       }
@@ -176,14 +175,12 @@
         display: inline-block;
         width: 100%;
         text-align: center;
-        border: 2px solid #000;
         border-radius: 0.5rem;
-        color: #fff;
         transition: box-shadow 200ms ease;
         text-decoration: none;
         margin-bottom: 0.5rem;
-        background-color: #000;
-        /* box-shadow: 6px 6px #0000002e; */
+        background: #1c2429;
+    color: #1de9b6;
       }
       .profile-card__links-button:hover {
         box-shadow: 0 0 0 #0000002e;
@@ -194,21 +191,20 @@
         direction: ltr;
       }
       .progressBar {
-        background-color: #444;
         width: 100%;
-        height: 18px;
+        height: 16px;
         padding: 2px;
         border-radius: 50px;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        border: 2px solid #ffffff36;
+        border: 2px solid;
+        background: #1c2429;
+        color: #2df0bc45;
       }
       .progressBarRect {
-        background-image: linear-gradient(270deg, #f98400 0%, #fbc118 100%);
-        /* background-image: linear-gradient(270deg, #22cad3 0%, #000538 100%); */
+        background-image: linear-gradient(270deg, #1DE9B6 0%, #0d5140 100%);
         height: 100%;
-        /* padding: 2px; */
         border-radius: inherit;
         -webkit-animation: progressLineTransmission 2.5s 0.3s ease-in-out both;
         animation: progressLineTransmission 2.5s 0.3s ease-in-out both;
@@ -217,17 +213,18 @@
         justify-content: flex-end;
       }
       .progressBarCircle {
-        background-color: #000000;
+        /* background-color: #000000; */
         height: calc(14px - 4px);
         width: calc(14px - 4px);
         border-radius: 50%;
-        box-shadow: rgb(0 0 0) 0px 0 4px 0px;
+        /* box-shadow: 0 0 0 rgb(180 139 28 / 40%); */
+        /* animation: limitincomingPulse 3s infinite; */
       }
       .progressBarPoint {
-        color: #fff;
+        color: #1DE9B6;
         margin-top: 8px;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 500;
         position: absolute;
       }
       .progressBarPoint--start {
@@ -440,10 +437,11 @@
         width: 50px;
         height: 50px;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
         border: 4px dotted;
         box-shadow: 0 0 10px 2px #00000061;
+        line-height: 37px;
       }
 
       @media screen and (min-width:800px){
@@ -466,11 +464,10 @@
       }
 
       .dlapp{
-        background-color: #e6e6e6;
+        border: 2px solid #f0f2f5;
         border-radius: 10px;
         padding: 20px;
         margin: 0 0 15px 0;
-        border: 2px dotted;
       }
 
       video{
@@ -500,16 +497,92 @@
         font-weight: 400;
         box-shadow: 0 0 0px 2px #000000;
       }
+      span.incoming-pulse {
+   width: 8px;
+   height: 8px;
+
+   border-radius: 50%;
+   background:  #1de9b6c7;
+   box-shadow: 0 0 0 rgba(28, 180, 105, 0.4);
+
+   animation: incomingPulse 1.7s infinite;
+   top: 8px;
+   right: 8px;
+    position: absolute;
+}
+
+span.incoming-pulse-text {
+  margin-inline-start: 29px;
+}
+
+@-webkit-keyframes incomingPulse {
+   0% {
+      -webkit-box-shadow: 0 0 0 0 rgba(28, 180, 105, 0.4);
+   }
+   70% {
+      -webkit-box-shadow: 0 0 0 10px rgba(28, 180, 105, 0);
+   }
+   100% {
+      -webkit-box-shadow: 0 0 0 0 rgba(28, 180, 105, 0);
+   }
+}
+
+@keyframes incomingPulse {
+   0% {
+      -moz-box-shadow: 0 0 0 0 rgba(28, 180, 105, 0.4);
+      box-shadow: 0 0 0 0 rgba(28, 180, 105, 0.4);
+   }
+   70% {
+      -moz-box-shadow: 0 0 0 10px rgba(28, 180, 105, 0);
+      box-shadow: 0 0 0 10px rgba(28, 180, 105, 0);
+   }
+   100% {
+      -moz-box-shadow: 0 0 0 0 rgba(28, 180, 105, 0);
+      box-shadow: 0 0 0 0 rgba(28, 180, 105, 0);
+   }
+}
+
+@-webkit-keyframes limitincomingPulse {
+   0% {
+      -webkit-box-shadow: 0 0 0 0 rgb(180 175 28 / 40%);
+   }
+   70% {
+      -webkit-box-shadow: 0 0 0 10px rgb(180 161 28 / 0%);
+   }
+   100% {
+      -webkit-box-shadow: 0 0 0 0 rgb(178 180 28 / 0%);
+   }
+}
+
+@keyframes limitincomingPulse {
+   0% {
+      -moz-box-shadow: 0 0 0 0 rgb(180 175 28 / 40%);
+      box-shadow: 0 0 0 0 rgb(180 175 28 / 40%);
+   }
+   70% {
+      -moz-box-shadow: 0 0 0 10px rgb(180 161 28 / 0%);
+      box-shadow: 0 0 0 10px rgb(180 161 28 / 0%);
+   }
+   100% {
+      -moz-box-shadow: 0 0 0 0 rgb(178 180 28 / 0%);
+      box-shadow: 0 0 0 0 rgb(178 180 28 / 0%);
+   }
+  }
+
+.faq-ol li{
+  margin-bottom: 15px;
+    font-size: 15px;
+}
     </style>
   </head>
 
   <body>
     <div class="profile-card">
       <div class="profile-card__bio">
-        <h1 class="profile-card__bio-name">نام کاربری: {{ user.username }}</h1>
+        <h1 class="profile-card__bio-name">نام‌کاربری:<span>{{ user.username }}</span></h1>
         <h1 class="sdgsdogshoi profile-card__bio-name">
           {% if user.status.value == 'active' %}فعال{% elif user.status.value ==
-          'on_hold' %}در انتظار{% elif user.status.value == 'limited' %}محدود
+          'on_hold' %}در انتظار اتصال{% elif user.status.value == 'limited' %}حجم تمام
           شده{% elif user.status.value == 'expired' %}زمان منقضی شده{% elif
           user.status.value == 'disabled' %}غیر فعال{% endif %}
         </h1>
@@ -532,7 +605,7 @@
           remaining_seconds // (24 * 3600) %} {% set remaining_hours =
           (remaining_seconds % (24 * 3600)) // 3600 %} {% set remaining_minutes
           = (remaining_seconds % 3600) // 60 %} {% if remaining_days >= 1 %} {{
-          remaining_days | int }} روز باقیمانده {% else %} {{( remaining_hours )
+          remaining_days | int }} روز باقی‌مانده {% else %} {{( remaining_hours )
           | int }} ساعت باقیمانده {% endif %} {% endif %}
         </h2>
         {% endif %}
@@ -552,53 +625,48 @@
         </div>
       </div>
       {% if user.status == 'active' or user.status == 'on_hold' %}
-      <div class="divcopyLinkC">
-        <p style="color: green;
-        background-color: #f0ffeb;
-        border: 1px solid;
-        border-radius: 12px;
-        padding: 10px;
-        text-align: center;">
-          اگر اولین بار است از لینک اشتراک استفاده می‌کنید، لطفا قبل از هر چیز بخش
-          <span style="color: #000;">
-            آموزش اتصال با لینک اشتراک
-          </span>
-          را در دو سطر پایینتر مشاهده فرمایید. ممنون از توجه‌تون.
-          <span style="color: #000;
-          display: block;
-          font-size: 0.9em;">
-            با اتصال به لینک اشتراک هوشمند، مصرف بسته اینترنتی شما کمتر میشود و همچنین دیگر نیاز نیست فیلترشکن خود را برای سایت های داخلی خاموش کنید.
-          </span>
-        </p>
+      <!-- <div class="divcopyLinkC"> -->
         <!-- <button class="copyLinkC copy-button" onclick="copyLinkC(userlinksCEncoded, this)">کپی همه کانفیگ‌ها</button> -->
-      </div>
+      <!-- </div> -->
 
-      <div class="profile-card__separator"></div>
+      <!-- <div class="profile-card__separator"></div> -->
       <div class="profile-card__links">
         <div class="accordion">
           <input type="checkbox" name="quick-add" id="quick-add" />
           <label class="profile-card__header" for="quick-add">
-             اتصال با لینک اشتراک هوشمند
+             اتصال سریع با لینک اشتراک
           </label>
           <div class="accordion-content">
 
-            <p style="margin: 0 0 30px;
-                      font-size: 15px;">
-          با اتصال به وسیله لینک اشتراک هوشمند، علاوه بر افزایش سرعت اینترنت شما، نیاز نیست برای سایت‌ها یا برنامه‌های داخلی فیلترشکن خود را قطع کنید و بسته اینترنت شما نیز یک‌چهارم محاسبه می‌گردد.
-          </p>
+            <ul style="margin: 0 0 30px;
+                      font-size: 15px;
+                      background: #f0f2f5;
+    color: #000;
+    border-radius: 12px;
+    padding: 1em;
+    list-style-position: inside;
+    line-height: 1.6;">
+
+            <li>
+              برای V2rayNG ؛ پس از کلیک روی "افزودن سریع به V2rayNG" وارد نرم‌فزار شوید و از بالا روی <span style="font-size: 1.4em;">፧</span> ضربه بزنید و پس از آن آخرین گزینه (Update subscription) را انتخاب کنید.
+            </li>
+            <li style="margin-top: 15px;">
+              برای Streisand ؛ پس از کلیک روی "افزودن سریع به Streisand" بصورت اتوماتیک کانفیگ ها وارد اپلیکیشن می‌شود.
+            </li>
+          </ul>
             <a
               class="profile-card__links-button"
               href="v2rayng://install-config?url={{ user.subscription_url }}&name={{ user.username | urlencode }}"
               rel="noopener noreferrer"
               target="_blank"
-              >افزودن به v2rayNG</a
+              >افزودن سریع به v2rayNG</a
             >
             <a
               class="profile-card__links-button"
               href="streisand://import/{{ user.subscription_url }}#{{ user.username | urlencode }}"
               rel="noopener noreferrer"
               target="_blank"
-              >افزودن به Streisand</a
+              >افزودن سریع به Streisand</a
             >
             <!-- <a
               class="profile-card__links-button"
@@ -628,26 +696,29 @@
 
         <div class="accordion">
           <input type="checkbox" name="etesal" id="etesal" />
-          <label style="color: blue;" class="profile-card__header" for="etesal"> آموزش اتصال با لینک اشتراک</label>
+          <label class="profile-card__header" for="etesal"><span class="incoming-pulse"></span><span class="incoming-pulse-text">آموزش اتصال با لینک اشتراک</span></label>
           <div class="accordion-content">
 
             <p style="margin: 0 0 30px;
             font-size: 15px;
-            line-height: 1.8;">
-برای اتصال به لینک اشتراک هوشمند باید حتما از نرم‌افزارهای V2rayNG یا V2rayN یا Streisand استفاده کنید. سایر نرم‌افزارها، لینک اشتراک هوشمند را پشتیبانی نمی‌کنند.
+            background: #f0f2f5;
+            color: #000;
+            border-radius: 12px;
+            padding: 1em;">
+برای اتصال به لینک اشتراک هوشمند باید حتما از نرم‌افزار V2rayNG یا V2rayN یا Streisand استفاده کنید. سایر نرم‌افزارها، لینک اشتراک هوشمند را پشتیبانی نمی‌کنند.
             </p>
             <div class="app-etesal">
               <div class="Click-here profile-card__links-button" app="v2ray">
-                V2rayNG - Android
+                آموزش V2rayNG
               </div>
               <div class="Click-here profile-card__links-button" app="streisand">
-                Streisand - iOS
+                آموزش Streisand
               </div>
               <!-- <div class="Click-here profile-card__links-button" app="v2box">
                 V2Box - Android & iOS
               </div> -->
               <div class="Click-here profile-card__links-button" app="v2rayn">
-                V2rayN - Windows
+                آموزش V2rayN
               </div>
               <!-- <div class="Click-here profile-card__links-button" app="nekoray">
                 Nekoray - Windows & Linux
@@ -680,14 +751,14 @@
                 href="https://github.com/2dust/v2rayNG/releases/download/1.8.25/v2rayNG_1.8.25_arm64-v8a.apk"
                 rel="noopener noreferrer"
                 target="_blank"
-                >v2rayNG - GitHub</a
+                >دانلود v2rayNG</a
               >
-              <a
+              <!-- <a
                 class="profile-card__links-button"
                 href="https://play.google.com/store/apps/details?id=com.v2ray.ang"
                 rel="noopener noreferrer"
                 target="_blank"
-                >v2rayNG - Google Play</a>
+                >v2rayNG - Google Play</a> -->
             </div>
 
             <div class="dlapp">
@@ -707,7 +778,7 @@
                 href="https://apps.apple.com/us/app/streisand/id6450534064"
                 rel="noopener noreferrer"
                 target="_blank"
-                >Streisand</a
+                >دانلود Streisand</a
               >
               <!-- <a
                 class="profile-card__links-button"
@@ -735,7 +806,7 @@
                 href="https://github.com/2dust/v2rayN/releases/download/6.45/zz_v2rayN-With-Core-SelfContained.7z"
                 rel="noopener noreferrer"
                 target="_blank"
-                >V2rayN</a
+                >دانلود V2rayN</a
               >
 
               <!-- <a
@@ -747,8 +818,37 @@
             </div>
           </div>
         </div>
+
+        <div class="profile-card__separator"></div>
+        <div class="accordion">
+          <input type="checkbox" name="faq" id="faq" />
+          <label class="profile-card__header" for="faq" style="
+              background: #081211;
+              border-radius: 12px;
+              padding: 0 10px 0 0;
+              color: #1DE9B6;
+              font-weight: 400;
+          ">
+            وی‌پی‌ان وصل نمی‌شه یا سرعت کمه؟
+          </label>
+          <div class="accordion-content">
+            <p style="margin: 0;font-size: 15px;line-height: 1.8;">
+              لطفا متن زیر رو تا انتها بخونید؛
+            </p>
+            <ol class="faq-ol" style="list-style-position: inside;padding-inline-start: 0;line-height: 1.8;">
+                <li>قبل از هر چیز از طریق همین صفحه بررسی کنید که اشتراک‌تون تموم نشده باشه. همینطور آموزش اتصال با لینک اشتراک رو هم توی همین صفحه (۲ تا آیتم بالاتر) حتما ببینید.</li>
+                <li>همه کانفیگ‌های توی لینک اشتراک فقط روی نرم‌افزارهای V2rayNG، V2rayN و Streisand جواب میده؛ ممکنه مثلا با V2box یکی دو تا از کانفیگ ها وصل نشه.</li>
+                <li>نسخه بروز از نرم‌افزارهای بالا رو نصب داشته باشید. ‌وی‌پی‌ان‌های ما روی نسخه های قدیمی &nbsp;نرم‌افزارهای V2rayNG، V2rayN و Streisand دچار محدودیت سرعت میشه. (توی همین صفحه لینک دانلودشون هست.)</li>
+                <li>ساعت گوشی یا سیستم‌عامل باید روی حالت اتوماتیک باشه؛ اگه بصورت دستی ساعت دستگاهتون رو تغییر دادید، ۲ تا از پرسرعت‌ترین وی‌پی‌ان‌های لینک اشتراک رو از دست می‌دید.</li>
+                <li>توی لینک اشتراک چند تا ‌وی‌پی‌ان قرار دادیم. اگه احیانا اولی وصل نشد دومی رو امتحان کنید. اگه آیتم‌های بالا رو انجام دادید و هیچکدوم از ‌وی‌پی‌ان‌های توی لینک اشتراک متصل نشد؛ بروزرسانی اشتراک رو بزنید (آموزشش توی بخش "آموزش اتصال با لینک اشتراک" توی همین صفحه هست)</li>
+                <li>اگه بازم همه موارد بالا رو بررسی کردید و متصل نشدید به پشتیبان‌تون پیام بدید. توی پیام؛ نام کاربری‌تون، اپراتور سیم‌کارتی که باهاش متصل هستید و خطایی که دریافت میکنید رو ارسال کنید تا سریع‌تر موردتون رو بررسی کنیم. هم میتونید اسکرین‌شات بفرستید هم متن.</li>
+            </ol>
+          </div>
+        </div>
+
       </div>
       {% endif %}
+      
     </div>
 
     <!-- <div class="support-divar"></div>
@@ -782,10 +882,17 @@
           <div class="pop-up-content-wrap" app="v2ray">
             <div style="direction: rtl; text-align: justify; line-height: 2">
               <h3>⚙️ آموزش برنامه V2rayNG اندروید:&nbsp;</h3>
-              <b style="color: red;"
-                >0️⃣ مطمئن بشید آخرین نسخه V2rayNG رو نصب دارید. (باید ورژن
-                1.8.20 و بالاتر باشد)</b
-              >
+              <ol style="
+              color: blueviolet;
+              font-weight: bold;
+          ">
+                          <li>
+                            مطمئن بشید آخرین نسخه V2rayNG رو نصب دارید. (باید ورژن 1.8.20 و بالاتر باشد)
+                          </li>
+                          <li>
+                            ساعت گوشی باید روی حالت اتوماتیک باشد
+                          </li>
+                        </ol>
               <video src="https://fandogh-4qb.pages.dev/v2rayNG.mp4" type="video/mp4" controls>
 
                 <p>
@@ -815,16 +922,15 @@
           <div class="pop-up-content-wrap" app="streisand">
             <div style="direction: rtl; text-align: justify; line-height: 2">
               <h3>⚙️ آموزش برنامه Streisand آیفون:</h3>
-              <b
-                >0️⃣ مطمئن بشید آخرین نسخه Streisand رو نصب دارید. (باید ورژن
-                1.6.18 و بالاتر باشد)</b
-              >
+              <b style="color: blueviolet;">
+                0️⃣ مطمئن بشید آخرین نسخه Streisand رو نصب دارید. و ساعت گوشیتون روی حالت اتوماتیک است.
+                </b>
               <p>
                 1️⃣ توی همین صفحه از قسمت اتصال با لینک اشتراک؛ &nbsp;دکمه
                 «افزودن به Streisand» رو بزنید.
               </p>
               <p>
-                ♻️ هر روز حداقل یک بار یا وقتایی که کانفیگ‌ها کار نمیکنن update subscription رو بزنید تا اشتراکتون بروز بشه.
+                ♻️ هر روز حداقل یک بار یا وقتایی که کانفیگ‌ها کار نمیکنن، توی Streisand دستتون رو روی نام‌کاربری نگه دارید و Update رو بزنید تا اشتراکتون بروز بشه.
               </p>
             </div>
           </div>
