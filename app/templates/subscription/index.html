@@ -98,13 +98,22 @@
         margin-top: 4px;
       }
       .sdgsdogshoi {
-        color: #334245;
     display: inline-block;
     border-radius: 10px;
     padding: 2px 10px;
-    background: #ffffff;
     font-weight: 300;
       }
+      {% if user.status.value == 'active' %}
+      .sdgsdogshoi{color: #1de9b6;}
+      {% elif user.status.value == 'on_hold' %}
+      .sdgsdogshoi{color: #e9d8fd;} 
+      {% elif user.status.value == 'limited' %} 
+      .sdgsdogshoi{color: #FC8181;}
+      {% elif user.status.value == 'expired' %}
+      .sdgsdogshoi{color: #d3bc41;}
+      {% elif user.status.value == 'disabled' %}
+      .sdgsdogshoi{color: #bdccd3;}
+      {% endif %}
       .profile-card__bio-title {
         font-size: 0.875em;
         font-weight: 500;
@@ -387,7 +396,7 @@
         background-color: #fff;
         border: 1px solid #999;
         border: 1px solid rgba(0, 0, 0, 0.2);
-        border-radius: 6px;
+        border-radius: 1em;
         -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
         box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
         background-clip: padding-box;
@@ -431,8 +440,8 @@
         cursor: pointer;
         z-index: 99;
         font-size: 37px;
-        color: #000;
-        background: #fff;
+        color: #2df0bc;
+    background: #000538;
         border-radius: 50px;
         width: 50px;
         height: 50px;
@@ -442,7 +451,19 @@
         border: 4px dotted;
         box-shadow: 0 0 10px 2px #00000061;
         line-height: 37px;
+        animation: rotateBorder 2s infinite ;
       }
+
+      @keyframes rotateBorder {
+    0% {
+      transform: rotate(0);
+      /* border-style: dotted; */
+    }
+    100% {
+      transform: rotate(360deg);
+      /* border-style: solid; */
+    }
+  }
 
       @media screen and (min-width:800px){
         .custom-model-main:before {
@@ -468,6 +489,11 @@
         border-radius: 10px;
         padding: 20px;
         margin: 0 0 15px 0;
+        direction: ltr;
+        text-align: center;
+        font-size: 1.2em;
+        font-weight: 700;
+        padding-bottom: 10px;
       }
 
       video{
@@ -497,81 +523,48 @@
         font-weight: 400;
         box-shadow: 0 0 0px 2px #000000;
       }
-      span.incoming-pulse {
-   width: 8px;
-   height: 8px;
-
-   border-radius: 50%;
-   background:  #1de9b6c7;
-   box-shadow: 0 0 0 rgba(28, 180, 105, 0.4);
-
-   animation: incomingPulse 1.7s infinite;
-   top: 8px;
-   right: 8px;
-    position: absolute;
-}
-
-span.incoming-pulse-text {
-  margin-inline-start: 29px;
-}
-
-@-webkit-keyframes incomingPulse {
-   0% {
-      -webkit-box-shadow: 0 0 0 0 rgba(28, 180, 105, 0.4);
-   }
-   70% {
-      -webkit-box-shadow: 0 0 0 10px rgba(28, 180, 105, 0);
-   }
-   100% {
-      -webkit-box-shadow: 0 0 0 0 rgba(28, 180, 105, 0);
-   }
-}
-
-@keyframes incomingPulse {
-   0% {
-      -moz-box-shadow: 0 0 0 0 rgba(28, 180, 105, 0.4);
-      box-shadow: 0 0 0 0 rgba(28, 180, 105, 0.4);
-   }
-   70% {
-      -moz-box-shadow: 0 0 0 10px rgba(28, 180, 105, 0);
-      box-shadow: 0 0 0 10px rgba(28, 180, 105, 0);
-   }
-   100% {
-      -moz-box-shadow: 0 0 0 0 rgba(28, 180, 105, 0);
-      box-shadow: 0 0 0 0 rgba(28, 180, 105, 0);
-   }
-}
-
-@-webkit-keyframes limitincomingPulse {
-   0% {
-      -webkit-box-shadow: 0 0 0 0 rgb(180 175 28 / 40%);
-   }
-   70% {
-      -webkit-box-shadow: 0 0 0 10px rgb(180 161 28 / 0%);
-   }
-   100% {
-      -webkit-box-shadow: 0 0 0 0 rgb(178 180 28 / 0%);
-   }
-}
-
-@keyframes limitincomingPulse {
-   0% {
-      -moz-box-shadow: 0 0 0 0 rgb(180 175 28 / 40%);
-      box-shadow: 0 0 0 0 rgb(180 175 28 / 40%);
-   }
-   70% {
-      -moz-box-shadow: 0 0 0 10px rgb(180 161 28 / 0%);
-      box-shadow: 0 0 0 10px rgb(180 161 28 / 0%);
-   }
-   100% {
-      -moz-box-shadow: 0 0 0 0 rgb(178 180 28 / 0%);
-      box-shadow: 0 0 0 0 rgb(178 180 28 / 0%);
-   }
-  }
 
 .faq-ol li{
   margin-bottom: 15px;
     font-size: 15px;
+    background: #f0f2f5;
+    border-radius: 1em;
+    padding: 1em;
+}
+.faq-ol li::marker{
+  color: blue;
+  font-weight: 900;
+}
+
+.apps{
+  padding: 1em;
+  text-align: center;
+  margin: 1em;
+  border: 2px solid white;
+  border-radius: 1em;
+  background: #f0f0f0;
+}
+
+.faq-help button{
+  position: fixed;
+    bottom: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    font-family: 'Inter', 'Vazirmatn';
+    padding: 1em;
+    background: #2df0bc;
+    color: black;
+    border-radius: 1em;
+    border: 0;
+    box-shadow: 0px 0px 10px 4px rgb(0 0 0 / 15%);
+    width: 310px;
+  font-weight: 500;
+  font-size: 1em;
+
+}
+
+.img-v2 img{
+  border-radius: 5px;
 }
     </style>
   </head>
@@ -625,231 +618,89 @@ span.incoming-pulse-text {
         </div>
       </div>
       {% if user.status == 'active' or user.status == 'on_hold' %}
-      <!-- <div class="divcopyLinkC"> -->
-        <!-- <button class="copyLinkC copy-button" onclick="copyLinkC(userlinksCEncoded, this)">کپی همه کانفیگ‌ها</button> -->
-      <!-- </div> -->
 
-      <!-- <div class="profile-card__separator"></div> -->
-      <div class="profile-card__links">
-        <div class="accordion">
-          <input type="checkbox" name="quick-add" id="quick-add" />
-          <label class="profile-card__header" for="quick-add">
-             اتصال سریع با لینک اشتراک
-          </label>
-          <div class="accordion-content">
-
-            <ul style="margin: 0 0 30px;
-                      font-size: 15px;
-                      background: #f0f2f5;
-    color: #000;
-    border-radius: 12px;
-    padding: 1em;
-    list-style-position: inside;
-    line-height: 1.6;">
-
-            <li>
-              برای V2rayNG ؛ پس از کلیک روی "افزودن سریع به V2rayNG" وارد نرم‌فزار شوید و از بالا روی <span style="font-size: 1.4em;">፧</span> ضربه بزنید و پس از آن آخرین گزینه (Update subscription) را انتخاب کنید.
-            </li>
-            <li style="margin-top: 15px;">
-              برای Streisand ؛ پس از کلیک روی "افزودن سریع به Streisand" بصورت اتوماتیک کانفیگ ها وارد اپلیکیشن می‌شود.
-            </li>
-          </ul>
-            <a
-              class="profile-card__links-button"
-              href="v2rayng://install-config?url={{ user.subscription_url }}&name={{ user.username | urlencode }}"
-              rel="noopener noreferrer"
-              target="_blank"
-              >افزودن سریع به v2rayNG</a
-            >
-            <a
-              class="profile-card__links-button"
-              href="streisand://import/{{ user.subscription_url }}#{{ user.username | urlencode }}"
-              rel="noopener noreferrer"
-              target="_blank"
-              >افزودن سریع به Streisand</a
-            >
-            <!-- <a
-              class="profile-card__links-button"
-              href="v2box://install-sub?url={{ user.subscription_url }}&name={{ user.username | urlencode }}"
-              rel="noopener noreferrer"
-              target="_blank"
-              >افزودن به V2Box</a
-            > -->
-            <a
-              class="profile-card__links-button copy-button"
-              onclick="copyLink('{{ user.subscription_url }}', this)"
-            >
-              کپی لینک اشتراک هوشمند
-            </a>
-            <!-- <a
-              class="profile-card__links-button copy-button"
-              onclick="copyOldLink('{{ user.subscription_url }}/v2ray', this)"
-            >
-              کپی لینک اشتراک ساده
-            </a> -->
-
-            <div style="padding: 40px 0;" id="qrcode"></div>
+      <div class="second app-etesal">
+        <div class="apps">
+          <h2>Android</h2>
+          <a
+            class="profile-card__links-button"
+            href="https://github.com/2dust/v2rayNG/releases/download/1.8.25/v2rayNG_1.8.25_arm64-v8a.apk"
+            rel="noopener noreferrer"
+            target="_blank">
+            آپدیت یا دانلود v2rayNG
+          </a>
+          <div class="Click-here profile-card__links-button" app="v2ray">
+            آموزش کامل V2rayNG
           </div>
-        </div>
-
-        <div class="profile-card__separator"></div>
-
-        <div class="accordion">
-          <input type="checkbox" name="etesal" id="etesal" />
-          <label class="profile-card__header" for="etesal"><span class="incoming-pulse"></span><span class="incoming-pulse-text">آموزش اتصال با لینک اشتراک</span></label>
-          <div class="accordion-content">
-
-            <p style="margin: 0 0 30px;
-            font-size: 15px;
-            background: #f0f2f5;
-            color: #000;
-            border-radius: 12px;
-            padding: 1em;">
-برای اتصال به لینک اشتراک هوشمند باید حتما از نرم‌افزار V2rayNG یا V2rayN یا Streisand استفاده کنید. سایر نرم‌افزارها، لینک اشتراک هوشمند را پشتیبانی نمی‌کنند.
-            </p>
-            <div class="app-etesal">
-              <div class="Click-here profile-card__links-button" app="v2ray">
-                آموزش V2rayNG
-              </div>
-              <div class="Click-here profile-card__links-button" app="streisand">
-                آموزش Streisand
-              </div>
-              <!-- <div class="Click-here profile-card__links-button" app="v2box">
-                V2Box - Android & iOS
-              </div> -->
-              <div class="Click-here profile-card__links-button" app="v2rayn">
-                آموزش V2rayN
-              </div>
-              <!-- <div class="Click-here profile-card__links-button" app="nekoray">
-                Nekoray - Windows & Linux
-              </div>   -->
-            </div>
+          <a
+            class="profile-card__links-button"
+            href="v2rayng://install-config?url={{ user.subscription_url }}&name={{ user.username | urlencode }}"
+            rel="noopener noreferrer"
+            target="_blank">
+            افزودن سریع به v2rayNG
+          </a>
+          <p style="font-size: 0.9em; text-align: right;">
+            بعد از کلیک روی افزودن سریع، طبق عکس‌های زیر (از راست به چپ) عمل کنید:
+          </p>
+          <div class="img-v2" style="
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 5px;
+">
+            <img src="https://raw.githubusercontent.com/x0sina/marzban-sub/main/1.jpg" alt="">
+            <img src="https://raw.githubusercontent.com/x0sina/marzban-sub/main/2.jpg" alt="">
           </div>
-        </div>
-
-        <div class="profile-card__separator"></div>
-        <div class="accordion">
-          <input type="checkbox" name="android" id="android" />
-          <label class="profile-card__header" for="android">
-            دانلود برنامه‌های مورد نیاز
-          </label>
-          <div class="accordion-content">
-            <div class="dlapp">
-              <div
-                style="
-                  direction: ltr;
-                  text-align: center;
-                  font-size: 1.2em;
-                  font-weight: 700;
-                  padding-bottom: 10px;
-                "
-              >
-                Android
-              </div>
-              <a
-                class="profile-card__links-button"
-                href="https://github.com/2dust/v2rayNG/releases/download/1.8.25/v2rayNG_1.8.25_arm64-v8a.apk"
-                rel="noopener noreferrer"
-                target="_blank"
-                >دانلود v2rayNG</a
-              >
-              <!-- <a
-                class="profile-card__links-button"
-                href="https://play.google.com/store/apps/details?id=com.v2ray.ang"
-                rel="noopener noreferrer"
-                target="_blank"
-                >v2rayNG - Google Play</a> -->
-            </div>
-
-            <div class="dlapp">
-              <div
-                style="
-                  direction: ltr;
-                  text-align: center;
-                  font-size: 1.2em;
-                  font-weight: 700;
-                  padding-bottom: 10px;
-                "
-              >
-                iPhone
-              </div>
-              <a
-                class="profile-card__links-button"
-                href="https://apps.apple.com/us/app/streisand/id6450534064"
-                rel="noopener noreferrer"
-                target="_blank"
-                >دانلود Streisand</a
-              >
-              <!-- <a
-                class="profile-card__links-button"
-                href="https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690"
-                rel="noopener noreferrer"
-                target="_blank"
-              >V2Box</a> -->
-            </div>
-
-            <div class="dlapp">
-              <div
-                style="
-                  direction: ltr;
-                  text-align: center;
-                  font-size: 1.2em;
-                  font-weight: 700;
-                  padding-bottom: 10px;
-                "
-              >
-                Windows
-              </div>
-
-              <a
-                class="profile-card__links-button"
-                href="https://github.com/2dust/v2rayN/releases/download/6.45/zz_v2rayN-With-Core-SelfContained.7z"
-                rel="noopener noreferrer"
-                target="_blank"
-                >دانلود V2rayN</a
-              >
-
-              <!-- <a
-              class="profile-card__links-button"
-              href="https://github.com/MatsuriDayo/nekoray/releases/download/3.26/nekoray-3.26-2023-12-09-windows64.zip"
-              rel="noopener noreferrer"
-              target="_blank"
-              >Nekoray</a> -->
-            </div>
+        </div>  
+        <div class="apps">
+          <h2>iPhone & mac</h2>
+          <a
+            class="profile-card__links-button"
+            href="https://apps.apple.com/us/app/streisand/id6450534064"
+            rel="noopener noreferrer"
+            target="_blank">
+            آپدیت یا دانلود Streisand
+          </a>
+          <div class="Click-here profile-card__links-button" app="streisand">
+            آموزش Streisand
           </div>
-        </div>
-
-        <div class="profile-card__separator"></div>
-        <div class="accordion">
-          <input type="checkbox" name="faq" id="faq" />
-          <label class="profile-card__header" for="faq" style="
-              background: #081211;
-              border-radius: 12px;
-              padding: 0 10px 0 0;
-              color: #1DE9B6;
-              font-weight: 400;
-          ">
-            وی‌پی‌ان وصل نمی‌شه یا سرعت کمه؟
-          </label>
-          <div class="accordion-content">
-            <p style="margin: 0;font-size: 15px;line-height: 1.8;">
-              لطفا متن زیر رو تا انتها بخونید؛
-            </p>
-            <ol class="faq-ol" style="list-style-position: inside;padding-inline-start: 0;line-height: 1.8;">
-                <li>قبل از هر چیز از طریق همین صفحه بررسی کنید که اشتراک‌تون تموم نشده باشه. همینطور آموزش اتصال با لینک اشتراک رو هم توی همین صفحه (۲ تا آیتم بالاتر) حتما ببینید.</li>
-                <li>همه کانفیگ‌های توی لینک اشتراک فقط روی نرم‌افزارهای V2rayNG، V2rayN و Streisand جواب میده؛ ممکنه مثلا با V2box یکی دو تا از کانفیگ ها وصل نشه.</li>
-                <li>نسخه بروز از نرم‌افزارهای بالا رو نصب داشته باشید. ‌وی‌پی‌ان‌های ما روی نسخه های قدیمی &nbsp;نرم‌افزارهای V2rayNG، V2rayN و Streisand دچار محدودیت سرعت میشه. (توی همین صفحه لینک دانلودشون هست.)</li>
-                <li>ساعت گوشی یا سیستم‌عامل باید روی حالت اتوماتیک باشه؛ اگه بصورت دستی ساعت دستگاهتون رو تغییر دادید، ۲ تا از پرسرعت‌ترین وی‌پی‌ان‌های لینک اشتراک رو از دست می‌دید.</li>
-                <li>توی لینک اشتراک چند تا ‌وی‌پی‌ان قرار دادیم. اگه احیانا اولی وصل نشد دومی رو امتحان کنید. اگه آیتم‌های بالا رو انجام دادید و هیچکدوم از ‌وی‌پی‌ان‌های توی لینک اشتراک متصل نشد؛ بروزرسانی اشتراک رو بزنید (آموزشش توی بخش "آموزش اتصال با لینک اشتراک" توی همین صفحه هست)</li>
-                <li>اگه بازم همه موارد بالا رو بررسی کردید و متصل نشدید به پشتیبان‌تون پیام بدید. توی پیام؛ نام کاربری‌تون، اپراتور سیم‌کارتی که باهاش متصل هستید و خطایی که دریافت میکنید رو ارسال کنید تا سریع‌تر موردتون رو بررسی کنیم. هم میتونید اسکرین‌شات بفرستید هم متن.</li>
-            </ol>
+          <a
+            class="profile-card__links-button"
+            href="streisand://import/{{ user.subscription_url }}#{{ user.username | urlencode }}"
+            rel="noopener noreferrer"
+            target="_blank">
+            افزودن سریع به Streisand
+          </a>
+        </div>  
+        <div class="apps">
+          <h2>Windows</h2>
+          <a
+            class="profile-card__links-button"
+            href="https://github.com/2dust/v2rayN/releases/download/6.45/zz_v2rayN-With-Core-SelfContained.7z"
+            rel="noopener noreferrer"
+            target="_blank">
+            آپدیت یا دانلود v2rayN
+          </a>
+          <div class="Click-here profile-card__links-button" app="v2rayn">
+            آموزش V2rayN
           </div>
-        </div>
+          <a class="profile-card__links-button copy-button"
+              onclick="copyLink('{{ user.subscription_url }}', this)">
+            کپی لینک اشتراک هوشمند
+          </a>
+        </div>  
 
       </div>
+
       {% endif %}
       
     </div>
+
+    <div class="faq-help">
+      <button app="faq">
+        وی‌پی‌ان وصل نمی‌شه یا سرعت کمه؟
+      </button>
+    </div>
+    
 
     <!-- <div class="support-divar"></div>
 
@@ -879,6 +730,63 @@ span.incoming-pulse-text {
       <div class="custom-model-inner">
         <div class="close-btn">×</div>
         <div class="custom-model-wrap">
+
+          <div class="help pop-up-content-wrap" app="faq">
+
+            <p style="margin: 0;font-size: 15px;line-height: 1.8;">
+              لطفا متن زیر رو تا انتها بخونید؛
+            </p>
+            <ol class="faq-ol" style="list-style-position: inside;padding-inline-start: 0;line-height: 1.8;">
+              <li>قبل از هر چیز از طریق همین صفحه بررسی کنید که اشتراک‌تون تموم نشده باشه. همینطور آموزش اتصال با لینک اشتراک رو از توی صفحه اصلی رو حتما ببینید.</li>
+              <li>همه کانفیگ‌های توی لینک اشتراک فقط روی نرم‌افزارهای V2rayNG، V2rayN و Streisand جواب میده؛ ممکنه مثلا با V2box یکی دو تا از کانفیگ ها وصل نشه.</li>
+              <li>نسخه بروز از نرم‌افزارهای بالا رو نصب داشته باشید. ‌وی‌پی‌ان‌های ما روی نسخه های قدیمی &nbsp;نرم‌افزارهای V2rayNG، V2rayN و Streisand دچار محدودیت سرعت میشه. (توی همین صفحه لینک دانلودشون هست.)</li>
+              <li>ساعت گوشی یا سیستم‌عامل باید روی حالت اتوماتیک باشه؛ اگه بصورت دستی ساعت دستگاهتون رو تغییر دادید، ۲ تا از پرسرعت‌ترین وی‌پی‌ان‌های لینک اشتراک رو از دست می‌دید.</li>
+              <li>توی لینک اشتراک چند تا ‌وی‌پی‌ان قرار دادیم. اگه احیانا اولی وصل نشد دومی رو امتحان کنید. اگه آیتم‌های بالا رو انجام دادید و هیچکدوم از ‌وی‌پی‌ان‌های توی لینک اشتراک متصل نشد؛ بروزرسانی اشتراک رو بزنید (آموزشش توی بخش "آموزش اتصال با لینک اشتراک" توی همین صفحه هست)</li>
+              <li>اگه بازم همه موارد بالا رو بررسی کردید و متصل نشدید به پشتیبان‌تون پیام بدید. توی پیام؛ نام کاربری‌تون، اپراتور سیم‌کارتی که باهاش متصل هستید و خطایی که دریافت میکنید رو ارسال کنید تا سریع‌تر موردتون رو بررسی کنیم. هم میتونید اسکرین‌شات بفرستید هم متن.</li>
+              <li>
+                اگه نمی‌تونید  به وی‌پی‌ان پر سرعت V6 متصل بشید، باید؛
+                <ol style="padding-inline-start: 0px; list-style-type: disclosure-closed;">
+                  <li>
+                    <strong>برای اندروید:</strong>
+                    <ul style="padding-inline-start: 0px;">
+                      <li>
+                        <strong>اندروید لاتین (انگلیسی):</strong>
+                        </br>
+                        توی settings عبارت «Mobile networks» رو جستجو کنید و روی اون ضربه بزنید.
+                        اینجا اگه دو سیم‌کارت دارید، سیم کارتی رو که باهاش به اینترنت متصل‌ید انتخاب کنید و دنبال «Access Points Names» یا «APN» بگردید و روی اون ضربه بزنید.
+                        اینجا‌ به اون آیتمی که انتخاب شده ورود کنید.
+                        اگر توی بخش proxy و port چیزی نوشته شده بود پاکشون کنید. پایین‌تر «APN protocol» و «APN roaming protocol» رو مطمئن بشید «IPv4/IPv6» انتخاب شده.‌
+                        حالا از گوشه صفحه روی ፧ ضربه بزنید و save رو بزنید. بعد گوشیتون رو خاموش و روشن کنید. تمام 
+                      </li>
+                      <li>
+                        <strong>
+                          اندروید فارسی:
+                        </strong>
+                        </br>
+                        توی تنظیمات گوشی عبارت «شبکه تلفن همراه» رو جستجو کنید و روی اون ضربه بزنید.
+                        اینجا اگه دو سیم‌کارت دارید، سیم کارتی رو که باهاش به اینترنت متصل‌ید انتخاب کنید و دنبال «نام‌های نقاط دسترسی» یا «APN» بگردید و روی اون ضربه بزنید.
+                        اینجا‌ به اون آیتمی که انتخاب شده ورود کنید.
+                        اگر توی بخش پروکسی و درگاه چیزی نوشته شده بود پاکشون کنید. پایین‌تر «پروتکل نام نقطه دستیابی» و «پروتکل رومینگ نام نقطه دستیابی» رو مطمئن بشید «IPv4/IPv6» انتخاب شده.‌
+                        حالا از گوشه صفحه روی ፧ ضربه بزنید و ذخیره رو کنید. بعد گوشیتون رو خاموش و روشن کنید. تمام
+                      </li>
+
+                    </ul>
+                  </br>
+                  </li>
+                  <li>
+                    <strong>برای آیفون:</strong>
+                    </br>
+                    برای گوشی های آیفون کافیه روی " دکمه نصب پروفایل ورژن 6 " رو ضربه بزنید.
+                    
+                  </li>
+                </ol>
+              </li>
+            </ol>
+
+
+          </div>
+
+
           <div class="pop-up-content-wrap" app="v2ray">
             <div style="direction: rtl; text-align: justify; line-height: 2">
               <h3>⚙️ آموزش برنامه V2rayNG اندروید:&nbsp;</h3>
@@ -1099,35 +1007,27 @@ span.incoming-pulse-text {
         }, 1500);
       }
 
-      document
-        .querySelector(".app-etesal")
-        .addEventListener("click", (button) => {
-          document
-            .querySelector(".custom-model-main")
-            .classList.add("model-open");
+      document.addEventListener("click", (button) => {
+  const app = button.target.getAttribute("app");
+  if (app) {
+    document.querySelector(".custom-model-main").classList.add("model-open");
+    document.querySelectorAll(".pop-up-content-wrap").forEach((element) => {
+      if (element.getAttribute("app") === app) {
+        element.style.display = "block";
+      } else {
+        element.style.display = "none";
+      }
+    });
+  }
+});
 
-          document
-            .querySelectorAll(".pop-up-content-wrap")
-            .forEach((element) => {
-              if (
-                element.getAttribute("app") == button.target.getAttribute("app")
-              ) {
-                element.style = "display: block;";
-              } else {
-                element.style = "display: none;";
-              }
-            });
-        });
-      document.querySelector(".close-btn").addEventListener("click", () => {
-        document
-          .querySelector(".custom-model-main")
-          .classList.remove("model-open");
-      });
-      document.querySelector(".bg-overlay").addEventListener("click", () => {
-        document
-          .querySelector(".custom-model-main")
-          .classList.remove("model-open");
-      });
+document.querySelector(".close-btn").addEventListener("click", () => {
+  document.querySelector(".custom-model-main").classList.remove("model-open");
+});
+
+document.querySelector(".bg-overlay").addEventListener("click", () => {
+  document.querySelector(".custom-model-main").classList.remove("model-open");
+});
       
     </script>
     <script type="text/javascript">
