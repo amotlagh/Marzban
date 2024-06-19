@@ -7,7 +7,14 @@
   },
   "dns": {
     "tag": "dns",
-    "servers": ["8.8.8.8"]
+    "servers": [
+      "8.8.8.8",
+      "8.8.4.4",
+      "94.140.14.14",
+      "94.140.15.15",
+      "2a10:50c0::ad1:ff",
+      "2a10:50c0::ad2:ff"
+    ]
   },
   "inbounds": [
     {
@@ -51,6 +58,15 @@
       }
     },
     {
+      "protocol": "blackhole",
+      "settings": {
+        "response": {
+          "type": "http"
+        }
+      },
+      "tag": "blackhole"
+    },
+    {
       "protocol": "dns",
       "tag": "dns_out"
     }
@@ -68,15 +84,49 @@
       },
       {
         "type": "field",
+        "outboundTag": "blackhole",
+        "domain": [
+          "geosite:category-ads-ir",
+          "geosite:apple-ads",
+          "geosite:facebook-ads",
+          "geosite:google-ads",
+          "geosite:hotjar-ads",
+          "geosite:instagram-ads",
+          "geosite:meta-ads",
+          "geosite:mxplayer-ads",
+          "geosite:ookla-speedtest-ads"
+        ]
+      },
+      {
+        "type": "field",
         "outboundTag": "direct",
         "domain": [
           "regexp:.*\\.ir$",
           "regexp:.*\\.xn--mgba3a4f16a$",
+          "geosite:apple",
+          "geosite:aparat",
+          "geosite:category-bank-ir",
+          "geosite:category-bourse-ir",
+          "geosite:category-education-ir",
+          "geosite:category-gov-ir",
+          "geosite:category-ir",
+          "geosite:category-media-ir",
+          "geosite:category-news-ir",
+          "geosite:category-payment-ir",
+          "geosite:category-scholar-ir",
+          "geosite:category-shopping-ir",
+          "geosite:category-tech-ir",
+          "geosite:category-travel-ir",
+          "geosite:category-social-media-ir",
+          "geosite:divar",
+          "geosite:ookla-speedtest",
+          "geosite:private",
+          "geosite:category-forums-ir",
+          "geosite:category-insurance-ir",
+          "geosite:snapp",
           "digikala",
-          "aparat",
           "speedtest",
           "telewebion",
-          "divarcdn.com",
           "varzesh3",
           "namnak.com",
           "namasha.com",
@@ -86,7 +136,6 @@
           "snapp",
           "microsoft",
           "windows",
-          "apple.com",
           "cafebazaar",
           "farsroid.com",
           "sb24.com",
@@ -110,8 +159,8 @@
           "wikipedia",
           "tamasha",
           "freeserver",
-          "speedtest.net",
-          "speedtest.ir",
+          "coin2coin",
+          "avidonline",
           "speedcheck.ir",
           "fast.com",
           "speedcheck.org",
@@ -119,7 +168,6 @@
           "bale",
           "rubika",
           "igap",
-          "vipstream",
           "fonts.gstatic.com"
         ]
       }
