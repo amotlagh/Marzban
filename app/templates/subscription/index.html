@@ -655,31 +655,29 @@ font-size: 18px;
         <h1 class="profile-card__bio-name">نام‌کاربری:<span>{{ user.username }}</span></h1>
         <h1 class="sdgsdogshoi profile-card__bio-name">
           {% if user.status.value == 'active' %}فعال{% elif user.status.value ==
-          'on_hold' %}در انتظار اتصال{% elif user.status.value == 'limited' %}حجم تمام
+          'on_hold' %}در انتظار اولین اتصال{% elif user.status.value == 'limited' %}حجم تمام
           شده{% elif user.status.value == 'expired' %}زمان منقضی شده{% elif
           user.status.value == 'disabled' %}غیر فعال{% endif %}
         </h1>
-        <!-- <h2 class="profile-card__bio-title">
-          {% if not user.expire %} ∞ {% else %} {% set current_timestamp =
-          now().timestamp() %} {% set remaining_seconds = [user.expire -
-          current_timestamp, 0] | max %} {% set remaining_days =
-          remaining_seconds // (24 * 3600) %} {% set remaining_hours =
-          (remaining_seconds % (24 * 3600)) // 3600 %} {% set remaining_minutes
-          = (remaining_seconds % 3600) // 60 %} {% if remaining_days >= 1 %} {{
-          remaining_days | int }} روز باقیمانده {% else %} {{ remaining_hours |
-          int }} ساعت باقیمانده {% endif %} {% endif %}
-        </h2> -->
         {% if user.status.value == 'active' or user.status.value == 'on_hold' or
         user.status.value == 'limited' %}
         <h2 class="profile-card__bio-title">
-          {% if not user.expire %} ∞ {% else %} {% set current_timestamp =
-          now().timestamp() %} {% set remaining_seconds = [user.expire -
-          current_timestamp, 0] | max %} {% set remaining_days =
-          remaining_seconds // (24 * 3600) %} {% set remaining_hours =
-          (remaining_seconds % (24 * 3600)) // 3600 %} {% set remaining_minutes
-          = (remaining_seconds % 3600) // 60 %} {% if remaining_days >= 1 %} {{
-          remaining_days | int }} روز باقی‌مانده {% else %} {{( remaining_hours )
-          | int }} ساعت باقیمانده {% endif %} {% endif %}
+          {% if not user.expire and not user.on_hold_expire_duration %}
+            ∞
+          {% else %}
+            {% if user.status.value == 'on_hold' %}
+              {% set remaining_seconds = [user.on_hold_expire_duration, 0] | max %}
+            {% else %}
+              {% set current_timestamp = now().timestamp() %}
+              {% set remaining_seconds = [user.expire - current_timestamp, 0] | max %}
+            {% endif %}
+            {% set remaining_days = remaining_seconds // (24 * 3600) %}
+            {% set remaining_hours = (remaining_seconds % (24 * 3600)) // 3600 %}
+            {% set remaining_minutes = (remaining_seconds % 3600) // 60 %}
+
+          {% if remaining_days >= 1 %} {{ remaining_days | int }}
+            روز باقی‌مانده
+          {% else %} {{( remaining_hours ) | int }} ساعت باقیمانده {% endif %} {% endif %}
         </h2>
         {% endif %}
         <div class="progressBarContainer">
@@ -712,9 +710,10 @@ font-size: 18px;
               <h2>V2rayNG</h2>
               <a
                 class="profile-card__links-button"
-                href="https://github.com/2dust/v2rayNG/releases/download/1.8.25/v2rayNG_1.8.25_arm64-v8a.apk"
+                href="#"
                 rel="noopener noreferrer"
-                target="_blank">
+                target="_blank"
+                id="v2rayNGv8a">
                 دریافت آخرین نسخه v2rayNG
               </a>
               <div class="Click-here profile-card__links-button" app="v2ray">
@@ -800,9 +799,10 @@ font-size: 18px;
               <h2>V2rayN</h2>
               <a
                 class="profile-card__links-button"
-                href="https://github.com/2dust/v2rayN/releases/download/6.45/zz_v2rayN-With-Core-SelfContained.7z"
+                href="#"
                 rel="noopener noreferrer"
-                target="_blank">
+                target="_blank"
+                id="v2rayN">
                 دریافت آخرین نسخه v2rayN
               </a>
               <div class="Click-here profile-card__links-button" app="v2rayn">
@@ -1262,6 +1262,56 @@ document.querySelector(".bg-overlay").addEventListener("click", () => {
         colorDark : "#000000",
         colorLight : "#ffffff",
         correctLevel : QRCode.CorrectLevel.M
+      });
+    </script>
+
+    <script>
+      async function getLatestReleaseName(url) {
+        if (!url || typeof url !== 'string') {
+          throw new Error('A valid URL must be provided.');
+        }
+
+        try {
+          const response = await fetch(url);
+
+          if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+          }
+
+          const latest = await response.json();
+
+          if ((!latest || !latest.tag_name) && (!latest || !latest.name)) {
+            throw new Error('The response does not contain the expected data.');
+          }
+
+          return latest.name || latest.tag_name;
+        } catch (error) {
+          console.error('Error fetching the latest release name:', error);
+          throw error;
+        }
+      }
+
+      const singbox = 'https://api.github.com/repos/SagerNet/sing-box/releases/latest';
+      const v2rayng = 'https://api.github.com/repos/2dust/v2rayNG/releases/latest';
+      const v2rayn = 'https://api.github.com/repos/2dust/v2rayN/releases/latest';
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          const sfaName = await getLatestReleaseName(singbox);
+          const sfa = document.getElementById('SFA');
+          sfa.href = `https://github.com/SagerNet/sing-box/releases/download/v${sfaName}/SFA-${sfaName}-universal.apk`;
+
+          const v2rayngName = await getLatestReleaseName(v2rayng);
+          const v2rayngv8a = document.getElementById('v2rayNGv8a');
+          v2rayngv8a.href = `https://github.com/2dust/v2rayNG/releases/download/${v2rayngName}/v2rayNG_${v2rayngName}_arm64-v8a.apk`;
+
+          const v2raynName = await getLatestReleaseName(v2rayn);
+          const v2rayN = document.getElementById('v2rayN');
+          v2rayN.href = `https://github.com/2dust/v2rayN/releases/download/${v2raynName}/zz_v2rayN-With-Core-SelfContained.7z`;
+          
+        } catch (error) {
+          console.error('Failed to update link:', error);
+        }
       });
     </script>
   </body>
