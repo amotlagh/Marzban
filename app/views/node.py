@@ -1,7 +1,7 @@
 import asyncio
 import time
 from datetime import datetime
-from typing import List
+from typing import List, Union
 
 import sqlalchemy
 from fastapi import BackgroundTasks, Depends, HTTPException, WebSocket
@@ -242,3 +242,37 @@ def get_usage(db: Session = Depends(get_db),
     usages = crud.get_nodes_usage(db, start_date, end_date)
 
     return {"usages": usages}
+
+
+@app.get("/api/nodes/admin/{username}/usage", tags=['Node'], response_model=NodesUsageResponse)
+def get_admin_usage(username: str,
+              db: Session = Depends(get_db),
+              start: str = None,
+              end: str = None,
+              admin: Admin = Depends(Admin.get_current)):
+    """
+    Get admin nodes usage
+    """
+
+    # prevent to get admin usage by another admin if it's not sudo admin
+    if not admin.is_sudo:
+        if not admin.username == username:
+            raise HTTPException(status_code=403, detail="You're not allowed")
+
+    dbadmin: Union[Admin, None] = crud.get_admin(db, username)
+    if not dbadmin:
+        raise HTTPException(status_code=404, detail="Admin not found")
+
+    if start is None:
+        start_date = datetime.fromtimestamp(datetime.utcnow().timestamp() - 30 * 24 * 3600)
+    else:
+        start_date = datetime.fromisoformat(start)
+
+    if end is None:
+        end_date = datetime.utcnow()
+    else:
+        end_date = datetime.fromisoformat(end)
+
+    usages = crud.get_admin_node_usages(db, dbadmin.id, start_date, end_date)
+
+    return { "usages": usages }    
