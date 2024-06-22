@@ -112,13 +112,13 @@ def get_v2ray_link(remark: str, address: str, inbound: dict, settings: dict):
         )
 
 
-def generate_v2ray_links(proxies: dict, inbounds: dict, extra_data: dict) -> list:
+def generate_v2ray_links(proxies: dict, inbounds: dict, extra_data: dict, admin: str) -> list:
     format_variables = setup_format_variables(extra_data)
-    return process_inbounds_and_tags(inbounds, proxies, format_variables, mode="v2ray")
+    return process_inbounds_and_tags(inbounds, proxies, format_variables, admin, mode="v2ray")
 
 
 def generate_clash_subscription(
-    proxies: dict, inbounds: dict, extra_data: dict, is_meta: bool = False
+    proxies: dict, inbounds: dict, extra_data: dict, admin: str, is_meta: bool = False
 ) -> str:
     if is_meta is True:
         conf = ClashMetaConfiguration()
@@ -127,18 +127,18 @@ def generate_clash_subscription(
 
     format_variables = setup_format_variables(extra_data)
     return process_inbounds_and_tags(
-        inbounds, proxies, format_variables, mode="clash", conf=conf
+        inbounds, proxies, format_variables, admin, mode="clash", conf=conf
     )
 
 
 def generate_singbox_subscription(
-    proxies: dict, inbounds: dict, extra_data: dict
+    proxies: dict, inbounds: dict, extra_data: dict, admin: str,
 ) -> str:
     conf = SingBoxConfiguration()
 
     format_variables = setup_format_variables(extra_data)
     return process_inbounds_and_tags(
-        inbounds, proxies, format_variables, mode="sing-box", conf=conf
+        inbounds, proxies, format_variables, admin, mode="sing-box", conf=conf
     )
 
 
@@ -147,24 +147,24 @@ def generate_v2ray_subscription(links: list) -> str:
 
 
 def generate_outline_subscription(
-    proxies: dict, inbounds: dict, extra_data: dict
+    proxies: dict, inbounds: dict, extra_data: dict, admin: str,
 ) -> str:
     conf = OutlineConfiguration()
 
     format_variables = setup_format_variables(extra_data)
     return process_inbounds_and_tags(
-        inbounds, proxies, format_variables, mode="outline", conf=conf
+        inbounds, proxies, format_variables, admin, mode="outline", conf=conf
     )
 
 
 def generate_v2ray_json_subscription(
-    proxies: dict, inbounds: dict, extra_data: dict
+    proxies: dict, inbounds: dict, extra_data: dict, admin: str,
 ) -> str:
     conf = V2rayJsonConfig()
 
     format_variables = setup_format_variables(extra_data)
     return process_inbounds_and_tags(
-        inbounds, proxies, format_variables, mode="v2ray-json", conf=conf
+        inbounds, proxies, format_variables, admin, mode="v2ray-json", conf=conf
     )
 
 
@@ -177,6 +177,7 @@ def generate_subscription(
         "proxies": user.proxies,
         "inbounds": user.inbounds,
         "extra_data": user.__dict__,
+        "admin": user.admin.username,
     }
 
     if config_format == "v2ray":
@@ -297,6 +298,7 @@ def process_inbounds_and_tags(
     inbounds: dict,
     proxies: dict,
     format_variables: dict,
+    admin: str,
     mode: str = "v2ray",
     conf=None,
 ) -> Union[List, str]:
@@ -305,7 +307,8 @@ def process_inbounds_and_tags(
     _inbounds = []
     for protocol, tags in inbounds.items():
         for tag in tags:
-            _inbounds.append((protocol, [tag]))
+            if admin and admin in tag:
+                _inbounds.append((protocol, [tag]))
     index_dict = {proxy: index for index, proxy in enumerate(xray.config.inbounds_by_tag.keys())}
     inbounds = sorted(_inbounds, key=lambda x: index_dict.get(x[1][0], float('inf')))
     
