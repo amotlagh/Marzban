@@ -272,7 +272,11 @@ class UserResponse(User):
     @validator("links", pre=False, always=True)
     def validate_links(cls, v, values, **kwargs):
         if not v:
-            admin = values.get("admin").username
+            admin = values.get("admin")
+            if admin is None:
+                admin = None
+            else:
+                admin = admin.username
             return generate_v2ray_links(
                 values.get("proxies", {}), values.get("inbounds", {}), extra_data=values, admin=admin
             )

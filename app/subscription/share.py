@@ -173,11 +173,17 @@ def generate_subscription(
     config_format: Literal["v2ray", "clash-meta", "clash", "sing-box", "outline", "v2ray-json"],
     as_base64: bool,
 ) -> str:
+
+    if user.admin:
+        admin = user.admin.username
+    else:
+        admin = None
+
     kwargs = {
         "proxies": user.proxies,
         "inbounds": user.inbounds,
         "extra_data": user.__dict__,
-        "admin": user.admin.username,
+        "admin": admin,
     }
 
     if config_format == "v2ray":
