@@ -65,6 +65,7 @@ class User(BaseModel):
     online_at: Optional[datetime] = Field(None, nullable=True)
     on_hold_expire_duration: Optional[int] = Field(None, nullable=True)
     on_hold_timeout: Optional[Union[datetime, None]] = Field(None, nullable=True)
+    admin: Optional[Admin]
 
     @validator("proxies", pre=True, always=True)
     def validate_proxies(cls, v, values, **kwargs):
@@ -264,7 +265,6 @@ class UserResponse(User):
     subscription_url: str = ""
     proxies: dict
     excluded_inbounds: Dict[ProxyTypes, List[str]] = {}
-    admin: Optional[Admin]
 
     class Config:
         orm_mode = True
@@ -272,8 +272,9 @@ class UserResponse(User):
     @validator("links", pre=False, always=True)
     def validate_links(cls, v, values, **kwargs):
         if not v:
+            admin = values.get("admin").username
             return generate_v2ray_links(
-                values.get("proxies", {}), values.get("inbounds", {}), extra_data=values, admin=values.get("admin")
+                values.get("proxies", {}), values.get("inbounds", {}), extra_data=values, admin=admin
             )
         return v
 
