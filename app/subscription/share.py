@@ -313,7 +313,10 @@ def process_inbounds_and_tags(
     _inbounds = []
     for protocol, tags in inbounds.items():
         for tag in tags:
-            if admin and admin in tag:
+            tag_parts = [part.strip() for part in tag.split('+')]
+            if admin and admin in tag_parts:
+                _inbounds.append((protocol, [tag]))
+            elif not admin and 'telegram' in tag_parts:
                 _inbounds.append((protocol, [tag]))
     index_dict = {proxy: index for index, proxy in enumerate(xray.config.inbounds_by_tag.keys())}
     inbounds = sorted(_inbounds, key=lambda x: index_dict.get(x[1][0], float('inf')))
