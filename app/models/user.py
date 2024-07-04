@@ -273,8 +273,8 @@ class UserResponse(User):
     def validate_links(cls, v, values, **kwargs):
         if not v:
             admin = values.get("admin")
-            if admin is None:
-                admin = None
+            if admin is None or admin.is_sudo:
+                admin = 'admin'
             else:
                 admin = admin.username
             return generate_v2ray_links(

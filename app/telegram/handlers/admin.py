@@ -1862,68 +1862,6 @@ def confirm_user_command(call: types.CallbackQuery):
                     os.remove(file_name)
                 except:
                     pass
-    elif data in ['inbound_add', 'inbound_remove']:
-        bot.edit_message_text(
-            '⏳ <b>In Progress...</b>',
-            call.message.chat.id,
-            call.message.message_id,
-            parse_mode="HTML")
-        inbound = call.data.split(":")[2]
-        with GetDB() as db:
-            users = crud.get_users(db)
-            unsuccessful = 0
-            for user in users:
-                inbound_tags = [j for i in user.inbounds for j in user.inbounds[i]]
-                protocol = xray.config.inbounds_by_tag[inbound]['protocol']
-                new_inbounds = user.inbounds
-                if data == 'inbound_add':
-                    if inbound not in inbound_tags:
-                        if protocol in list(new_inbounds.keys()):
-                            new_inbounds[protocol].append(inbound)
-                        else:
-                            new_inbounds[protocol] = [inbound]
-                elif data == 'inbound_remove':
-                    if inbound in inbound_tags:
-                        if len(new_inbounds[protocol]) == 1:
-                            del new_inbounds[protocol]
-                        else:
-                            new_inbounds[protocol].remove(inbound)
-                if (data == 'inbound_remove' and inbound in inbound_tags)\
-                        or (data == 'inbound_add' and inbound not in inbound_tags):
-                    proxies = {p.type.value: p.settings for p in user.proxies}
-                    for protocol in xray.config.inbounds_by_protocol:
-                        if protocol in new_inbounds and protocol not in user.inbounds:
-                            proxies.update({protocol: {'flow': TELEGRAM_DEFAULT_VLESS_FLOW} if
-                                            TELEGRAM_DEFAULT_VLESS_FLOW and protocol == ProxyTypes.VLESS else {}})
-                        elif protocol in user.inbounds and protocol not in new_inbounds:
-                            del proxies[protocol]
-                    try:
-                        user = crud.update_user(db, user, UserModify(inbounds=new_inbounds, proxies=proxies))
-                        if user.status == UserStatus.active:
-                            xray.operations.update_user(user)
-                    except:
-                        db.rollback()
-                        unsuccessful += 1
-
-            bot.edit_message_text(
-                f'✅ <b>{data[8:].title()}</b> <code>{inbound}</code> <b>Users Successfully</b>' +
-                (f'\n Unsuccessful: <code>{unsuccessful}</code>' if unsuccessful else ''),
-                call.message.chat.id,
-                call.message.message_id,
-                parse_mode="HTML",
-                reply_markup=BotKeyboard.main_menu())
-
-            if TELEGRAM_LOGGER_CHANNEL_ID:
-                text = f'''\
-✏️ <b>#Modified #Inbound_{data[8:].title()} #From_Bot</b>
-➖➖➖➖➖➖➖➖➖
-<b>Inbound:</b> <code>{inbound}</code> 
-➖➖➖➖➖➖➖➖➖
-<b>By :</b> <a href="tg://user?id={chat_id}">{full_name}</a>'''
-                try:
-                    bot.send_message(TELEGRAM_LOGGER_CHANNEL_ID, text, 'HTML')
-                except:
-                    pass
 
     elif data == 'revoke_sub':
         username = call.data.split(":")[2]

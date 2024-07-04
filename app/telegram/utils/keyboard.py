@@ -41,9 +41,6 @@ class BotKeyboard:
         keyboard.add(
             types.InlineKeyboardButton(text='🔋 Data (➕|➖)', callback_data='add_data'),
             types.InlineKeyboardButton(text='📅 Time (➕|➖)', callback_data='add_time'))
-        keyboard.add(
-            types.InlineKeyboardButton(text='➕ Add Inbound', callback_data='inbound_add'),
-            types.InlineKeyboardButton(text='➖ Remove Inbound', callback_data='inbound_remove'))
         keyboard.add(types.InlineKeyboardButton(text='🔙 Back', callback_data='cancel'))
         return keyboard
 
@@ -318,14 +315,6 @@ class BotKeyboard:
                         callback_data=f'select_protocol:{protocol}:{action}'
                     )
                 )
-                if protocol in selected_protocols:
-                    for inbound in inbounds:
-                        keyboard.add(
-                            types.InlineKeyboardButton(
-                                text=f"«{inbound['tag']}» {'✅' if inbound['tag'] in selected_protocols[protocol] else '❌'}",
-                                callback_data=f'select_inbound:{inbound["tag"]}:{action}'
-                            )
-                        )
 
         keyboard.add(
             types.InlineKeyboardButton(

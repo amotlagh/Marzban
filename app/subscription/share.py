@@ -174,10 +174,10 @@ def generate_subscription(
     as_base64: bool,
 ) -> str:
 
-    if user.admin:
-        admin = user.admin.username
+    if not user.admin or user.admin.is_sudo:
+        admin = 'admin'
     else:
-        admin = None
+        admin = user.admin.username
 
     kwargs = {
         "proxies": user.proxies,
@@ -314,9 +314,7 @@ def process_inbounds_and_tags(
     for protocol, tags in inbounds.items():
         for tag in tags:
             tag_parts = [part.strip() for part in tag.split('+')]
-            if admin and admin in tag_parts:
-                _inbounds.append((protocol, [tag]))
-            elif not admin and 'telegram' in tag_parts:
+            if admin in tag_parts:
                 _inbounds.append((protocol, [tag]))
     index_dict = {proxy: index for index, proxy in enumerate(xray.config.inbounds_by_tag.keys())}
     inbounds = sorted(_inbounds, key=lambda x: index_dict.get(x[1][0], float('inf')))
