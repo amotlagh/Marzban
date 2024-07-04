@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from typing import Dict, List, Optional, Union
 import random
@@ -102,6 +102,10 @@ class User(BaseModel):
 class UserCreate(User):
     username: str
     status: UserStatusCreate = None
+    on_hold_timeout: Optional[datetime] = Field(
+        default_factory=lambda: datetime.now() + timedelta(days=30),
+        nullable=True
+    )
 
     class Config:
         schema_extra = {
