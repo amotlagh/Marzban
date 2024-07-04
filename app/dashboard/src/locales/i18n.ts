@@ -1,13 +1,8 @@
 import { joinPaths } from "@remix-run/router";
 
-import fa from "date-fns/locale/fa-IR";
-import ru from "date-fns/locale/ru";
-import zh from "date-fns/locale/zh-CN";
 import dayjs from "dayjs";
 import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
 import HttpApi from "i18next-http-backend";
-import { registerLocale } from "react-datepicker";
 import { initReactI18next } from "react-i18next";
 
 declare module "i18next" {
@@ -17,7 +12,6 @@ declare module "i18next" {
 }
 
 i18n
-  .use(LanguageDetector)
   .use(initReactI18next)
   .use(HttpApi)
   .init(
@@ -36,7 +30,7 @@ i18n
         caches: ["localStorage", "sessionStorage", "cookie"],
       },
       backend: {
-        loadPath: joinPaths([import.meta.env.BASE_URL, `locales/{{lng}}.json`]),
+        loadPath: joinPaths([import.meta.env.BASE_URL, `locales/en.json`]),
       },
     },
     function (err, t) {
@@ -47,10 +41,5 @@ i18n
 i18n.on("languageChanged", (lng) => {
   dayjs.locale(lng);
 });
-
-// DataPicker
-registerLocale("zh-cn", zh);
-registerLocale("ru", ru);
-registerLocale("fa", fa);
 
 export default i18n;

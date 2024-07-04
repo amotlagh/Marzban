@@ -80,6 +80,7 @@ def review():
 
             update_user_status(db, user, status)
             start_user_expire(db, user)
+            
             report.status_change(username=user.username, status=status,
                 user=UserResponse.from_orm(user), user_admin=user.admin)
 
