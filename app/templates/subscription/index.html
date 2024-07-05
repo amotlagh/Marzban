@@ -184,7 +184,7 @@
         transform: rotate(90deg);
       }
       input:checked~.accordion-content {
-        max-height: 600px;
+        max-height: fit-content;
         padding-top: 30px;
       }
       .profile-card__separator {
@@ -729,11 +729,7 @@ font-size: 18px;
               <p style="font-size: 0.9em; text-align: right;">
                 بعد از کلیک روی افزودن سریع:
               </p>
-              <div class="img-v2" style="
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: 5px;
-    ">
+              <div class="img-v2" style="display: grid;grid-template-columns: 1fr 1fr;column-gap: 5px;">
                 <div class="container">
                   <img src="https://raw.githubusercontent.com/x0sina/marzban-sub/main/1.jpg" alt="">
                   <div class="centered">1</div>
@@ -746,6 +742,29 @@ font-size: 18px;
 
               </div>
             </div>  
+
+            <div class="apps">
+              <h2>sing-box</h2>
+              <a
+                class="profile-card__links-button"
+                href="#"
+                rel="noopener noreferrer"
+                target="_blank"
+                id="SFA">
+                دریافت آخرین نسخه sing-box
+              </a>
+              <div class="Click-here profile-card__links-button" app="SFA">
+                آموزش sing-box
+              </div>
+              <a
+                class="profile-card__links-button"
+                href="sing-box://import-remote-profile?url={{ user.subscription_url | urlencode }}#{{ user.username | urlencode }}"
+                rel="noopener noreferrer"
+                target="_blank">
+                افزودن سریع به sing-box
+              </a>
+            </div>  
+
     
           </div>
         </div>
@@ -781,7 +800,32 @@ font-size: 18px;
                 target="_blank">
                 افزودن سریع به Streisand
               </a>
-            </div> 
+            </div>
+            
+            <div class="apps">
+              <h2>sing-box</h2>
+              <a
+                class="profile-card__links-button"
+                href="https://apps.apple.com/us/app/sing-box/id6451272673"
+                rel="noopener noreferrer"
+                target="_blank"
+                >
+                دریافت آخرین نسخه sing-box
+              </a>
+              <div class="Click-here profile-card__links-button" app="ipv6">
+                نصب تنظیمات وی‌پی‌ان V6
+              </div>
+              <div class="Click-here profile-card__links-button" app="SFA">
+                آموزش sing-box
+              </div>
+              <a
+                class="profile-card__links-button"
+                href="sing-box://import-remote-profile?url={{ user.subscription_url | urlencode }}#{{ user.username | urlencode }}"
+                rel="noopener noreferrer"
+                target="_blank">
+                افزودن سریع به sing-box
+              </a>
+            </div>  
     
           </div>
         </div>
@@ -895,8 +939,12 @@ font-size: 18px;
             </p>
             <ol class="faq-ol" style="list-style-position: inside;padding-inline-start: 0;line-height: 1.8;">
               <li>قبل از هر چیز از طریق همین صفحه بررسی کنید که اشتراک‌تون تموم نشده باشه. همینطور آموزش اتصال با لینک اشتراک رو از توی صفحه اصلی رو حتما ببینید.</li>
-              <li>همه کانفیگ‌های توی لینک اشتراک فقط روی نرم‌افزارهای V2rayNG، V2rayN و Streisand جواب میده؛ ممکنه مثلا با V2box یکی دو تا از کانفیگ ها وصل نشه.</li>
-              <li>نسخه بروز از نرم‌افزارهای بالا رو نصب داشته باشید. ‌وی‌پی‌ان‌های ما روی نسخه های قدیمی &nbsp;نرم‌افزارهای V2rayNG، V2rayN و Streisand دچار محدودیت سرعت میشه. (توی همین صفحه لینک دانلودشون هست.)</li>
+              <li>
+                همه کانفیگ‌های توی لینک اشتراک فقط روی نرم‌افزارهای V2rayNG، V2rayN، Streisand و sing-box جواب میده؛ ممکنه مثلا با V2box یکی دو تا از کانفیگ ها وصل نشه.
+              </li>
+              <li>
+                نسخه بروز از نرم‌افزارهای بالا رو نصب داشته باشید. ‌وی‌پی‌ان‌های ما روی نسخه های قدیمی  نرم‌افزارها دچار محدودیت سرعت میشه. (توی همین صفحه لینک دانلودشون هست.)
+              </li>
               <li>ساعت گوشی یا سیستم‌عامل باید روی حالت اتوماتیک باشه؛ اگه بصورت دستی ساعت دستگاهتون رو تغییر دادید، ۲ تا از پرسرعت‌ترین وی‌پی‌ان‌های لینک اشتراک رو از دست می‌دید.</li>
               <li>توی لینک اشتراک چند تا ‌وی‌پی‌ان قرار دادیم. اگه احیانا اولی وصل نشد دومی رو امتحان کنید. اگه آیتم‌های بالا رو انجام دادید و هیچکدوم از ‌وی‌پی‌ان‌های توی لینک اشتراک متصل نشد؛ بروزرسانی اشتراک رو بزنید (آموزشش توی بخش "آموزش اتصال با لینک اشتراک" توی همین صفحه هست)</li>
               <li>اگه بازم همه موارد بالا رو بررسی کردید و متصل نشدید به پشتیبان‌تون پیام بدید. توی پیام؛ نام کاربری‌تون، اپراتور سیم‌کارتی که باهاش متصل هستید و خطایی که دریافت میکنید رو ارسال کنید تا سریع‌تر موردتون رو بررسی کنیم. هم میتونید اسکرین‌شات بفرستید هم متن.</li>
@@ -983,6 +1031,29 @@ font-size: 18px;
 
             </div>
           </div>
+
+          <div class="pop-up-content-wrap" app="SFA">
+            <div style="direction: rtl; text-align: justify; line-height: 2">
+              <h3>⚙️ آموزش برنامه sing-box:</h3>
+              <b style="color: blueviolet;">
+                 مطمئن بشید آخرین نسخه sing-box رو نصب دارید. و ساعت گوشیتون روی حالت اتوماتیک است.
+                </b>
+                <ul>
+                  <li>
+                    توی sing-box وارد settings بشید و در بخش Core فیلد Memory Limit رو Disable کنید.
+                  </li>
+                  <li>
+                    توی sing-box وارد settings بشید و در بخش Background permission روی گزینه Ignore Battery Optimizations ضربه بزنید تا وقتی که صفحه گوشیتون خاموش میشه، sing-box بسته نشه.
+                  </li>
+                </ul>
+              <p style="font-weight: bold;color: rgb(5, 85, 99);">
+                 توی همین صفحه «افزودن سریع به sing-box» رو بزنید.
+              </p>
+              <video src="https://ipv6-7jf.pages.dev/sing-box.webm" type="video/webm" controls>
+
+            </div>
+          </div>
+
           <div class="pop-up-content-wrap" app="streisand">
             <div style="direction: rtl; text-align: justify; line-height: 2">
               <h3>⚙️ آموزش برنامه Streisand آیفون:</h3>
@@ -1290,12 +1361,16 @@ document.querySelector(".bg-overlay").addEventListener("click", () => {
           throw error;
         }
       }
-
+      const singbox = 'https://api.github.com/repos/SagerNet/sing-box/releases/latest';
       const v2rayng = 'https://api.github.com/repos/2dust/v2rayNG/releases/latest';
       const v2rayn = 'https://api.github.com/repos/2dust/v2rayN/releases/latest';
 
       document.addEventListener('DOMContentLoaded', async () => {
         try {
+
+          const sfaName = await getLatestReleaseName(singbox);
+          const sfa = document.getElementById('SFA');
+          sfa.href = `https://github.com/SagerNet/sing-box/releases/download/v${sfaName}/SFA-${sfaName}-arm64-v8a.apk`;
           
           const v2rayngName = await getLatestReleaseName(v2rayng);
           const v2rayngv8a = document.getElementById('v2rayNGv8a');
