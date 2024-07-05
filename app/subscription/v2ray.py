@@ -486,7 +486,7 @@ class V2rayJsonConfig(str):
         grpcSettings["permit_without_stream"] = False
         grpcSettings["initial_windows_size"] = 35536
         if random_user_agent:
-            grpcSettings["user_agent"] = choice(self.grpc_user_agent_data)
+            grpcSettings["User-Agent"] = choice(self.grpc_user_agent_data)
 
         return grpcSettings
 
@@ -521,7 +521,7 @@ class V2rayJsonConfig(str):
         return tcpSettings
 
 
-    def h2_config(path=None, host=None):
+    def h2_config(self, path=None, host=None, random_user_agent=None):
 
         httpSettings = {}
         httpSettings["headers"] = {}
@@ -733,8 +733,7 @@ class V2rayJsonConfig(str):
         elif net == "h2":
             network_setting = self.h2_config(path=path, host=host, random_user_agent=random_user_agent)
         elif net == "kcp":
-            network_setting = self.kcp_config(
-                path=path, host=host, header=headers)
+            network_setting = self.kcp_config(path=path, host=host, header=headers)
         elif net == "tcp":
             network_setting = self.tcp_http_config(path=path, host=host, random_user_agent=random_user_agent)
         elif net == "quic":

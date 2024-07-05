@@ -15,6 +15,6 @@
          "grpc-node/1.24.2 grpc-c/8.0.0 (linux; chttp2; ganges)",
          "grpc-c++/1.16.0 grpc-c/6.0.0 (linux; nghttp2; hw)",
          "grpc-node/1.19.0 grpc-c/7.0.0 (linux; chttp2; gold)",
-         "grpc-ruby/1.62.0 grpc-c/39.0.0 (osx; chttp2)]"
+         "grpc-ruby/1.62.0 grpc-c/39.0.0 (osx; chttp2)"
      ]
 }
