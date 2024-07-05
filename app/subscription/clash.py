@@ -116,8 +116,8 @@ class ClashConfiguration(object):
                 node['sni'] = sni
             else:
                 node['servername'] = sni
-            if alpn:
-                node['alpn'] = alpn.split(',')
+            # if alpn:
+            #     node['alpn'] = alpn.split(',')
             if ais:
                 node['skip-cert-verify'] = ais
 
