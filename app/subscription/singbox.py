@@ -52,7 +52,9 @@ class SingBoxConfiguration(str):
 
     @staticmethod
     def tls_config(sni=None, fp=None, tls=None, pbk=None,
-                   sid=None, alpn=None, ais=None):
+                   sid=None,
+                #    alpn=None,
+                   ais=None):
 
         config = {}
         if tls in ['tls', 'reality']:
@@ -70,14 +72,15 @@ class SingBoxConfiguration(str):
                 config["reality"]["public_key"] = pbk
             if sid:
                 config["reality"]["short_id"] = sid
-            if alpn:
-                config["alpn"] = [alpn] if not isinstance(alpn, list) else alpn
 
         if fp:
             config["utls"] = {
                 "enabled": bool(fp),
                 "fingerprint": fp
             }
+
+        # if alpn:
+        #     config["alpn"] = [alpn] if not isinstance(alpn, list) else alpn
 
         return config
 
@@ -212,7 +215,8 @@ class SingBoxConfiguration(str):
 
         if tls in ('tls', 'reality'):
             config['tls'] = self.tls_config(sni=sni, fp=fp, tls=tls,
-                                            pbk=pbk, sid=sid, alpn=alpn,
+                                            pbk=pbk, sid=sid,
+                                            # alpn=alpn,
                                             ais=ais)
 
         mux_json = json.loads(self.mux_template)
