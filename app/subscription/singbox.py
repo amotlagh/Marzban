@@ -70,15 +70,14 @@ class SingBoxConfiguration(str):
                 config["reality"]["public_key"] = pbk
             if sid:
                 config["reality"]["short_id"] = sid
+            if alpn:
+                config["alpn"] = [alpn] if not isinstance(alpn, list) else alpn
 
         if fp:
             config["utls"] = {
                 "enabled": bool(fp),
                 "fingerprint": fp
             }
-
-        if alpn:
-            config["alpn"] = [alpn] if not isinstance(alpn, list) else alpn
 
         return config
 
