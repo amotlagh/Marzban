@@ -171,6 +171,10 @@ class SingBoxConfiguration(str):
                       mux_enable: bool = False,
                       random_user_agent: bool = False,
                       ):
+        
+        if isinstance(port, str):
+            ports = port.split(',')
+            port = int(choice(ports))
 
         config = {
             "type": type,
