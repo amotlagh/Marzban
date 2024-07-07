@@ -1,53 +1,74 @@
 {
   "log": {
-    "disabled": true,
-    "level": "warn",
+    "disabled": false,
+    "level": "error",
     "timestamp": true
   },
   "dns": {
     "servers": [
       {
-        "tag": "dns-remote",
-        "address": "https://8.8.8.8/dns-query",
+        "tag": "dns_proxy",
+        "address": "https://dns.adguard-dns.com/dns-query",
+        "address_resolver": "dns_direct",
+        "strategy": "prefer_ipv4",
         "detour": "proxy"
       },
       {
-        "tag": "dns-local",
-        "address": "local",
+        "tag": "dns_direct",
+        "address": "8.8.8.8",
+        "strategy": "prefer_ipv4",
         "detour": "direct"
+      },
+      {
+        "tag": "dns_block",
+        "address": "rcode://success"
       }
     ],
     "rules": [
       {
         "outbound": "any",
-        "server": "dns-local"
+        "server": "dns_direct"
       },
       {
-        "domain_suffix": ".ir",
-        "server": "dns-local"
+        "clash_mode": "Global",
+        "server": "dns_proxy"
       },
+      {
+        "clash_mode": "Direct",
+        "server": "dns_direct"
+      },
+      {
+        "rule_set": [
+          "geosite-category-ads-all",
+          "geosite-malware",
+          "geosite-phishing",
+          "geosite-cryptominers"
+        ],
+        "server": "dns_block"
+      },
+      {
+       "domain_suffix": ".ir",
+       "server": "dns_direct"
+     },
       {
         "rule_set": "geosite-ir",
-        "server": "dns-local"
+        "server": "dns_direct"
       }
     ],
-    "final": "dns-remote",
-    "reverse_mapping": true,
-    "strategy": "prefer_ipv4",
+    "final": "dns_proxy",
+    "fakeip": {},
     "independent_cache": true
   },
   "ntp": {
-    "enabled": false,
+    "enabled": true,
     "server": "time.apple.com",
-    "server_port": 123,
-    "interval": "30m",
     "detour": "direct"
   },
   "inbounds": [
     {
       "type": "tun",
       "tag": "tun-in",
-      "interface_name": "singbox-tun",
+      "interface_name": "tun0",
       "mtu": 9000,
       "inet4_address": "172.19.0.1/30",
       "inet6_address": "fdfe:dcba:9876::1/126",
@@ -55,8 +76,7 @@
       "strict_route": true,
       "stack": "mixed",
       "sniff": true,
-      "sniff_override_destination": true,
-      "domain_strategy": "prefer_ipv4"
+      "sniff_override_destination": true
     }
   ],
   "outbounds": [
@@ -68,11 +88,10 @@
     },
     {
       "type": "urltest",
-      "tag": "⚡️ Auto",
+      "tag": "⚡️ Fastest",
       "outbounds": null,
       "url": "https://www.gstatic.com/generate_204",
-      "interval": "3m0s",
-      "tolerance": 50
+      "interval": "1m0s"
     },
     {
       "type": "direct",
@@ -94,10 +113,10 @@
         "mode": "or",
         "rules": [
           {
-            "protocol": "dns"
+            "port": 53
           },
           {
-            "port": 53
+            "protocol": "dns"
           }
         ],
         "outbound": "dns-out"
@@ -117,20 +136,21 @@
         "outbound": "block"
       },
       {
-        "rule_set": [
-          "geosite-ir",
-          "geoip-ir"
-        ],
-        "outbound": "direct"
-      },
-      {
-        "domain_suffix": ".ir",
-        "outbound": "direct"
-      },
-      {
         "ip_is_private": true,
         "outbound": "direct"
       },
+      {
+        "clash_mode": "Global",
+        "outbound": "proxy"
+      },
+      {
+        "clash_mode": "Direct",
+        "outbound": "direct"
+      },
+      {
+       "domain_suffix": ".ir",
+       "outbound": "direct"
+       },
       {
         "rule_set": [
           "geosite-category-ads-all",
@@ -141,6 +161,24 @@
           "geoip-phishing"
         ],
         "outbound": "block"
+      },
+      {
+        "rule_set": [
+          "geosite-ir",
+          "geoip-ir"
+        ],
+        "outbound": "direct"
+      },
+      {
+        "domain_keyword": [
+          "speedcheck",
+          "speedtest",
+          "coin2coin",
+          "avidonline",
+          "freeserver",
+          "swapino"
+        ],
+        "outbound": "direct"
       }
     ],
     "rule_set": [
@@ -216,14 +254,8 @@
   "experimental": {
     "cache_file": {
       "enabled": true,
+      "store_fakeip": false,
       "store_rdrc": true
-    },
-    "clash_api": {
-      "external_controller": "127.0.0.1:9090",
-      "external_ui": "metacubexd",
-      "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/gh-pages.zip",
-      "external_ui_download_detour": "direct",
-      "default_mode": "Enhanced"
     }
   }
 }
