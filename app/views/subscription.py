@@ -88,7 +88,7 @@ def user_subscription(token: str,
         conf = generate_subscription(user=user, config_format="clash", as_base64=False)
         return Response(content=conf, media_type="text/yaml", headers=response_headers)
 
-    elif re.match('^(SFA|SFI|SFM|SFT|[Kk]aring|[Hh]iddify[Nn]ext)', user_agent):
+    elif re.match('^(SFA|SFI|SFM|SFT|[Kk]aring|[Hh]iddify[Nn]ext|[Hh]iddify)', user_agent):
         conf = generate_subscription(user=user, config_format="sing-box", as_base64=False)
         return Response(content=conf, media_type="application/json", headers=response_headers)
 
@@ -96,7 +96,7 @@ def user_subscription(token: str,
         conf = generate_subscription(user=user, config_format="outline", as_base64=False)
         return Response(content=conf, media_type="application/json", headers=response_headers)
     
-    elif re.match(r'V2box', user_agent):
+    elif re.match('^[Vv]2[Bb]ox)', user_agent):
         if USE_CUSTOM_JSON_FOR_V2BOX:
             conf = generate_subscription(user=user, config_format="v2ray-json", as_base64=False)
             return Response(content=conf, media_type="application/json", headers=response_headers)
@@ -104,7 +104,7 @@ def user_subscription(token: str,
             conf = generate_subscription(user=user, config_format="v2ray", as_base64=True)
             return Response(content=conf, media_type="text/plain", headers=response_headers)
 
-    elif re.match(r'Streisand', user_agent):
+    elif re.match('^[Ss]treisand', user_agent):
         if USE_CUSTOM_JSON_FOR_STREISAND:
             conf = generate_subscription(user=user, config_format="v2ray-json", as_base64=False)
             return Response(content=conf, media_type="application/json", headers=response_headers)
