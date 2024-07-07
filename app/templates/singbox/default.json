@@ -10,7 +10,6 @@
         "tag": "dns_proxy",
         "address": "https://8.8.8.8/dns-query",
         "address_resolver": "dns_direct",
-        "strategy": "prefer_ipv4",
         "detour": "proxy"
       },
       {
@@ -66,8 +65,7 @@
       "auto_route": true,
       "strict_route": true,
       "stack": "mixed",
-      "sniff": true,
-      "sniff_override_destination": true
+      "sniff": true
     }
   ],
   "outbounds": [
