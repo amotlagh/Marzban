@@ -184,7 +184,7 @@
         transform: rotate(90deg);
       }
       input:checked~.accordion-content {
-        max-height: 600px;
+        max-height: fit-content;
         padding-top: 30px;
       }
       .profile-card__separator {
@@ -743,7 +743,7 @@ font-size: 18px;
               </div>
             </div>  
 
-            <!-- <div class="apps">
+            <div class="apps">
               <h2>sing-box</h2>
               <a
                 class="profile-card__links-button"
@@ -763,7 +763,7 @@ font-size: 18px;
                 target="_blank">
                 افزودن سریع به sing-box
               </a>
-            </div>   -->
+            </div>  
 
     
           </div>
@@ -802,7 +802,7 @@ font-size: 18px;
               </a>
             </div>
             
-            <!-- <div class="apps">
+            <div class="apps">
               <h2>sing-box</h2>
               <a
                 class="profile-card__links-button"
@@ -825,7 +825,7 @@ font-size: 18px;
                 target="_blank">
                 افزودن سریع به sing-box
               </a>
-            </div>   -->
+            </div>  
     
           </div>
         </div>
@@ -1361,12 +1361,17 @@ document.querySelector(".bg-overlay").addEventListener("click", () => {
           throw error;
         }
       }
+      const singbox = 'https://api.github.com/repos/SagerNet/sing-box/releases/latest';
       const v2rayng = 'https://api.github.com/repos/2dust/v2rayNG/releases/latest';
       const v2rayn = 'https://api.github.com/repos/2dust/v2rayN/releases/latest';
 
       document.addEventListener('DOMContentLoaded', async () => {
         try {
 
+          const sfaName = await getLatestReleaseName(singbox);
+          const sfa = document.getElementById('SFA');
+          sfa.href = `https://github.com/SagerNet/sing-box/releases/download/v${sfaName}/SFA-${sfaName}-arm64-v8a.apk`;
+          
           const v2rayngName = await getLatestReleaseName(v2rayng);
           const v2rayngv8a = document.getElementById('v2rayNGv8a');
           v2rayngv8a.href = `https://github.com/2dust/v2rayNG/releases/download/${v2rayngName}/v2rayNG_${v2rayngName}_arm64-v8a.apk`;

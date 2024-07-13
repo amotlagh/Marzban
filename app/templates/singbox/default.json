@@ -5,127 +5,138 @@
     "timestamp": true
   },
   "dns": {
-    "servers": [
-      {
-        "tag": "dns_proxy",
-        "address": "https://8.8.8.8/dns-query",
-        "address_resolver": "dns_direct",
-        "detour": "proxy"
-      },
-      {
-        "tag": "dns_direct",
-        "address": "8.8.8.8",
-        "strategy": "prefer_ipv4",
-        "detour": "direct"
-      },
-      {
-        "tag": "dns_block",
-        "address": "rcode://success"
-      }
-    ],
+    "final": "local-dns",
     "rules": [
       {
-        "outbound": "any",
-        "server": "dns_direct"
+        "clash_mode": "Global",
+        "server": "proxy-dns",
+        "source_ip_cidr": [
+          "172.19.0.0/30"
+        ]
       },
       {
-        "clash_mode": "Global",
-        "server": "dns_proxy"
+        "server": "proxy-dns",
+        "source_ip_cidr": [
+          "172.19.0.0/30"
+        ]
       },
       {
         "clash_mode": "Direct",
-        "server": "dns_direct"
+        "server": "direct-dns"
       },
       {
-       "domain_suffix": ".ir",
-       "server": "dns_direct"
-      },
-      {
-        "rule_set": "geosite-ir",
-        "server": "dns_direct"
+        "rule_set": [
+          "geosite-ir"
+        ],
+        "server": "direct-dns"
       }
     ],
-    "final": "dns_proxy",
-    "fakeip": {},
-    "independent_cache": true
-  },
-  "ntp": {
-    "enabled": true,
-    "server": "time.apple.com",
-    "detour": "direct"
+    "servers": [
+      {
+        "address": "tcp://8.8.8.8",
+        "address_resolver": "local-dns",
+        "detour": "proxy",
+        "tag": "proxy-dns"
+      },
+      {
+        "address": "local",
+        "detour": "direct",
+        "tag": "local-dns"
+      },
+      {
+        "address": "rcode://success",
+        "tag": "block"
+      },
+      {
+        "address": "tcp://8.8.8.8",
+        "detour": "direct",
+        "tag": "direct-dns"
+      }
+    ],
+    "strategy": "prefer_ipv4"
   },
   "inbounds": [
     {
-      "type": "tun",
-      "tag": "tun-in",
-      "interface_name": "tun0",
-      "mtu": 9000,
-      "inet4_address": "172.19.0.1/30",
-      "inet6_address": "fdfe:dcba:9876::1/126",
       "auto_route": true,
-      "strict_route": true,
-      "stack": "mixed",
-      "sniff": true
+      "endpoint_independent_nat": false,
+      "inet4_address": "172.19.0.1/30",
+      "mtu": 9000,
+      "platform": {
+        "http_proxy": {
+          "enabled": true,
+          "server": "127.0.0.1",
+          "server_port": 2080
+        }
+      },
+      "sniff": true,
+      "stack": "system",
+      "strict_route": false,
+      "type": "tun"
+    },
+    {
+      "listen": "127.0.0.1",
+      "listen_port": 2080,
+      "sniff": true,
+      "type": "mixed",
+      "users": []
     }
   ],
   "outbounds": [
     {
-      "type": "selector",
+      "outbounds": null,
       "tag": "proxy",
-      "outbounds": null,
-      "interrupt_exist_connections": true
+      "type": "selector"
     },
     {
+      "interval": "3m",
+      "outbounds": null,
+      "tag": "⚡️ Lowest ping",
+      "tolerance": 50,
       "type": "urltest",
-      "tag": "⚡️ Fastest",
-      "outbounds": null,
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "1m0s"
+      "url": "http://www.msftconnecttest.com/connecttest.txt"
     },
     {
-      "type": "direct",
-      "tag": "direct"
+      "tag": "direct",
+      "type": "direct"
     },
     {
-      "type": "block",
-      "tag": "block"
+      "tag": "dns-out",
+      "type": "dns"
     },
     {
-      "type": "dns",
-      "tag": "dns-out"
+      "tag": "block",
+      "type": "block"
     }
   ],
   "route": {
+    "auto_detect_interface": true,
+    "final": "proxy",
+    "rule_set": [
+      {
+        "download_detour": "direct",
+        "format": "binary",
+        "tag": "geosite-ads",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ads-all.srs"
+      },
+      {
+        "download_detour": "direct",
+        "format": "binary",
+        "tag": "geosite-ir",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ir.srs"
+      },
+      {
+        "download_detour": "direct",
+        "format": "binary",
+        "tag": "geoip-ir",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/ir.srs"
+      }
+    ],
     "rules": [
       {
-        "type": "logical",
-        "mode": "or",
-        "rules": [
-          {
-            "port": 53
-          },
-          {
-            "protocol": "dns"
-          }
-        ],
-        "outbound": "dns-out"
-      },
-      {
-        "type": "logical",
-        "mode": "or",
-        "rules": [
-          {
-            "port": 853
-          },
-          {
-            "network": "udp",
-            "port": 443
-          }
-        ],
-        "outbound": "block"
-      },
-      {
-        "ip_is_private": true,
+        "clash_mode": "Direct",
         "outbound": "direct"
       },
       {
@@ -133,59 +144,22 @@
         "outbound": "proxy"
       },
       {
-        "clash_mode": "Direct",
-        "outbound": "direct"
+        "outbound": "dns-out",
+        "protocol": "dns"
       },
       {
-       "domain_suffix": ".ir",
-       "outbound": "direct"
-      },
-      {
+        "outbound": "direct",
         "rule_set": [
-          "geosite-ir",
-          "geoip-ir"
-        ],
-        "outbound": "direct"
+          "geoip-ir",
+          "geosite-ir"
+        ]
       },
       {
-        "domain_keyword": [
-          "speedcheck",
-          "speedtest",
-          "coin2coin",
-          "avidonline",
-          "freeserver",
-          "swapino"
-        ],
-        "outbound": "direct"
+        "outbound": "block",
+        "rule_set": [
+          "geosite-ads"
+        ]
       }
-    ],
-    "rule_set": [
-      {
-        "type": "remote",
-        "tag": "geosite-ir",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-sing-box-rules/rule-set/geosite-ir.srs",
-        "download_detour": "direct",
-        "update_interval": "72h0m0s"
-      },
-      {
-        "type": "remote",
-        "tag": "geoip-ir",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-sing-box-rules/rule-set/geoip-ir.srs",
-        "download_detour": "direct",
-        "update_interval": "72h0m0s"
-      }
-    ],
-    "final": "proxy",
-    "auto_detect_interface": true,
-    "override_android_vpn": true
-  },
-  "experimental": {
-    "cache_file": {
-      "enabled": true,
-      "store_fakeip": false,
-      "store_rdrc": true
-    }
+    ]
   }
 }
