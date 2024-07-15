@@ -178,6 +178,12 @@
         ],
         "outboundTag": "blackhole",
         "type": "field"
+      },
+      {
+        "type": "field",
+        "outboundTag": "blackhole",
+        "port": "443",
+        "network": "udp"
       }
     ]
   },
