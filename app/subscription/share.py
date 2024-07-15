@@ -1,6 +1,8 @@
 import base64
 import random
 import secrets
+import yaml
+import json
 from datetime import datetime as dt, timedelta
 from typing import TYPE_CHECKING, Literal, Union, List
 
@@ -13,7 +15,7 @@ from . import *
 if TYPE_CHECKING:
     from app.models.user import UserResponse
 
-from config import (ACTIVE_STATUS_TEXT, EXPIRED_STATUS_TEXT, LIMITED_STATUS_TEXT, DISABLED_STATUS_TEXT, ONHOLD_STATUS_TEXT)
+from config import (ACTIVE_STATUS_TEXT, EXPIRED_STATUS_TEXT, LIMITED_STATUS_TEXT, DISABLED_STATUS_TEXT, ONHOLD_STATUS_TEXT, RANDOMIZE_SUBSCRIPTION_CONFIGS)
 
 SERVER_IP = get_public_ip()
 
@@ -91,6 +93,43 @@ def generate_v2ray_json_subscription(
     )
 
 
+def randomize_sub_config(
+        config: str, config_format: str
+) -> str:
+
+    if config_format == "v2ray":
+        config = config.split("\n")
+        random.shuffle(config)
+        config = "\n".join(config)
+
+    elif config_format in ("clash-meta", "clash"):
+        config = yaml.safe_load(config)
+        random.shuffle(config['proxies'])
+        for group in config['proxy-groups']:
+            if group['name'] == '♻️ Automatic':
+                group['proxies'] = [proxy['name'] for proxy in config['proxies']]
+        config = yaml.dump(config, allow_unicode=True, sort_keys=False)
+
+    elif config_format == "sing-box":
+        config = json.loads(config)
+        outbounds = config['outbounds']
+        main_outbounds = [ob for ob in outbounds if ob['type'] in {'selector', 'urltest'}]
+        other_outbounds = [ob for ob in outbounds if ob['type'] not in {'selector', 'urltest', 'direct', 'block', 'dns'}]
+        random.shuffle(other_outbounds)
+        proxy_names = [ob['tag'] for ob in other_outbounds]
+        for ob in main_outbounds:
+            ob['outbounds'] = ['Best Latency'] + proxy_names if ob['type'] == 'selector' else proxy_names
+        config['outbounds'] = main_outbounds + other_outbounds + [ob for ob in outbounds if ob['type'] in {'direct', 'block', 'dns'}]
+        config = json.dumps(config, indent=4)
+
+    elif config_format == "v2ray-json":
+        config = json.loads(config)
+        random.shuffle(config)
+        config = json.dumps(config, indent=4)
+
+    return config
+
+
 def generate_subscription(
     user: "UserResponse",
     config_format: Literal["v2ray", "clash-meta", "clash", "sing-box", "outline", "v2ray-json"],
@@ -126,6 +165,9 @@ def generate_subscription(
 
     if as_base64:
         config = base64.b64encode(config.encode()).decode()
+
+    if RANDOMIZE_SUBSCRIPTION_CONFIGS is not False:
+        config = randomize_sub_config(config, config_format)
 
     return config
 
