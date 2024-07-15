@@ -85,15 +85,18 @@
     {
       "outbounds": null,
       "tag": "proxy",
-      "type": "selector"
+      "type": "selector",
+      "default": "⚡️ Lowest ping",
+      "interrupt_exist_connections": true
     },
     {
-      "interval": "3m",
+      "interval": "5m",
       "outbounds": null,
       "tag": "⚡️ Lowest ping",
       "tolerance": 50,
       "type": "urltest",
-      "url": "http://www.msftconnecttest.com/connecttest.txt"
+      "url": "http://www.msftconnecttest.com/connecttest.txt",
+      "interrupt_exist_connections": true
     },
     {
       "tag": "direct",
@@ -161,5 +164,18 @@
         ]
       }
     ]
+  },
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "store_rdrc": true
+    },
+    "clash_api": {
+      "external_controller": "127.0.0.1:9090",
+      "external_ui": "metacubexd",
+      "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
+      "external_ui_download_detour": "direct",
+      "default_mode": "Enhanced"
+    }
   }
 }

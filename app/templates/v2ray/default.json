@@ -24,7 +24,7 @@
       "listen": "0.0.0.0",
       "protocol": "socks",
       "sniffing": {
-        "enabled": true,
+        "enabled": false,
         "destOverride": ["http", "tls"]
       },
       "settings": {
@@ -39,7 +39,7 @@
       "listen": "0.0.0.0",
       "protocol": "http",
       "sniffing": {
-        "enabled": true,
+        "enabled": false,
         "destOverride": ["http", "tls"]
       },
       "settings": {
@@ -92,6 +92,7 @@
         "outboundTag": "direct",
         "domain": [
           "regexp:.*\\.ir$",
+          "regexp:.*\\.local$",
           "divar",
           "aparat",
           "flightio",
@@ -104,6 +105,7 @@
           "namavid",
           "netafraz",
           "gisoom.com",
+          "zarinexpress",
           "safarmarket.com",
           "dalfak",
           "datisnetwork",
