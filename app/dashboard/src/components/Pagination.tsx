@@ -133,12 +133,7 @@ export const Pagination: FC = () => {
         </HStack>
       </Box>
 
-      <ButtonGroup
-        size="sm"
-        isAttached
-        variant="outline"
-        order={{ base: 1, md: 2 }}
-      >
+      <ButtonGroup size="sm" isAttached variant="outline" order={{ base: 1, md: 2 }}>
         <Button
           leftIcon={<PrevIcon />}
           onClick={changePage.bind(null, page - 1)}

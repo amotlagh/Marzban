@@ -279,7 +279,7 @@ class XRayConfig(dict):
                     settings['path'] = net_settings.get('path', '')
                     host = net_settings.get('host', '')
                     settings['host'] = [host]
-                
+
                 elif net == 'splithttp':
                     settings['path'] = net_settings.get('path', '')
                     host = net_settings.get('host', '')
@@ -303,7 +303,6 @@ class XRayConfig(dict):
                 self.inbounds_by_protocol[inbound['protocol']].append(settings)
             except KeyError:
                 self.inbounds_by_protocol[inbound['protocol']] = [settings]
-
 
     def get_inbound(self, tag) -> dict:
         for inbound in self['inbounds']:
@@ -390,7 +389,6 @@ class XRayConfig(dict):
                             del client['flow']
 
                         clients.append(client)
-
 
         if DEBUG:
             with open('generated_config-debug.json', 'w') as f:

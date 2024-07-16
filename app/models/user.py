@@ -66,6 +66,7 @@ class User(BaseModel):
     on_hold_expire_duration: Optional[int] = Field(None, nullable=True)
     on_hold_timeout: Optional[Union[datetime, None]] = Field(None, nullable=True)
     admin: Optional[Admin]
+    auto_delete_in_days: Optional[int] = Field(None, nullable=True)
 
     @validator("proxies", pre=True, always=True)
     def validate_proxies(cls, v, values, **kwargs):
@@ -300,6 +301,31 @@ class UserResponse(User):
         if isinstance(v, list):
             v = {p.type: p.settings for p in v}
         return super().validate_proxies(v, values, **kwargs)
+
+
+class SubscriptionUserResponse(UserResponse):
+    class Config:
+        orm_mode = True
+        fields = {
+            field: {"include": True} for field in [
+                "username",
+                "status",
+                "expire",
+                "data_limit",
+                "data_limit_reset_strategy",
+                "used_traffic",
+                "lifetime_used_traffic",
+                "proxies",
+                "created_at",
+                "sub_updated_at",
+                "online_at",
+                "links",
+                "subscription_url",
+                "sub_updated_at",
+                "sub_last_user_agent",
+                "online_at",
+            ]
+        }
 
 
 class UsersResponse(BaseModel):

@@ -67,6 +67,4 @@ export type UserCreate = Pick<
   | "note"
   | "sub_updated_at"
   | "sub_last_user_agent"
-  | "sub_updated_at"
-  | "sub_last_user_agent"
 >;

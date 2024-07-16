@@ -12,6 +12,7 @@ from app.db import GetDB, crud
 from app.db.models import Admin, User
 from app.models.admin import AdminCreate, AdminPartialModify
 from app.utils.system import readable_size
+
 from . import utils
 
 app = typer.Typer(no_args_is_help=True)
@@ -33,6 +34,7 @@ def validate_discord_webhook(value: str) -> Union[str, None]:
     if not value.startswith("https://discord.com"):
         utils.error("Discord webhook must start with 'https://discord.com'")
     return value
+
 
 def calculate_admin_usage(admin_id: int) -> str:
     with GetDB() as db:

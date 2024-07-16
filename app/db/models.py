@@ -49,7 +49,7 @@ class User(Base):
         nullable=False,
         default=UserDataLimitResetStrategy.no_reset,
     )
-    usage_logs = relationship("UserUsageResetLogs", back_populates="user") # maybe rename it to reset_usage_logs?
+    usage_logs = relationship("UserUsageResetLogs", back_populates="user")  # maybe rename it to reset_usage_logs?
     expire = Column(Integer, nullable=True)
     admin_id = Column(Integer, ForeignKey("admins.id"))
     admin = relationship("Admin", back_populates="users")
@@ -61,7 +61,14 @@ class User(Base):
     online_at = Column(DateTime, nullable=True, default=None)
     on_hold_expire_duration = Column(BigInteger, nullable=True, default=None)
     on_hold_timeout = Column(DateTime, nullable=True, default=None)
+
+    # * Positive values: User will be deleted after the value of this field in days automatically.
+    # * Negative values: User won't be deleted automatically at all.
+    # * NULL: Uses global settings.
+    auto_delete_in_days = Column(Integer, nullable=True, default=None)
+
     edit_at = Column(DateTime, nullable=True, default=None)
+    last_status_change = Column(DateTime, default=datetime.utcnow, nullable=True)
 
     @hybrid_property
     def reseted_usage(self):

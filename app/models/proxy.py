@@ -18,6 +18,7 @@ from xray_api.types.account import (
 
 FRAGMENT_PATTERN = re.compile(r'^((\d{1,3}-\d{1,3})|(\d{1,3})),((\d{1,3}-\d{1,3})|(\d{1,3})),(tlshello|\d|\d\-\d)$')
 
+
 class ProxyTypes(str, Enum):
     # proxy_type = protocol
 
@@ -99,7 +100,7 @@ class ProxyHostSecurity(str, Enum):
 
 ProxyHostALPN = Enum(
     "ProxyHostALPN",
-   {
+    {
         "none": "",
         "h3": "h3",
         "h2": "h2",

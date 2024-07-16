@@ -1,11 +1,16 @@
 import json
 from random import choice
+
 import yaml
 
 from app.subscription.funcs import get_grpc_gun
 from app.templates import render_template
-from config import (CLASH_SUBSCRIPTION_TEMPLATE, MUX_TEMPLATE,
-                    USER_AGENT_TEMPLATE, GRPC_USER_AGENT_TEMPLATE)
+from config import (
+    CLASH_SUBSCRIPTION_TEMPLATE, 
+    MUX_TEMPLATE,
+    USER_AGENT_TEMPLATE,
+    GRPC_USER_AGENT_TEMPLATE,
+)
 
 
 class ClashConfiguration(object):
@@ -116,8 +121,8 @@ class ClashConfiguration(object):
                 node['sni'] = sni
             else:
                 node['servername'] = sni
-            # if alpn:
-            #     node['alpn'] = alpn.split(',')
+            if alpn:
+                node['alpn'] = alpn.split(',')
             if ais:
                 node['skip-cert-verify'] = ais
 

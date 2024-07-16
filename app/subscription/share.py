@@ -9,15 +9,19 @@ from typing import TYPE_CHECKING, Literal, Union, List
 from jdatetime import date as jd
 
 from app import xray
-from app.utils.system import get_public_ip, readable_size
+from app.utils.system import get_public_ip, get_public_ipv6, readable_size
+
 from . import *
 
 if TYPE_CHECKING:
     from app.models.user import UserResponse
 
-from config import (ACTIVE_STATUS_TEXT, EXPIRED_STATUS_TEXT, LIMITED_STATUS_TEXT, DISABLED_STATUS_TEXT, ONHOLD_STATUS_TEXT, RANDOMIZE_SUBSCRIPTION_CONFIGS)
+from config import (ACTIVE_STATUS_TEXT, DISABLED_STATUS_TEXT,
+                    EXPIRED_STATUS_TEXT, LIMITED_STATUS_TEXT,
+                    ONHOLD_STATUS_TEXT, RANDOMIZE_SUBSCRIPTION_CONFIGS)
 
 SERVER_IP = get_public_ip()
+SERVER_IPV6 = get_public_ipv6()
 
 STATUS_EMOJIS = {
     "active": "✅",
@@ -92,11 +96,10 @@ def generate_v2ray_json_subscription(
         inbounds, proxies, format_variables, admin, conf=conf
     )
 
-
 def randomize_sub_config(
         config: str, config_format: str
 ) -> str:
-
+    
     if config_format == "v2ray":
         config = config.split("\n")
         random.shuffle(config)
@@ -128,8 +131,7 @@ def randomize_sub_config(
         config = json.dumps(config, indent=4)
 
     return config
-
-
+    
 def generate_subscription(
     user: "UserResponse",
     config_format: Literal["v2ray", "clash-meta", "clash", "sing-box", "outline", "v2ray-json"],
@@ -163,11 +165,11 @@ def generate_subscription(
     else:
         raise ValueError(f'Unsupported format "{config_format}"')
 
-    if as_base64:
-        config = base64.b64encode(config.encode()).decode()
-
     if RANDOMIZE_SUBSCRIPTION_CONFIGS is not False:
         config = randomize_sub_config(config, config_format)
+        
+    if as_base64:
+        config = base64.b64encode(config.encode()).decode()
 
     return config
 
@@ -218,6 +220,7 @@ def setup_format_variables(extra_data: dict) -> dict:
             else:
                 days_left = "0"
                 time_left = "0"
+
         else:
             days_left = "∞"
             time_left = "∞"
@@ -250,6 +253,7 @@ def setup_format_variables(extra_data: dict) -> dict:
 
     format_variables = {
         "SERVER_IP": SERVER_IP,
+        "SERVER_IPV6": SERVER_IPV6,
         "USERNAME": extra_data.get("username", "{USERNAME}"),
         "DATA_USAGE": readable_size(extra_data.get("used_traffic")),
         "DATA_LIMIT": data_limit,
@@ -281,7 +285,7 @@ def process_inbounds_and_tags(
                 _inbounds.append((protocol, [tag]))
     index_dict = {proxy: index for index, proxy in enumerate(xray.config.inbounds_by_tag.keys())}
     inbounds = sorted(_inbounds, key=lambda x: index_dict.get(x[1][0], float('inf')))
-    
+
     for protocol, tags in inbounds:
         settings = proxies.get(protocol)
         if not settings:
@@ -325,7 +329,7 @@ def process_inbounds_and_tags(
                         "sni": sni,
                         "host": req_host,
                         "tls": inbound["tls"] if host["tls"] is None else host["tls"],
-                        "alpn": host["alpn"] or inbound.get("alpn", ""),
+                        "alpn": host["alpn"] if host["alpn"] else None,
                         "path": path,
                         "fp": host["fingerprint"] or inbound.get("fp", ""),
                         "ais": host["allowinsecure"]
@@ -333,7 +337,6 @@ def process_inbounds_and_tags(
                         "mux_enable": host["mux_enable"],
                         "fragment_setting": host["fragment_setting"],
                         "random_user_agent": host["random_user_agent"],
-                        "mode" : "multi" if inbound.get('multiMode', '') == True else "gun"
                     }
                 )
 

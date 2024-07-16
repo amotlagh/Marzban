@@ -260,6 +260,12 @@ const AccordionInbound: FC<AccordionInboundType> = ({
                                 </Text>
                                 <Text mt={1}>
                                   <Badge>
+                                    {"{"}SERVER_IPV6{"}"}
+                                  </Badge>{" "}
+                                  {t("hostsDialog.currentServerv6")}
+                                </Text>
+                                <Text mt={1}>
+                                  <Badge>
                                     {"{"}USERNAME{"}"}
                                   </Badge>{" "}
                                   {t("hostsDialog.username")}
@@ -373,6 +379,12 @@ const AccordionInbound: FC<AccordionInboundType> = ({
                                   {"{"}SERVER_IP{"}"}
                                 </Badge>{" "}
                                 {t("hostsDialog.currentServer")}
+                              </Text>
+                              <Text mt={1}>
+                                <Badge>
+                                  {"{"}SERVER_IPV6{"}"}
+                                </Badge>{" "}
+                                {t("hostsDialog.currentServerv6")}
                               </Text>
                               <Text mt={1}>
                                 <Badge>
@@ -1033,7 +1045,7 @@ export const HostsDialog: FC = () => {
           </Icon>
         </ModalHeader>
         <ModalCloseButton mt={3} />
-        <ModalBody pb={3} pt={3}>
+        <ModalBody w="440px" pb={3} pt={3}>
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(handleFormSubmit)}>
               <Text mb={3} opacity={0.8} fontSize="sm">

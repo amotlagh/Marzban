@@ -3,8 +3,11 @@ from random import choice
 from app.templates import render_template
 from app.subscription.funcs import get_grpc_gun
 
-from config import (SINGBOX_SUBSCRIPTION_TEMPLATE, MUX_TEMPLATE, USER_AGENT_TEMPLATE)
-                    # ,GRPC_USER_AGENT_TEMPLATE)
+from config import (
+    SINGBOX_SUBSCRIPTION_TEMPLATE,
+    MUX_TEMPLATE,
+    USER_AGENT_TEMPLATE
+)
 
 
 class SingBoxConfiguration(str):
@@ -20,14 +23,7 @@ class SingBoxConfiguration(str):
             self.user_agent_list = user_agent_data['list']
         else:
             self.user_agent_list = []
-
-        # temp_grpc_user_agent_data = render_template(GRPC_USER_AGENT_TEMPLATE)
-        # grpc_user_agent_data = json.loads(temp_grpc_user_agent_data)
-
-        # if 'list' in grpc_user_agent_data and isinstance(grpc_user_agent_data['list'], list):
-        #     self.grpc_user_agent_data = grpc_user_agent_data['list']
-        # else:
-        #     self.grpc_user_agent_data = []
+            
 
     def add_outbound(self, outbound_data):
         self.config["outbounds"].append(outbound_data)
@@ -138,8 +134,6 @@ class SingBoxConfiguration(str):
                     transport_config['ping_timeout'] = ping_timeout
                 if permit_without_stream:
                     transport_config['permit_without_stream'] = permit_without_stream
-                # if random_user_agent:
-                #     transport_config['User-Agent'] = choice(self.grpc_user_agent_data)
 
             elif transport_type == "httpupgrade":
                 transport_config['host'] = host
@@ -171,7 +165,7 @@ class SingBoxConfiguration(str):
                       mux_enable: bool = False,
                       random_user_agent: bool = False,
                       ):
-        
+
         if isinstance(port, str):
             ports = port.split(',')
             port = int(choice(ports))
@@ -236,6 +230,8 @@ class SingBoxConfiguration(str):
         if net in ["grpc", "gun"]:
             path = get_grpc_gun(path)
 
+        alpn = inbound.get('alpn', None)
+
         outbound = self.make_outbound(
             remark=remark,
             type=inbound['protocol'],
@@ -247,7 +243,7 @@ class SingBoxConfiguration(str):
             sni=inbound['sni'],
             host=inbound['host'],
             path=path,
-            alpn=inbound.get('alpn', '').rsplit(sep=","),
+            alpn=alpn.rsplit(sep=",") if alpn else None,
             fp=inbound.get('fp', ''),
             pbk=inbound.get('pbk', ''),
             sid=inbound.get('sid', ''),

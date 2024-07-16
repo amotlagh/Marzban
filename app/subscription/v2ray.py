@@ -11,12 +11,16 @@ import string # spiderX
 
 from app.templates import render_template
 from app.subscription.funcs import get_grpc_gun, get_grpc_multi
-
-from config import MUX_TEMPLATE, USER_AGENT_TEMPLATE, V2RAY_SUBSCRIPTION_TEMPLATE, GRPC_USER_AGENT_TEMPLATE
+from app.templates import render_template
+from config import (
+    MUX_TEMPLATE,
+    USER_AGENT_TEMPLATE,
+    V2RAY_SUBSCRIPTION_TEMPLATE,
+    GRPC_USER_AGENT_TEMPLATE,
+)
 
 
 class V2rayShareLink(str):
-
     def __init__(self):
         self.links = []
 
@@ -61,9 +65,10 @@ class V2rayShareLink(str):
                 type=inbound["header_type"],
                 ais=inbound.get("ais", ""),
                 fs=inbound.get("fragment_setting", ""),
-                mode=inbound.get("mode",""),
+                multiMode=multi_mode,
                 max_upload_size=inbound.get('max_upload_size', 1000000),
-                max_concurrent_uploads=inbound.get('max_concurrent_uploads', 10),
+                max_concurrent_uploads=inbound.get(
+                    'max_concurrent_uploads', 10),
             )
 
         elif inbound["protocol"] == "vless":
@@ -86,9 +91,10 @@ class V2rayShareLink(str):
                 type=inbound["header_type"],
                 ais=inbound.get("ais", ""),
                 fs=inbound.get("fragment_setting", ""),
-                mode=inbound.get("mode",""),
+                multiMode=multi_mode,
                 max_upload_size=inbound.get('max_upload_size', 1000000),
-                max_concurrent_uploads=inbound.get('max_concurrent_uploads', 10),
+                max_concurrent_uploads=inbound.get(
+                    'max_concurrent_uploads', 10),
             )
 
         elif inbound["protocol"] == "trojan":
@@ -111,9 +117,10 @@ class V2rayShareLink(str):
                 type=inbound["header_type"],
                 ais=inbound.get("ais", ""),
                 fs=inbound.get("fragment_setting", ""),
-                mode=inbound.get("mode",""),
+                multiMode=multi_mode,
                 max_upload_size=inbound.get('max_upload_size', 1000000),
-                max_concurrent_uploads=inbound.get('max_concurrent_uploads', 10),
+                max_concurrent_uploads=inbound.get(
+                    'max_concurrent_uploads', 10),
             )
 
         elif inbound["protocol"] == "shadowsocks":
@@ -147,7 +154,7 @@ class V2rayShareLink(str):
         spx="",
         ais="",
         fs="",
-        mode="",
+        multiMode: bool = False,
         max_upload_size: int = 1000000,
         max_concurrent_uploads: int = 10,
     ):
@@ -166,14 +173,19 @@ class V2rayShareLink(str):
             "v": "2",
         }
 
+        if fs:
+            payload["fragment"] = fs
+
         if tls == "tls":
             payload["sni"] = sni
             payload["fp"] = fp
-            payload["alpn"] = alpn
+            if alpn:
+                payload["alpn"] = alpn
             if fs:
                 payload["fragment"] = fs
             if ais:
                 payload["allowInsecure"] = 1
+
         elif tls == "reality":
             payload["sni"] = sni
             payload["fp"] = fp
@@ -182,11 +194,12 @@ class V2rayShareLink(str):
             payload["spx"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
             
         if net == "grpc":
-            payload["mode"] = mode
+            if multiMode:
+                payload["mode"] = "multi"
+            else:
+                payload["mode"] = "gun"
 
         elif net == "splithttp":
-            payload["path"] = path
-            payload["host"] = host
             payload["maxUploadSize"] = max_upload_size
             payload["maxConcurrentUploads"] = max_concurrent_uploads
 
@@ -217,7 +230,7 @@ class V2rayShareLink(str):
               spx='',
               ais='',
               fs="",
-              mode="",
+              multiMode: bool = False,
               max_upload_size: int = 1000000,
               max_concurrent_uploads: int = 10,
               ):
@@ -233,7 +246,10 @@ class V2rayShareLink(str):
         if net == 'grpc':
             payload['serviceName'] = path
             payload["authority"] = host
-            payload["mode"] = mode
+            if multiMode:
+                payload["mode"] = "multi"
+            else:
+                payload["mode"] = "gun"
 
         elif net == 'quic':
             payload['key'] = path
@@ -252,11 +268,13 @@ class V2rayShareLink(str):
         if tls == "tls":
             payload["sni"] = sni
             payload["fp"] = fp
-            payload["alpn"] = alpn
+            if alpn:
+                payload["alpn"] = alpn
             if fs:
                 payload["fragment"] = fs
             if ais:
                 payload["allowInsecure"] = 1
+
         elif tls == "reality":
             payload["sni"] = sni
             payload["fp"] = fp
@@ -291,7 +309,7 @@ class V2rayShareLink(str):
                spx='',
                ais='',
                fs="",
-               mode="",
+               multiMode: bool = False,
                max_upload_size: int = 1000000,
                max_concurrent_uploads: int = 10,
                ):
@@ -307,8 +325,10 @@ class V2rayShareLink(str):
         if net == 'grpc':
             payload['serviceName'] = path
             payload["authority"] = host
-            payload["host"] = host
-            payload["mode"] = mode
+            if multiMode:
+                payload["mode"] = "multi"
+            else:
+                payload["mode"] = "gun"
 
         elif net == "splithttp":
             payload["path"] = path
@@ -319,7 +339,6 @@ class V2rayShareLink(str):
         elif net == 'quic':
             payload['key'] = path
             payload["quicSecurity"] = host
-        
         else:
             payload["path"] = path
             payload["host"] = host
@@ -327,7 +346,8 @@ class V2rayShareLink(str):
         if tls == "tls":
             payload["sni"] = sni
             payload["fp"] = fp
-            payload["alpn"] = alpn
+            if alpn:
+                payload["alpn"] = alpn
             if fs:
                 payload["fragment"] = fs
             if ais:
@@ -427,7 +447,6 @@ class V2rayJsonConfig(str):
 
         return realitySettings
 
-
     def ws_config(self, path=None, host=None, random_user_agent=None):
 
         wsSettings = {}
@@ -441,7 +460,7 @@ class V2rayJsonConfig(str):
             wsSettings["headers"]["User-Agent"] = choice(self.user_agent_list)
 
         return wsSettings
-    
+
     def httpupgrade_config(self, path=None, host=None, random_user_agent=None):
 
         httpupgradeSettings = {}
@@ -451,7 +470,8 @@ class V2rayJsonConfig(str):
         if host:
             httpupgradeSettings["host"] = host
         if random_user_agent:
-            httpupgradeSettings["headers"]["User-Agent"] = choice(self.user_agent_list)
+            httpupgradeSettings["headers"]["User-Agent"] = choice(
+                self.user_agent_list)
 
         return httpupgradeSettings
 
@@ -467,7 +487,8 @@ class V2rayJsonConfig(str):
         if host:
             splithttpSettings["host"] = host
         if random_user_agent:
-            splithttpSettings["headers"]["User-Agent"] = choice(self.user_agent_list)
+            splithttpSettings["headers"]["User-Agent"] = choice(
+                self.user_agent_list)
         splithttpSettings["maxUploadSize"] = max_upload_size
         splithttpSettings["maxConcurrentUploads"] = max_concurrent_uploads
 
@@ -485,6 +506,7 @@ class V2rayJsonConfig(str):
         grpcSettings["health_check_timeout"] = 20
         grpcSettings["permit_without_stream"] = False
         grpcSettings["initial_windows_size"] = 35536
+
         if random_user_agent:
             grpcSettings["User-Agent"] = choice(self.grpc_user_agent_data)
 
@@ -511,15 +533,14 @@ class V2rayJsonConfig(str):
 
             if host:
                 tcpSettings["header"]["request"]["headers"]["Host"] = [host]
-            
+
             if random_user_agent:
-                tcpSettings["header"]["request"]["headers"]["User-Agent"] = [choice(self.user_agent_list)]
+                tcpSettings["header"]["request"]["headers"]["User-Agent"] = [
+                    choice(self.user_agent_list)]
             else:
                 tcpSettings["header"]["request"]["headers"]["User-Agent"] = []
 
-
         return tcpSettings
-
 
     def h2_config(self, path=None, host=None, random_user_agent=None):
 
@@ -534,7 +555,8 @@ class V2rayJsonConfig(str):
         else:
             httpSettings["host"] = []
         if random_user_agent:
-            httpSettings["headers"]["User-Agent"] = [choice(self.user_agent_list)]
+            httpSettings["headers"]["User-Agent"] = [
+                choice(self.user_agent_list)]
 
         return httpSettings
 
@@ -666,7 +688,6 @@ class V2rayJsonConfig(str):
         servers["email"] = ""
         servers["method"] = method
         servers["ota"] = False
-        servers["level"] = 1
 
         settings["servers"] = [servers]
 
@@ -684,7 +705,6 @@ class V2rayJsonConfig(str):
         servers["email"] = ""
         servers["method"] = method
         servers["uot"] = False
-        servers["level"] = 1
 
         settings["servers"] = [servers]
 
@@ -720,30 +740,37 @@ class V2rayJsonConfig(str):
                             headers='',
                             ais='',
                             dialer_proxy='',
-                            multiMode='',
+                            multiMode: bool = False,
                             random_user_agent: bool = False,
-                            max_upload_size: int = 1000000,
+                            max_upload_size: int = 1,
                             max_concurrent_uploads: int = 10,
                             ):
 
         if net == "ws":
-            network_setting = self.ws_config(path=path, host=host, random_user_agent=random_user_agent)
+            network_setting = self.ws_config(
+                path=path, host=host, random_user_agent=random_user_agent)
         elif net == "grpc":
-            network_setting = self.grpc_config(path=path, host=host, multiMode=True if multiMode == True else False, random_user_agent=random_user_agent)
+            network_setting = self.grpc_config(
+                path=path, host=host, multiMode=multiMode, random_user_agent=random_user_agent)
         elif net == "h2":
-            network_setting = self.h2_config(path=path, host=host, random_user_agent=random_user_agent)
+            network_setting = self.h2_config(
+                path=path, host=host, random_user_agent=random_user_agent)
         elif net == "kcp":
-            network_setting = self.kcp_config(path=path, host=host, header=headers)
+            network_setting = self.kcp_config(
+                path=path, host=host, header=headers)
         elif net == "tcp":
-            network_setting = self.tcp_http_config(path=path, host=host, random_user_agent=random_user_agent)
+            network_setting = self.tcp_http_config(
+                path=path, host=host, random_user_agent=random_user_agent)
         elif net == "quic":
-            network_setting = self.quic_config(path=path, host=host, header=headers)
+            network_setting = self.quic_config(
+                path=path, host=host, header=headers)
         elif net == "httpupgrade":
-            network_setting = self.httpupgrade_config(path=path, host=host, random_user_agent=random_user_agent)
+            network_setting = self.httpupgrade_config(
+                path=path, host=host, random_user_agent=random_user_agent)
         elif net == "splithttp":
-            network_setting = self.splithttp_config(path=path, host=host, random_user_agent=random_user_agent, 
-                                                     max_upload_size=max_upload_size, 
-                                                     max_concurrent_uploads=max_concurrent_uploads)
+            network_setting = self.splithttp_config(path=path, host=host, random_user_agent=random_user_agent,
+                                                    max_upload_size=max_upload_size,
+                                                    max_concurrent_uploads=max_concurrent_uploads)
 
         if tls == "tls":
             tls_settings = self.tls_config(sni=sni, fp=fp, alpn=alpn, ais=ais)
@@ -772,9 +799,17 @@ class V2rayJsonConfig(str):
         net = inbound['network']
         protocol = inbound['protocol']
         port = inbound['port']
-        tls = (inbound['tls']) #amotlagh : tls = inbound['tls']
+        tls = (inbound['tls'])
         headers = inbound['header_type']
         fragment = inbound['fragment_setting']
+        path = inbound["path"]
+        multi_mode = inbound.get("multiMode", False)
+
+        if net in ["grpc", "gun"]:
+            if multi_mode:
+                path = get_grpc_multi(path)
+            else:
+                path = get_grpc_gun(path)
 
         outbound = {
             "tag": "proxy",
@@ -819,20 +854,22 @@ class V2rayJsonConfig(str):
         if fragment:
             try:
                 length, interval, packets = fragment.split(',')
-                fragment_outbound = self.make_fragment_outbound(packets, length, interval)
+                fragment_outbound = self.make_fragment_outbound(
+                    packets, length, interval)
                 outbounds.append(fragment_outbound)
                 dialer_proxy = fragment_outbound['tag']
             except ValueError:
                 pass
 
+        alpn = inbound.get('alpn', None)
 
         outbound["streamSettings"] = self.make_stream_setting(
             net=net,
             tls=tls,
             sni=inbound['sni'],
             host=inbound['host'],
-            path=inbound['path'],
-            alpn=inbound.get('alpn', '').rsplit(sep=","),
+            path=path,
+            alpn=alpn.rsplit(sep=",") if alpn else None,
             fp=inbound.get('fp', ''),
             pbk=inbound.get('pbk', ''),
             sid=inbound.get('sid', ''),
@@ -840,7 +877,7 @@ class V2rayJsonConfig(str):
             headers=headers,
             ais=inbound.get('ais', ''),
             dialer_proxy=dialer_proxy,
-            multiMode=inbound.get('multiMode',''),
+            multiMode=multi_mode,
             random_user_agent=inbound.get('random_user_agent', False),
             max_upload_size=inbound.get('max_upload_size', 1000000),
             max_concurrent_uploads=inbound.get('max_concurrent_uploads', 10),

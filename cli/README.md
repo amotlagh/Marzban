@@ -8,14 +8,14 @@ $ [OPTIONS] COMMAND [ARGS]...
 
 **Options**:
 
-- `--help`: Show this message and exit.
+* `--help`: Show this message and exit.
 
 **Commands**:
 
-- `admin`
-- `completion`: Generate and install completion scripts.
-- `subscription`
-- `user`
+* `admin`
+* `completion`: Generate and install completion scripts.
+* `subscription`
+* `user`
 
 ## `admin`
 
@@ -27,15 +27,15 @@ $ admin [OPTIONS] COMMAND [ARGS]...
 
 **Options**:
 
-- `--help`: Show this message and exit.
+* `--help`: Show this message and exit.
 
 **Commands**:
 
-- `create`: Creates an admin
-- `delete`: Deletes the specified admin
-- `import-from-env`: Imports the sudo admin from env
-- `list`: Displays a table of admins
-- `update`: Updates the specified admin
+* `create`: Creates an admin
+* `delete`: Deletes the specified admin
+* `import-from-env`: Imports the sudo admin from env
+* `list`: Displays a table of admins
+* `update`: Updates the specified admin
 
 ### `admin create`
 
@@ -51,11 +51,11 @@ $ admin create [OPTIONS]
 
 **Options**:
 
-- `-u, --username TEXT`: [required]
-- `--sudo / --no-sudo`: [default: no-sudo]
-- `-tg, --telegram-id TEXT`
-- `-dc, --discord-webhook TEXT`
-- `--help`: Show this message and exit.
+* `-u, --username TEXT`: [required]
+* `--sudo / --no-sudo`: [default: no-sudo]
+* `-tg, --telegram-id TEXT`
+* `-dc, --discord-webhook TEXT`
+* `--help`: Show this message and exit.
 
 ### `admin delete`
 
@@ -71,9 +71,9 @@ $ admin delete [OPTIONS]
 
 **Options**:
 
-- `-u, --username TEXT`: [required]
-- `-y, --yes`: Skips confirmations
-- `--help`: Show this message and exit.
+* `-u, --username TEXT`: [required]
+* `-y, --yes`: Skips confirmations
+* `--help`: Show this message and exit.
 
 ### `admin import-from-env`
 
@@ -82,9 +82,8 @@ Imports the sudo admin from env
 Confirmations can be skipped using `--yes/-y` option.
 
 What does it do?
-
-- Creates a sudo admin according to `SUDO_USERNAME` and `SUDO_PASSWORD`.
-- Links any user which doesn't have an `admin_id` to the imported sudo admin.
+  - Creates a sudo admin according to `SUDO_USERNAME` and `SUDO_PASSWORD`.
+  - Links any user which doesn't have an `admin_id` to the imported sudo admin.
 
 **Usage**:
 
@@ -94,8 +93,8 @@ $ admin import-from-env [OPTIONS]
 
 **Options**:
 
-- `-y, --yes`: Skips confirmations
-- `--help`: Show this message and exit.
+* `-y, --yes`: Skips confirmations
+* `--help`: Show this message and exit.
 
 ### `admin list`
 
@@ -109,10 +108,10 @@ $ admin list [OPTIONS]
 
 **Options**:
 
-- `-o, --offset INTEGER`
-- `-l, --limit INTEGER`
-- `-u, --username TEXT`: Search by username
-- `--help`: Show this message and exit.
+* `-o, --offset INTEGER`
+* `-l, --limit INTEGER`
+* `-u, --username TEXT`: Search by username
+* `--help`: Show this message and exit.
 
 ### `admin update`
 
@@ -128,8 +127,8 @@ $ admin update [OPTIONS]
 
 **Options**:
 
-- `-u, --username TEXT`: [required]
-- `--help`: Show this message and exit.
+* `-u, --username TEXT`: [required]
+* `--help`: Show this message and exit.
 
 ## `completion`
 
@@ -143,12 +142,12 @@ $ completion [OPTIONS] COMMAND [ARGS]...
 
 **Options**:
 
-- `--help`: Show this message and exit.
+* `--help`: Show this message and exit.
 
 **Commands**:
 
-- `install`: Install completion for the specified shell.
-- `show`: Show completion for the specified shell,...
+* `install`: Install completion for the specified shell.
+* `show`: Show completion for the specified shell,...
 
 ### `completion install`
 
@@ -162,8 +161,8 @@ $ completion install [OPTIONS]
 
 **Options**:
 
-- `--shell [bash|zsh|fish|powershell|pwsh]`: The shell to install completion for.
-- `--help`: Show this message and exit.
+* `--shell [bash|zsh|fish|powershell|pwsh]`: The shell to install completion for.
+* `--help`: Show this message and exit.
 
 ### `completion show`
 
@@ -177,8 +176,8 @@ $ completion show [OPTIONS]
 
 **Options**:
 
-- `--shell [bash|zsh|fish|powershell|pwsh]`: The shell to install completion for.
-- `--help`: Show this message and exit.
+* `--shell [bash|zsh|fish|powershell|pwsh]`: The shell to install completion for.
+* `--help`: Show this message and exit.
 
 ## `subscription`
 
@@ -190,12 +189,12 @@ $ subscription [OPTIONS] COMMAND [ARGS]...
 
 **Options**:
 
-- `--help`: Show this message and exit.
+* `--help`: Show this message and exit.
 
 **Commands**:
 
-- `get-config`: Generates a subscription config.
-- `get-link`: Prints the given user's subscription link.
+* `get-config`: Generates a subscription config.
+* `get-link`: Prints the given user's subscription link.
 
 ### `subscription get-config`
 
@@ -204,7 +203,7 @@ Generates a subscription config.
 Generates a subscription config for the given user in the given format.
 
 The output will be written in the output file when the `output-file` is present,
-otherwise will be shown in the terminal.
+  otherwise will be shown in the terminal.
 
 **Usage**:
 
@@ -214,18 +213,18 @@ $ subscription get-config [OPTIONS]
 
 **Options**:
 
-- `-u, --username TEXT`: [required]
-- `-f, --format [v2ray|clash]`: [required]
-- `-o, --output TEXT`: Writes the generated config in the file if provided
-- `--base64`: Encodes output in base64 format if present
-- `--help`: Show this message and exit.
+* `-u, --username TEXT`: [required]
+* `-f, --format [v2ray|clash]`: [required]
+* `-o, --output TEXT`: Writes the generated config in the file if provided
+* `--base64`: Encodes output in base64 format if present
+* `--help`: Show this message and exit.
 
 ### `subscription get-link`
 
 Prints the given user's subscription link.
 
 NOTE: This command needs `XRAY_SUBSCRIPTION_URL_PREFIX` environment variable to be set
-in order to work correctly.
+  in order to work correctly.
 
 **Usage**:
 
@@ -235,8 +234,8 @@ $ subscription get-link [OPTIONS]
 
 **Options**:
 
-- `-u, --username TEXT`: [required]
-- `--help`: Show this message and exit.
+* `-u, --username TEXT`: [required]
+* `--help`: Show this message and exit.
 
 ## `user`
 
@@ -248,12 +247,12 @@ $ user [OPTIONS] COMMAND [ARGS]...
 
 **Options**:
 
-- `--help`: Show this message and exit.
+* `--help`: Show this message and exit.
 
 **Commands**:
 
-- `list`: Displays a table of users
-- `set-owner`: Transfers user's ownership
+* `list`: Displays a table of users
+* `set-owner`: Transfers user's ownership
 
 ### `user list`
 
@@ -269,13 +268,13 @@ $ user list [OPTIONS]
 
 **Options**:
 
-- `-o, --offset INTEGER`
-- `-l, --limit INTEGER`
-- `-u, --username TEXT`: Search by username(s)
-- `-s, --search TEXT`: Search by username/note
-- `--status [active|disabled|limited|expired|on_hold]`
-- `--admin, --owner TEXT`: Search by owner admin's username
-- `--help`: Show this message and exit.
+* `-o, --offset INTEGER`
+* `-l, --limit INTEGER`
+* `-u, --username TEXT`: Search by username(s)
+* `-s, --search TEXT`: Search by username/note
+* `--status [active|disabled|limited|expired|on_hold]`
+* `--admin, --owner TEXT`: Search by owner admin's username(s)
+* `--help`: Show this message and exit.
 
 ### `user set-owner`
 
@@ -291,7 +290,7 @@ $ user set-owner [OPTIONS]
 
 **Options**:
 
-- `-u, --username TEXT`
-- `--admin, --owner TEXT`: Admin's username
-- `-y, --yes`: Skips confirmations
-- `--help`: Show this message and exit.
+* `-u, --username TEXT`
+* `--admin, --owner TEXT`: Admin's username
+* `-y, --yes`: Skips confirmations
+* `--help`: Show this message and exit.
