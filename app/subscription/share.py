@@ -118,7 +118,7 @@ def randomize_sub_config(
         random.shuffle(other_outbounds)
         proxy_names = [ob['tag'] for ob in other_outbounds]
         for ob in main_outbounds:
-            ob['outbounds'] = ['Best Latency'] + proxy_names if ob['type'] == 'selector' else proxy_names
+            ob['outbounds'] = ['⚡️ Best Latency'] + proxy_names if ob['type'] == 'selector' else proxy_names
         config['outbounds'] = main_outbounds + other_outbounds + [ob for ob in outbounds if ob['type'] in {'direct', 'block', 'dns'}]
         config = json.dumps(config, indent=4)
 

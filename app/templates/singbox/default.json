@@ -86,13 +86,13 @@
       "outbounds": null,
       "tag": "proxy",
       "type": "selector",
-      "default": "⚡️ Lowest ping",
+      "default": "⚡️ Best Latency",
       "interrupt_exist_connections": true
     },
     {
       "interval": "5m",
       "outbounds": null,
-      "tag": "⚡️ Lowest ping",
+      "tag": "⚡️ Best Latency",
       "tolerance": 50,
       "type": "urltest",
       "url": "http://www.msftconnecttest.com/connecttest.txt",
