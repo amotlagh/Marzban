@@ -1365,16 +1365,16 @@ document.querySelector(".bg-overlay").addEventListener("click", () => {
           throw error;
         }
       }
-      const singbox = 'https://api.github.com/repos/SagerNet/sing-box/releases/latest';
+      //const singbox = 'https://api.github.com/repos/SagerNet/sing-box/releases/latest';
       const v2rayng = 'https://api.github.com/repos/2dust/v2rayNG/releases/latest';
       const v2rayn = 'https://api.github.com/repos/2dust/v2rayN/releases/latest';
 
       document.addEventListener('DOMContentLoaded', async () => {
         try {
 
-          const sfaName = await getLatestReleaseName(singbox);
-          const sfa = document.getElementById('SFA');
-          sfa.href = `https://github.com/SagerNet/sing-box/releases/download/v${sfaName}/SFA-${sfaName}-arm64-v8a.apk`;
+          // const sfaName = await getLatestReleaseName(singbox);
+          // const sfa = document.getElementById('SFA');
+          // sfa.href = `https://github.com/SagerNet/sing-box/releases/download/v${sfaName}/SFA-${sfaName}-arm64-v8a.apk`;
           
           const v2rayngName = await getLatestReleaseName(v2rayng);
           const v2rayngv8a = document.getElementById('v2rayNGv8a');
