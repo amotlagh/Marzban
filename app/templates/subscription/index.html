@@ -655,7 +655,11 @@ font-size: 18px;
               {% set remaining_seconds = [user.on_hold_expire_duration, 0] | max %}
             {% else %}
               {% set current_timestamp = now().timestamp() %}
-              {% set remaining_seconds = [user.expire - current_timestamp, 0] | max %}
+              {% if user.expire %}
+                {% set remaining_seconds = [user.expire - current_timestamp, 0] | max %}
+              {% else %}
+                {% set remaining_seconds = 0 %}
+              {% endif %}
             {% endif %}
             {% set remaining_days = remaining_seconds // (24 * 3600) %}
             {% set remaining_hours = (remaining_seconds % (24 * 3600)) // 3600 %}
