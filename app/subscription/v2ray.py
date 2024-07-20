@@ -187,6 +187,7 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
+            payload["spx"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
             
         if net == "grpc":
             if multiMode:
@@ -274,6 +275,7 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
+            payload["spx"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
 
         return (
             "vless://"
@@ -349,6 +351,7 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
+            payload["spx"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
 
         return (
             "trojan://"
