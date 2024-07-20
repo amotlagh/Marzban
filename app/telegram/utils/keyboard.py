@@ -143,13 +143,39 @@ class BotKeyboard:
         return keyboard
 
     @staticmethod
+    def user_status_select():
+        keyboard = types.InlineKeyboardMarkup()
+
+        keyboard.add(
+            types.InlineKeyboardButton(
+                text="🟢 active",
+                callback_data='status:active'
+            ),
+            types.InlineKeyboardButton(
+                text="🟣 onhold",
+                callback_data='status:onhold'
+            )
+        )
+        keyboard.add(
+            types.InlineKeyboardButton(
+                text='🔙 Back',
+                callback_data='cancel'
+            )
+        )
+        return keyboard        
+
+    @staticmethod
     def show_links(username: str):
         keyboard = types.InlineKeyboardMarkup()
 
         keyboard.add(
             types.InlineKeyboardButton(
-                text="🖼 QR code",
-                callback_data=f'genqr:{username}'
+                text="🖼 Configs QRcode",
+                callback_data=f'genqr:configs:{username}'
+            ),
+            types.InlineKeyboardButton(
+                text="🚀 Sub QRcode",
+                callback_data=f'genqr:sub:{username}'
             )
         )
         keyboard.add(

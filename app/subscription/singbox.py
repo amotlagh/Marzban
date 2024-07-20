@@ -13,6 +13,7 @@ from config import (
 class SingBoxConfiguration(str):
 
     def __init__(self):
+        self.proxy_remarks = []
         template = render_template(SINGBOX_SUBSCRIPTION_TEMPLATE)
         self.config = json.loads(template)
         self.mux_template = render_template(MUX_TEMPLATE)
@@ -23,12 +24,21 @@ class SingBoxConfiguration(str):
             self.user_agent_list = user_agent_data['list']
         else:
             self.user_agent_list = []
-            
+
+    def _remark_validation(self, remark):
+        if not remark in self.proxy_remarks:
+            return remark
+        c = 2
+        while True:
+            new = f'{remark} ({c})'
+            if not new in self.proxy_remarks:
+                return new
+            c += 1
 
     def add_outbound(self, outbound_data):
         self.config["outbounds"].append(outbound_data)
 
-    def render(self):
+    def render(self, reverse=False):
         urltest_types = ["vmess", "vless", "trojan", "shadowsocks"]
         urltest_tags = [outbound["tag"]
                         for outbound in self.config["outbounds"] if outbound["type"] in urltest_types]
@@ -44,6 +54,8 @@ class SingBoxConfiguration(str):
             if outbound.get("type") == "selector":
                 outbound["outbounds"] = selector_tags
 
+        if reverse:
+            self.config["outbounds"].reverse()
         return json.dumps(self.config, indent=4)
 
     @staticmethod
@@ -66,14 +78,15 @@ class SingBoxConfiguration(str):
                 config["reality"]["public_key"] = pbk
             if sid:
                 config["reality"]["short_id"] = sid
-            if alpn:
-                config["alpn"] = [alpn] if not isinstance(alpn, list) else alpn
 
         if fp:
             config["utls"] = {
                 "enabled": bool(fp),
                 "fingerprint": fp
             }
+
+        if alpn:
+            config["alpn"] = [alpn] if not isinstance(alpn, list) else alpn
 
         return config
 
@@ -227,10 +240,17 @@ class SingBoxConfiguration(str):
         net = inbound["network"]
         path = inbound["path"]
 
-        if net in ["grpc", "gun"]:
+        # not supported by sing-box
+        if net in ("kcp", "splithttp"):
+            return
+
+        if net in ("grpc", "gun"):
             path = get_grpc_gun(path)
 
         alpn = inbound.get('alpn', None)
+
+        remark = self._remark_validation(remark)
+        self.proxy_remarks.append(remark)
 
         outbound = self.make_outbound(
             remark=remark,

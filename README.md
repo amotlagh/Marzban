@@ -1,155 +1,3 @@
-# Install:
-
-```bash
-apt update && apt upgrade -y
-bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
-wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
-wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
-wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat
-wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/latest/download/iran.dat
-cd ~
-git clone https://github.com/amotlagh/Marzban.git
-cd Marzban
-python3 -m pip install -r requirements.txt
-cp .env.example .env
-cp xray_config.json.example xray_config.json
-alembic upgrade head
-sudo ln -s $(pwd)/marzban-cli.py /usr/bin/marzban-cli
-sudo chmod +x /usr/bin/marzban-cli
-marzban-cli completion install
-sudo chmod +x install_service.sh
-sudo ./install_service.sh
-sudo systemctl enable --now marzban.service
-marzban-cli admin create --sudo
-```
-
-# Update:
-
-```bash
-sudo systemctl stop --now marzban.service
-bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
-wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
-wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
-wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat
-wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/latest/download/iran.dat
-cd ~
-rm -rf ~/temp/
-git clone https://github.com/amotlagh/Marzban.git temp
-cp -r ~/temp/* ~/Marzban/
-cd Marzban
-python3 -m pip install -r requirements.txt
-alembic upgrade head
-sudo chmod +x /usr/bin/marzban-cli
-marzban-cli completion install
-sudo chmod +x install_service.sh
-sudo ./install_service.sh
-sudo systemctl enable --now marzban.service
-```
-
----
-
-## Change to mysql:
-
-```
-apt install mysql-server sqlite3
-```
-
-```
-sudo mysql_secure_installation
-```
-
-```
-mysql
-```
-
-```
-SET GLOBAL validate_password.policy = LOW;
-```
-
-```
-CREATE DATABASE db_name;
-```
-
-```
-CREATE USER 'db_user'@'%' IDENTIFIED WITH mysql_native_password BY 'db_password';
-```
-
-```
-GRANT ALL ON db_name.* TO 'db_user'@'%';
-```
-
-```
-exit
-```
-
-```
-nano ~/Marzban/.env
-```
-
-```
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://DB_USER:DB_PASS@127.0.0.1/DB_NAME"
-MYSQL_ROOT_PASSWORD = "DB_PASS"
-```
-
-```
-sqlite3 /root/Marzban/db.sqlite3 '.dump --data-only' | sed "s/INSERT INTO \([^ ]*\)/REPLACE INTO \`\\1\`/g" > /tmp/dump.sql
-```
-
-```
-systemctl restart marzban
-```
-
-```
-cd ~/Marzban/
-alembic upgrade head
-```
-
-```
-mysql -u db_user -p -h 127.0.0.1 marzban -e "SET FOREIGN_KEY_CHECKS = 0; SET NAMES utf8mb4; SOURCE /tmp/dump.sql;"
-```
-
-```
-rm /tmp/dump.sql
-```
-
----
-
-## Optimize server:
-
-### Open the sysctl configuration file:
-
-```
-sudo nano /etc/sysctl.conf
-```
-
-### Add the following lines at the end of the file:
-
-```
-net.ipv4.tcp_syncookies = 0
-net.ipv4.tcp_congestion_control = bbr
-net.core.default_qdisc = fq
-```
-
-### Apply the changes:
-
-```
-sudo sysctl -p
-```
-
-# Donation
-
-If you found this repo useful and would like to support its development, you can make a donation in one of the following crypto networks:
-
-- TRON network (TRC20): `TALangyzvcaL25Khfdg8ntTkVMgpAKWwjW`
-- ETH, BNB, MATIC network (ERC20, BEP20): `0x3A51B09e14e01332C080e4BB2432d1DbEB3f9fC7`
-- Bitcoin network: `bc1qc9cqud5unhwdfc4a6q6kn0s5sjnk5ktf4rf85p`
-- Bitcoin Lightning network: `lnurl1dp68gurn8ghj7ampd3kx2ar0veekzar0wd5xjtnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhkzmrfwdkskl3xdk`
-- LTC network: `ltc1q4puewzjfdhvc8wrqusqewatm9fg9yw8pzptczk`
-- Solana network: `H6FxECgiv48kEwVZ51b3wj5DKEnExtVAT9zfHSmRxWqu`
-- TON network: `UQDVFB33UBnSxsoxjpNOuPiy51W8MGQDqcq28AtiVSjwHL6E`
-
-Thank you for your support!
-
 <p align="center">
   <a href="https://github.com/gozargah/marzban" target="_blank" rel="noopener noreferrer">
     <picture>
@@ -259,8 +107,35 @@ Marzban is user-friendly, feature-rich and reliable. It lets you to create diffe
 
 # Installation guide
 
-If you are eager to run the project using the source code, check the section below
+Run the following command
 
+```bash
+sudo bash -c "$(curl -sL https://github.com/Gozargah/Marzban-scripts/raw/master/marzban.sh)" @ install
+```
+
+Once the installation is complete:
+
+- You will see the logs that you can stop watching them by closing the terminal or pressing `Ctrl+C`
+- The Marzban files will be located at `/opt/marzban`
+- The configuration file can be found at `/opt/marzban/.env` (refer to [configurations](#configuration) section to see variables)
+- The data files will be placed at `/var/lib/marzban`
+- You can access the Marzban dashboard by opening a web browser and navigating to `http://YOUR_SERVER_IP:8000/dashboard/` (replace YOUR_SERVER_IP with the actual IP address of your server)
+
+Next, you need to create a sudo admin for logging into the Marzban dashboard by the following command
+
+```bash
+marzban cli admin create --sudo
+```
+
+That's it! You can login to your dashboard using these credentials
+
+To see the help message of the Marzban script, run the following command
+
+```bash
+marzban --help
+```
+
+If you are eager to run the project using the source code, check the section below
 <details markdown="1">
 <summary><h3>Manual install (advanced)</h3></summary>
 
@@ -382,45 +257,50 @@ server {
 ```
 
 By default the app will be run on `http://localhost:8000/dashboard`. You can configure it using changing the `UVICORN_HOST` and `UVICORN_PORT` environment variables.
-
 </details>
 
 # Configuration
 
 > You can set settings below using environment variables or placing them in `.env` file.
 
-| Variable                          | Description                                                                                           |
-| --------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| SUDO_USERNAME                     | Superuser's username                                                                                  |
-| SUDO_PASSWORD                     | Superuser's password                                                                                  |
-| SQLALCHEMY_DATABASE_URL           | Database URL ([SQLAlchemy's docs](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls)) |
-| UVICORN_HOST                      | Bind application to this host (default: `0.0.0.0`)                                                    |
-| UVICORN_PORT                      | Bind application to this port (default: `8000`)                                                       |
-| UVICORN_UDS                       | Bind application to a UNIX domain socket                                                              |
-| UVICORN_SSL_CERTFILE              | SSL certificate file to have application on https                                                     |
-| UVICORN_SSL_KEYFILE               | SSL key file to have application on https                                                             |
-| XRAY_JSON                         | Path of Xray's json config file (default: `xray_config.json`)                                         |
-| XRAY_EXECUTABLE_PATH              | Path of Xray binary (default: `/usr/local/bin/xray`)                                                  |
-| XRAY_ASSETS_PATH                  | Path of Xray assets (default: `/usr/local/share/xray`)                                                |
-| XRAY_SUBSCRIPTION_URL_PREFIX      | Prefix of subscription URLs                                                                           |
-| XRAY_FALLBACKS_INBOUND_TAG        | Tag of the inbound that includes fallbacks, needed in the case you're using fallbacks                 |
-| XRAY_EXCLUDE_INBOUND_TAGS         | Tags of the inbounds that shouldn't be managed and included in links by application                   |
-| CUSTOM_TEMPLATES_DIRECTORY        | Customized templates directory (default: `app/templates`)                                             |
-| CLASH_SUBSCRIPTION_TEMPLATE       | The template that will be used for generating clash configs (default: `clash/default.yml`)            |
-| SUBSCRIPTION_PAGE_TEMPLATE        | The template used for generating subscription info page (default: `subscription/index.html`)          |
-| HOME_PAGE_TEMPLATE                | Decoy page template (default: `home/index.html`)                                                      |
-| TELEGRAM_API_TOKEN                | Telegram bot API token (get token from [@botfather](https://t.me/botfather))                          |
-| TELEGRAM_ADMIN_ID                 | Numeric Telegram ID of admin (use [@userinfobot](https://t.me/userinfobot) to found your ID)          |
-| TELEGRAM_PROXY_URL                | Run Telegram Bot over proxy                                                                           |
-| JWT_ACCESS_TOKEN_EXPIRE_MINUTES   | Expire time for the Access Tokens in minutes, `0` considered as infinite (default: `1440`)            |
-| DOCS                              | Whether API documents should be available on `/docs` and `/redoc` or not (default: `False`)           |
-| DEBUG                             | Debug mode for development (default: `False`)                                                         |
-| WEBHOOK_ADDRESS                   | Webhook address to send notifications to. Webhook notifications will be sent if this value was set.   |
-| WEBHOOK_SECRET                    | Webhook secret will be sent with each request as `x-webhook-secret` in the header (default: `None`)   |
-| NUMBER_OF_RECURRENT_NOTIFICATIONS | How many times to retry if an error detected in sending a notification (default: `3`)                 |
-| RECURRENT_NOTIFICATIONS_TIMEOUT   | Timeout between each retry if an error detected in sending a notification in seconds (default: `180`) |
-| NOTIFY_REACHED_USAGE_PERCENT      | At which percentage of usage to send the warning notification (default: `80`)                         |
-| NOTIFY_DAYS_LEFT                  | When to send warning notifaction about expiration (default: `3`)                                      |
+| Variable                                 | Description                                                                                                              |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| SUDO_USERNAME                            | Superuser's username                                                                                                     |
+| SUDO_PASSWORD                            | Superuser's password                                                                                                     |
+| SQLALCHEMY_DATABASE_URL                  | Database URL ([SQLAlchemy's docs](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls))                    |
+| UVICORN_HOST                             | Bind application to this host (default: `0.0.0.0`)                                                                       |
+| UVICORN_PORT                             | Bind application to this port (default: `8000`)                                                                          |
+| UVICORN_UDS                              | Bind application to a UNIX domain socket                                                                                 |
+| UVICORN_SSL_CERTFILE                     | SSL certificate file to have application on https                                                                        |
+| UVICORN_SSL_KEYFILE                      | SSL key file to have application on https                                                                                |
+| XRAY_JSON                                | Path of Xray's json config file (default: `xray_config.json`)                                                            |
+| XRAY_EXECUTABLE_PATH                     | Path of Xray binary (default: `/usr/local/bin/xray`)                                                                     |
+| XRAY_ASSETS_PATH                         | Path of Xray assets (default: `/usr/local/share/xray`)                                                                   |
+| XRAY_SUBSCRIPTION_URL_PREFIX             | Prefix of subscription URLs                                                                                              |
+| XRAY_FALLBACKS_INBOUND_TAG               | Tag of the inbound that includes fallbacks, needed in the case you're using fallbacks                                    |
+| XRAY_EXCLUDE_INBOUND_TAGS                | Tags of the inbounds that shouldn't be managed and included in links by application                                      |
+| CUSTOM_TEMPLATES_DIRECTORY               | Customized templates directory (default: `app/templates`)                                                                |
+| CLASH_SUBSCRIPTION_TEMPLATE              | The template that will be used for generating clash configs (default: `clash/default.yml`)                               |
+| SUBSCRIPTION_PAGE_TEMPLATE               | The template used for generating subscription info page (default: `subscription/index.html`)                             |
+| HOME_PAGE_TEMPLATE                       | Decoy page template (default: `home/index.html`)                                                                         |
+| TELEGRAM_API_TOKEN                       | Telegram bot API token  (get token from [@botfather](https://t.me/botfather))                                            |
+| TELEGRAM_ADMIN_ID                        | Numeric Telegram ID of admin (use [@userinfobot](https://t.me/userinfobot) to found your ID)                             |
+| TELEGRAM_PROXY_URL                       | Run Telegram Bot over proxy                                                                                              |
+| JWT_ACCESS_TOKEN_EXPIRE_MINUTES          | Expire time for the Access Tokens in minutes, `0` considered as infinite (default: `1440`)                               |
+| DOCS                                     | Whether API documents should be available on `/docs` and `/redoc` or not (default: `False`)                              |
+| DEBUG                                    | Debug mode for development (default: `False`)                                                                            |
+| WEBHOOK_ADDRESS                          | Webhook address to send notifications to. Webhook notifications will be sent if this value was set.                      |
+| WEBHOOK_SECRET                           | Webhook secret will be sent with each request as `x-webhook-secret` in the header (default: `None`)                      |
+| NUMBER_OF_RECURRENT_NOTIFICATIONS        | How many times to retry if an error detected in sending a notification (default: `3`)                                    |
+| RECURRENT_NOTIFICATIONS_TIMEOUT          | Timeout between each retry if an error detected in sending a notification in seconds (default: `180`)                    |
+| NOTIFY_REACHED_USAGE_PERCENT             | At which percentage of usage to send the warning notification (default: `80`)                                            |
+| NOTIFY_DAYS_LEFT                         | When to send warning notifaction about expiration (default: `3`)                                                         |
+| USERS_AUTODELETE_DAYS                    | Delete expired (and optionally limited users) after this many days (Negative values disable this feature, default: `-1`) |
+| USER_AUTODELETE_INCLUDE_LIMITED_ACCOUNTS | Weather to include limited accounts in the auto-delete feature (default: `False`)                                        |
+| USE_CUSTOM_JSON_DEFAULT                  | Enable custom JSON config for ALL supported clients (default: `False`)                                                   |
+| USE_CUSTOM_JSON_FOR_V2RAYNG              | Enable custom JSON config only for V2rayNG (default: `False`)                                                            |
+| USE_CUSTOM_JSON_FOR_STREISAND            | Enable custom JSON config only for Streisand (default: `False`)                                                          |
+| USE_CUSTOM_JSON_FOR_V2RAYN               | Enable custom JSON config only for V2rayN (default: `False`)                                                             |
 
 # API
 

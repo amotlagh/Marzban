@@ -38,9 +38,9 @@ export type UserInbounds = {
 export type User = {
   proxies: ProxyType;
   expire: number | null;
-  on_hold_expire_duration: number | null;
   data_limit: number | null;
   data_limit_reset_strategy: DataLimitResetStrategy;
+  on_hold_expire_duration: number | null;
   lifetime_used_traffic: number;
   username: string;
   used_traffic: number;
@@ -59,9 +59,9 @@ export type UserCreate = Pick<
   | "inbounds"
   | "proxies"
   | "expire"
-  | "on_hold_expire_duration"
   | "data_limit"
   | "data_limit_reset_strategy"
+  | "on_hold_expire_duration"
   | "username"
   | "status"
   | "note"
