@@ -1,13 +1,13 @@
 import base64
 import json
 import urllib.parse as urlparse
+import random
+import string
+
 from random import choice
 from typing import Union
 from urllib.parse import quote
 from uuid import UUID
-
-import random # spiderX
-import string # spiderX
 
 from app.templates import render_template
 from app.subscription.funcs import get_grpc_gun, get_grpc_multi
@@ -59,7 +59,6 @@ class V2rayShareLink(str):
                 alpn=inbound.get("alpn", ""),
                 pbk=inbound.get("pbk", ""),
                 sid=inbound.get("sid", ""),
-                spx=inbound.get("spx", ""),
                 host=inbound["host"],
                 path=path,
                 type=inbound["header_type"],
@@ -85,7 +84,6 @@ class V2rayShareLink(str):
                 alpn=inbound.get("alpn", ""),
                 pbk=inbound.get("pbk", ""),
                 sid=inbound.get("sid", ""),
-                spx=inbound.get("spx", ""),
                 host=inbound["host"],
                 path=path,
                 type=inbound["header_type"],
@@ -111,7 +109,6 @@ class V2rayShareLink(str):
                 alpn=inbound.get("alpn", ""),
                 pbk=inbound.get("pbk", ""),
                 sid=inbound.get("sid", ""),
-                spx=inbound.get("spx", ""),
                 host=inbound["host"],
                 path=path,
                 type=inbound["header_type"],
@@ -151,7 +148,6 @@ class V2rayShareLink(str):
         alpn="",
         pbk="",
         sid="",
-        spx="",
         ais="",
         fs="",
         multiMode: bool = False,
@@ -191,7 +187,6 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
-            payload["spx"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
             
         if net == "grpc":
             if multiMode:
@@ -227,7 +222,6 @@ class V2rayShareLink(str):
               alpn='',
               pbk='',
               sid='',
-              spx='',
               ais='',
               fs="",
               multiMode: bool = False,
@@ -280,7 +274,6 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
-            payload["spx"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))                
 
         return (
             "vless://"
@@ -306,7 +299,6 @@ class V2rayShareLink(str):
                alpn='',
                pbk='',
                sid='',
-               spx='',
                ais='',
                fs="",
                multiMode: bool = False,
@@ -357,7 +349,6 @@ class V2rayShareLink(str):
             payload["fp"] = fp
             payload["pbk"] = pbk
             payload["sid"] = sid
-            payload["spx"] = "/" + ''.join(random.choice(string.ascii_letters) for i in range(20))
 
         return (
             "trojan://"
@@ -736,7 +727,6 @@ class V2rayJsonConfig(str):
                             alpn='',
                             pbk='',
                             sid='',
-                            spx='',
                             headers='',
                             ais='',
                             dialer_proxy='',
@@ -873,7 +863,6 @@ class V2rayJsonConfig(str):
             fp=inbound.get('fp', ''),
             pbk=inbound.get('pbk', ''),
             sid=inbound.get('sid', ''),
-            spx=inbound.get('spx', ''),
             headers=headers,
             ais=inbound.get('ais', ''),
             dialer_proxy=dialer_proxy,
