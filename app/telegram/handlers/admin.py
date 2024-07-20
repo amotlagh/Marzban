@@ -1757,7 +1757,7 @@ def confirm_user_command(call: types.CallbackQuery):
                 username=mem_store.get(f'{call.message.chat.id}:username'),
                 status='on_hold',
                 on_hold_expire_duration=int(expire_days) * 24 * 60 * 60,
-                on_hold_timeout=datetime.now() + timedelta(days=365),
+                on_hold_timeout=datetime.now() + timedelta(days=60),
                 data_limit=mem_store.get(f'{call.message.chat.id}:data_limit')
                 if mem_store.get(f'{call.message.chat.id}:data_limit') else None,
                 proxies=proxies,

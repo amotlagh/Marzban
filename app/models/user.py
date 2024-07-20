@@ -104,7 +104,7 @@ class UserCreate(User):
     username: str
     status: UserStatusCreate = None
     on_hold_timeout: Optional[datetime] = Field(
-        default_factory=lambda: datetime.now() + timedelta(days=30),
+        default_factory=lambda: datetime.now() + timedelta(days=60),
         nullable=True
     )
 
