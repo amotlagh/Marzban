@@ -283,7 +283,7 @@ class UserResponse(User):
             else:
                 admin = admin.username
             return generate_v2ray_links(
-                values.get("proxies", {}), values.get("inbounds", {}), extra_data=values, admin=admin
+                values.get("proxies", {}), values.get("inbounds", {}), extra_data=values, admin=admin, reverse=False,
             )
         return v
 
