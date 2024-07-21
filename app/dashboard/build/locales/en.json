@@ -74,7 +74,6 @@
   "userDialog.total": "Total: ",
   "userDialog.onHold" : "On Hold",
   "userDialog.onHoldExpireDuration":"Expire Duration",
-  "userDialog.active":"Active",
   "hostsDialog.title": "Using this setting, you are able to assign specific address for each inbound.",
   "hostsDialog.desc": "Use these variables to make it dynamic",
   "hostsDialog.username": "The username of the user",
