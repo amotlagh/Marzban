@@ -578,7 +578,7 @@ class V2rayJsonConfig(str):
 
         quicSettings = {
             "security": "none",
-            "header": {"none"},
+            "header": {"type": "none"}, #fixed
             "key": ""
         }
 
