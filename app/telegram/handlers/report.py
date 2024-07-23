@@ -64,7 +64,8 @@ def report_new_user(user_id: int, username: str, by: str, expire_date: int, on_h
     )
 
 
-def report_user_modification(username: str, expire_date: int, data_limit: int, proxies: list, by: str, 
+def report_user_modification(username: str, expire_date: int, on_hold_expire_duration: int, 
+                             note: str, data_limit: int, proxies: list, by: str, 
                              data_limit_reset_strategy:UserDataLimitResetStrategy, admin: Admin = None):
     text = '''\
 ✏️ <b>#Modified</b> #{username}
@@ -75,14 +76,18 @@ def report_user_modification(username: str, expire_date: int, data_limit: int, p
 <b>Protocols :</b> {protocols}
 <b>Data Limit Reset Strategy :</b> {data_limit_reset_strategy}
 ➖➖➖➖➖➖➖➖➖
+<b>Note :</b>
+{note}
+➖➖➖➖➖➖➖➖➖
 <b>Belongs To :</b> {belong_to}
 <b>By :</b> <b>#{by}</b>\
     '''.format(
         belong_to=escape_html(admin.username) if admin else None,
         by=escape_html(by),
         username=escape_html(username),
+        note=escape_html(note),
         data_limit=readable_size(data_limit) if data_limit else "Unlimited",
-        expire_date=datetime.fromtimestamp(expire_date).strftime("%Y-%m-%d %H:%M:%S") if expire_date else "Never",
+        expire_date=datetime.fromtimestamp(expire_date).strftime("%Y-%m-%d %H:%M:%S") if expire_date else (f"{int(on_hold_expire_duration/(24 * 3600))} Days (On_hold)" if on_hold_expire_duration else "Never"),
         protocols=', '.join([p for p in proxies]),
         data_limit_reset_strategy=escape_html(data_limit_reset_strategy),
     )
