@@ -56,6 +56,8 @@ def user_created(user: UserResponse, user_id: int, by: Admin, user_admin: Admin 
                 username=user.username,
                 by=by.username,
                 expire_date=user.expire,
+                on_hold_expire_duration=user.on_hold_expire_duration,
+                note=user.note,
                 data_limit=user.data_limit,
                 proxies=user.proxies,
                 data_limit_reset_strategy=user.data_limit_reset_strategy,

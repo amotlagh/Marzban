@@ -102,10 +102,8 @@ WEBHOOK_SECRET = config("WEBHOOK_SECRET", default=None)
 RECURRENT_NOTIFICATIONS_TIMEOUT = config("RECURRENT_NOTIFICATIONS_TIMEOUT", default=180, cast=int)
 # how many times to try after ok response not recevied after sending a notifications
 NUMBER_OF_RECURRENT_NOTIFICATIONS = config("NUMBER_OF_RECURRENT_NOTIFICATIONS", default=3, cast=int)
-
 # sends a notification when the user uses this much of thier data
-NOTIFY_REACHED_USAGE_PERCENT = config("NOTIFY_REACHED_USAGE_PERCENT", default=80, cast=int)
-
+NOTIFY_REACHED_USAGE_PERCENT = config("NOTIFY_REACHED_USAGE_PERCENT", default=90, cast=int)
 # sends a notification when there is n days left of their service
 NOTIFY_DAYS_LEFT = config("NOTIFY_DAYS_LEFT", default=3, cast=int)
 
@@ -114,7 +112,7 @@ DISABLE_RECORDING_USER_NODE_USAGE = config("DISABLE_RECORDING_USER_NODE_USAGE", 
 DISABLE_RECORDING_ADMIN_NODE_USAGE = config("DISABLE_RECORDING_ADMIN_NODE_USAGE", cast=bool, default=False)
 
 # headers: profile-update-interval, support-url, profile-title
-SUB_UPDATE_INTERVAL = config("SUB_UPDATE_INTERVAL", default="12")
+SUB_UPDATE_INTERVAL = config("SUB_UPDATE_INTERVAL", default="1")
 SUB_SUPPORT_URL = config("SUB_SUPPORT_URL", default="https://t.me/")
 SUB_PROFILE_TITLE = config("SUB_PROFILE_TITLE", default="Subscription")
 RANDOMIZE_SUBSCRIPTION_CONFIGS = config("RANDOMIZE_SUBSCRIPTION_CONFIGS", default=False, cast=bool)
