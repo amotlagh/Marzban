@@ -4,15 +4,13 @@
 apt update && apt upgrade -y
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
 wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
-wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
-wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat
-wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/latest/download/iran.dat
 cd ~
 git clone https://github.com/amotlagh/Marzban.git
 cd Marzban
 python3 -m pip install -r requirements.txt
 cp .env.example .env
 cp xray_config.json.example xray_config.json
+cp /root/Marzban/geoip.dat /usr/local/share/xray/geoip.dat
 alembic upgrade head
 sudo ln -s $(pwd)/marzban-cli.py /usr/bin/marzban-cli
 sudo chmod +x /usr/bin/marzban-cli
@@ -28,15 +26,12 @@ marzban-cli admin create --sudo
 ```bash
 sudo systemctl stop --now marzban.service
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
-wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
-wget -O /usr/local/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
-wget -O /usr/local/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat
-wget -O /usr/local/share/xray/iran.dat https://github.com/bootmortis/iran-hosted-domains/releases/latest/download/iran.dat
 cd ~
 rm -rf ~/temp/
 git clone https://github.com/amotlagh/Marzban.git temp
 cp -r ~/temp/* ~/Marzban/
 cd Marzban
+cp /root/Marzban/geoip.dat /usr/local/share/xray/geoip.dat
 python3 -m pip install -r requirements.txt
 alembic upgrade head
 sudo chmod +x /usr/bin/marzban-cli
@@ -134,6 +129,25 @@ net.core.default_qdisc = fq
 
 ```
 sudo sysctl -p
+```
+
+## Block Iran Network:
+
+```json
+{
+   "type":"field",
+   "source":[
+      "geoip:iran-mci",
+      "geoip:iran-tci",
+      "geoip:iran-shatel",
+      "geoip:iran-rightel",
+      "geoip:iran-asiatech"
+   ],
+   "inboundTag":[
+      
+   ],
+   "outboundTag":"blackhole"
+}
 ```
 
 
