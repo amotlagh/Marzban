@@ -120,9 +120,9 @@ sudo nano /etc/sysctl.conf
 ### Add the following lines at the end of the file:
 
 ```
-net.ipv4.tcp_syncookies = 0
-net.ipv4.tcp_congestion_control = bbr
-net.core.default_qdisc = fq
+net.core.default_qdisc=fq_codel
+net.ipv4.tcp_congestion_control=bbr
+net.mptcp.enabled=1
 ```
 
 ### Apply the changes:

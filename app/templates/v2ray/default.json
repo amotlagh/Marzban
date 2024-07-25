@@ -2,30 +2,27 @@
   "log": {
     "access": "",
     "error": "",
-    "loglevel": "none",
+    "loglevel": "warning",
     "dnsLog": false
   },
   "dns": {
-    "tag": "dns",
+    "tag": "dns-in",
     "servers": [
-      "8.8.8.8",
-      "8.8.4.4",
-      "94.140.14.14",
-      "94.140.15.15",
-      "2a10:50c0::ad1:ff",
-      "2a10:50c0::ad2:ff"
+      "https://8.8.8.8/dns-query",
+      "https://8.8.4.4/dns-query"
     ]
   },
   "inbounds": [
     {
-      "domainOverride": ["http", "tls"],
       "tag": "socks",
       "port": 10808,
       "listen": "0.0.0.0",
       "protocol": "socks",
       "sniffing": {
-        "enabled": false,
-        "destOverride": ["http", "tls"]
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "routeOnly": false,
+        "metadataOnly": true
       },
       "settings": {
         "auth": "noauth",
@@ -39,8 +36,10 @@
       "listen": "0.0.0.0",
       "protocol": "http",
       "sniffing": {
-        "enabled": false,
-        "destOverride": ["http", "tls"]
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "routeOnly": false,
+        "metadataOnly": true
       },
       "settings": {
         "auth": "noauth",
@@ -68,7 +67,7 @@
     },
     {
       "protocol": "dns",
-      "tag": "dns_out"
+      "tag": "dns-out"
     }
   ],
   "routing": {
@@ -76,10 +75,10 @@
     "domainMatcher": "hybrid",
     "rules": [
       {
-        "inboundTag": ["socks", "http"],
+        "inboundTag": ["dns-in"],
         "type": "field",
         "port": "53",
-        "outboundTag": "dns_out",
+        "outboundTag": "dns-out",
         "enabled": true
       },
       {
