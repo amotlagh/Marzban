@@ -793,10 +793,21 @@ class V2rayJsonConfig(str):
 
         if dialer_proxy:
             sockopt = {
-                "dialerProxy": dialer_proxy
+                "dialerProxy": dialer_proxy,
+                "mark": 255,
+                "tcpcongestion": "bbr",
+                "interface": "wg0",
+                "tcpMptcp": True,
+                "tcpNoDelay": True,
             }
         else:
-            sockopt = None
+            sockopt = {
+                "mark": 255,
+                "tcpcongestion": "bbr",
+                "interface": "wg0",
+                "tcpMptcp": True,
+                "tcpNoDelay": True,
+            }
 
         streamSettings = self.stream_setting_config(network=net, security=tls,
                                                     network_setting=network_setting,
