@@ -26,14 +26,15 @@
       },
       {
         "rule_set": [
-          "geosite-ir"
+          "geosite-ir",
+          "geoip-ir"
         ],
         "server": "direct-dns"
       }
     ],
     "servers": [
       {
-        "address": "tcp://8.8.8.8",
+        "address": "https://8.8.8.8/dns-query",
         "address_resolver": "local-dns",
         "detour": "proxy",
         "tag": "proxy-dns"
@@ -48,7 +49,7 @@
         "tag": "block"
       },
       {
-        "address": "tcp://8.8.8.8",
+        "address": "https://8.8.8.8/dns-query",
         "detour": "direct",
         "tag": "direct-dns"
       }
