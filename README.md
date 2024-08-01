@@ -1,3 +1,156 @@
+# Install:
+
+```bash
+apt update && apt upgrade -y
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
+cd ~
+git clone https://github.com/amotlagh/Marzban.git
+cd Marzban
+python3 -m pip install -r requirements.txt
+cp .env.example .env
+cp xray_config.json.example xray_config.json
+cp /root/Marzban/geoip.dat /usr/local/share/xray/geoip.dat
+alembic upgrade head
+sudo ln -s $(pwd)/marzban-cli.py /usr/bin/marzban-cli
+sudo chmod +x /usr/bin/marzban-cli
+marzban-cli completion install
+sudo chmod +x install_service.sh
+sudo ./install_service.sh
+sudo systemctl enable --now marzban.service
+marzban-cli admin create --sudo
+```
+
+# Update:
+
+```bash
+sudo systemctl stop --now marzban.service
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+cd ~
+rm -rf ~/temp/
+git clone https://github.com/amotlagh/Marzban.git temp
+cp -r ~/temp/* ~/Marzban/
+cd Marzban
+cp /root/Marzban/geoip.dat /usr/local/share/xray/geoip.dat
+python3 -m pip install -r requirements.txt
+alembic upgrade head
+sudo chmod +x /usr/bin/marzban-cli
+marzban-cli completion install
+sudo chmod +x install_service.sh
+sudo ./install_service.sh
+sudo systemctl enable --now marzban.service
+```
+
+---
+
+## Change to mysql:
+
+```
+apt install mysql-server sqlite3
+```
+
+```
+sudo mysql_secure_installation
+```
+
+```
+mysql
+```
+
+```
+SET GLOBAL validate_password.policy = LOW;
+```
+
+```
+CREATE DATABASE db_name;
+```
+
+```
+CREATE USER 'db_user'@'%' IDENTIFIED WITH mysql_native_password BY 'db_password';
+```
+
+```
+GRANT ALL ON db_name.* TO 'db_user'@'%';
+```
+
+```
+exit
+```
+
+```
+nano ~/Marzban/.env
+```
+
+```
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://DB_USER:DB_PASS@127.0.0.1/DB_NAME"
+MYSQL_ROOT_PASSWORD = "DB_PASS"
+```
+
+```
+sqlite3 /root/Marzban/db.sqlite3 '.dump --data-only' | sed "s/INSERT INTO \([^ ]*\)/REPLACE INTO \`\\1\`/g" > /tmp/dump.sql
+```
+
+```
+systemctl restart marzban
+```
+
+```
+cd ~/Marzban/
+alembic upgrade head
+```
+
+```
+mysql -u db_user -p -h 127.0.0.1 marzban -e "SET FOREIGN_KEY_CHECKS = 0; SET NAMES utf8mb4; SOURCE /tmp/dump.sql;"
+```
+
+```
+rm /tmp/dump.sql
+```
+
+---
+
+## Optimize server:
+
+### Open the sysctl configuration file:
+
+```
+sudo nano /etc/sysctl.conf
+```
+
+### Add the following lines at the end of the file:
+
+```
+net.ipv4.tcp_syncookies = 0
+net.core.default_qdisc=fq_codel
+net.ipv4.tcp_congestion_control=bbr
+net.mptcp.enabled=1
+```
+
+### Apply the changes:
+
+```
+sudo sysctl -p
+```
+
+## Block Iran Network:
+
+```json
+{
+   "type":"field",
+   "source":[
+      "geoip:iran-mci",
+      "geoip:iran-tci",
+      "geoip:iran-shatel",
+      "geoip:iran-rightel",
+      "geoip:iran-asiatech"
+   ],
+   "inboundTag":[
+      
+   ],
+   "outboundTag":"blackhole"
+}
+```
+
 <p align="center">
   <a href="https://github.com/gozargah/marzban" target="_blank" rel="noopener noreferrer">
     <picture>
