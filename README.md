@@ -7,6 +7,9 @@ wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
 cd ~
 git clone https://github.com/amotlagh/Marzban.git
 cd Marzban
+python3 -m pip install virtualenv
+python3 -m virtualenv .venv
+source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 cp .env.example .env
 cp xray_config.json.example xray_config.json
@@ -35,6 +38,9 @@ rm -rf ~/Marzban/xray_api/
 cp -r ~/temp/* ~/Marzban/
 cd Marzban
 cp /root/Marzban/geoip.dat /usr/local/share/xray/geoip.dat
+python3 -m pip install virtualenv
+python3 -m virtualenv .venv
+source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 alembic upgrade head
 sudo chmod +x /usr/bin/marzban-cli
