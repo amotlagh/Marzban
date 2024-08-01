@@ -14,6 +14,7 @@ python3 -m pip install -r requirements.txt
 cp .env.example .env
 cp xray_config.json.example xray_config.json
 cp /root/Marzban/geoip.dat /usr/local/share/xray/geoip.dat
+pip install --upgrade pip
 alembic upgrade head
 deactivate
 sudo ln -s $(pwd)/marzban-cli.py /usr/bin/marzban-cli
@@ -43,6 +44,7 @@ python3 -m pip install virtualenv
 python3 -m virtualenv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
+pip install --upgrade pip
 alembic upgrade head
 deactivate
 sudo systemctl enable --now marzban.service
