@@ -29,6 +29,9 @@ bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release
 cd ~
 rm -rf ~/temp/
 git clone https://github.com/amotlagh/Marzban.git temp
+rm -rf ~/Marzban/app/
+rm -rf ~/Marzban/cli/
+rm -rf ~/Marzban/xray_api/
 cp -r ~/temp/* ~/Marzban/
 cd Marzban
 cp /root/Marzban/geoip.dat /usr/local/share/xray/geoip.dat
