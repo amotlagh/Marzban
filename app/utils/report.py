@@ -200,24 +200,3 @@ def login(username: str, password: str, client_ip: str, success: bool) -> None:
             )
         except Exception:
             pass
-
-
-def node_error_monitoring(node: NodeResponse) -> None:
-    try:
-        telegram.report_node_error(
-            name=node.name,
-            status=node.status,
-            xray=node.xray_version if node.xray_version else "None",
-            error=node.message if node.message else "None"
-        )
-    except Exception:
-        pass
-    try:
-        discord.report_node_error(
-            name=node.name,
-            status=node.status,
-            xray=node.xray_version if node.xray_version else "None",
-            error=node.message if node.message else "None"
-        )
-    except Exception:
-        pass
