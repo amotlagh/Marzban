@@ -250,17 +250,18 @@ def process_inbounds_and_tags(
         ],
         reverse=False,
 ) -> Union[List, str]:
+
     _inbounds = []
     for protocol, tags in inbounds.items():
         for tag in tags:
-            _inbounds.append((protocol, [tag]))
-    index_dict = {proxy: index for index, proxy in enumerate(
-        xray.config.inbounds_by_tag.keys())}
-    inbounds = sorted(
-        _inbounds, key=lambda x: index_dict.get(x[1][0], float('inf')))
+            tag_parts = [part.strip() for part in tag.split('+')]
+            if admin in tag_parts:
+                _inbounds.append((protocol, [tag]))
+    index_dict = {proxy: index for index, proxy in enumerate(xray.config.inbounds_by_tag.keys())}
+    inbounds = sorted(_inbounds, key=lambda x: index_dict.get(x[1][0], float('inf')))
 
     all_hosts = []
-
+    
     for protocol, tags in inbounds:
         settings = proxies.get(protocol)
         if not settings:
@@ -273,28 +274,26 @@ def process_inbounds_and_tags(
                 continue
 
             format_variables.update({"TRANSPORT": inbound["network"]})
-
+            host_inbound = inbound.copy()
             for host in xray.hosts.get(tag, []):
-                host_inbound = inbound.copy()
-                
                 sni = ""
-                sni_list = host["sni"] or inbound["sni"]
-                if sni_list:
-                    salt = secrets.token_hex(8)
-                    sni = random.choice(sni_list).replace("*", salt)
-
                 req_host = ""
+                sni_list = host["sni"] or inbound["sni"]
                 req_host_list = host["host"] or inbound["host"]
-                if req_host_list:
-                    salt = secrets.token_hex(8)
-                    req_host = random.choice(req_host_list).replace("*", salt)
-                
-                address = ""
-                address_list = host['address']
+
+                if sni_list and req_host_list and len(sni_list) == len(req_host_list):
+                    index = random.randint(0, len(sni_list) - 1)
+                    sni = sni_list[index].replace("*", secrets.token_hex(8))
+                    req_host = req_host_list[index].replace("*", secrets.token_hex(8))
+                else:
+                    if sni_list:
+                        sni = random.choice(sni_list).replace("*", secrets.token_hex(8))
+                    if req_host_list:
+                        req_host = random.choice(req_host_list).replace("*", secrets.token_hex(8))
+
                 if host['address']:
                     salt = secrets.token_hex(8)
-                    address = random.choice(address_list).replace('*', salt)
-                
+                    address = host['address'].replace('*', salt)
                 if host["path"] is not None:
                     path = host["path"].format_map(format_variables)
                 else:
