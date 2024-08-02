@@ -44,20 +44,12 @@ TELEGRAM_DEFAULT_VLESS_FLOW = config("TELEGRAM_DEFAULT_VLESS_FLOW", default="")
 JWT_ACCESS_TOKEN_EXPIRE_MINUTES = config("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", cast=int, default=1440)
 
 CUSTOM_TEMPLATES_DIRECTORY = config("CUSTOM_TEMPLATES_DIRECTORY", default=None)
+CLASH_SUBSCRIPTION_TEMPLATE = config("CLASH_SUBSCRIPTION_TEMPLATE", default="clash/default.yml")
 SUBSCRIPTION_PAGE_TEMPLATE = config("SUBSCRIPTION_PAGE_TEMPLATE", default="subscription/index.html")
 HOME_PAGE_TEMPLATE = config("HOME_PAGE_TEMPLATE", default="home/index.html")
-
-CLASH_SUBSCRIPTION_TEMPLATE = config("CLASH_SUBSCRIPTION_TEMPLATE", default="clash/default.yml")
-CLASH_SETTINGS_TEMPLATE = config("CLASH_SETTINGS_TEMPLATE", default="clash/settings.yml")
-
 SINGBOX_SUBSCRIPTION_TEMPLATE = config("SINGBOX_SUBSCRIPTION_TEMPLATE", default="singbox/default.json")
-SINGBOX_SETTINGS_TEMPLATE = config("SINGBOX_SETTINGS_TEMPLATE", default="singbox/settings.json")
-
 MUX_TEMPLATE = config("MUX_TEMPLATE", default="mux/default.json")
-
 V2RAY_SUBSCRIPTION_TEMPLATE = config("V2RAY_SUBSCRIPTION_TEMPLATE", default="v2ray/default.json")
-V2RAY_SETTINGS_TEMPLATE = config("V2RAY_SETTINGS_TEMPLATE", default="v2ray/settings.json")
-
 USER_AGENT_TEMPLATE = config("USER_AGENT_TEMPLATE", default="user_agent/default.json")
 GRPC_USER_AGENT_TEMPLATE = config("GRPC_USER_AGENT_TEMPLATE", default="user_agent/grpc.json")
 
@@ -79,7 +71,7 @@ NOTIFY_USER_DATA_USED_RESET = config("NOTIFY_USER_DATA_USED_RESET", default=True
 NOTIFY_USER_SUB_REVOKED = config("NOTIFY_USER_SUB_REVOKED", default=True, cast=bool)
 NOTIFY_DATA_USAGE_PERCENT_REACHED = config("NOTIFY_DATA_USAGE_PERCENT_REACHED", default=True, cast=bool)
 NOTIFY_DAYS_LEFT = config("NOTIFY_DAYS_LEFT", default=True, cast=bool)
-NOTIFY_LOGIN = config("NOTIFY_LOGIN", default=True, cast=bool)
+NOTIFY_LOGIN = config("NOTIFY_LOGIN", default=False, cast=bool)
 
 ACTIVE_STATUS_TEXT = config("ACTIVE_STATUS_TEXT", default="Active")
 EXPIRED_STATUS_TEXT = config("EXPIRED_STATUS_TEXT", default="Expired")
@@ -110,10 +102,8 @@ WEBHOOK_SECRET = config("WEBHOOK_SECRET", default=None)
 RECURRENT_NOTIFICATIONS_TIMEOUT = config("RECURRENT_NOTIFICATIONS_TIMEOUT", default=180, cast=int)
 # how many times to try after ok response not recevied after sending a notifications
 NUMBER_OF_RECURRENT_NOTIFICATIONS = config("NUMBER_OF_RECURRENT_NOTIFICATIONS", default=3, cast=int)
-
 # sends a notification when the user uses this much of thier data
-NOTIFY_REACHED_USAGE_PERCENT = config("NOTIFY_REACHED_USAGE_PERCENT", default=80, cast=int)
-
+NOTIFY_REACHED_USAGE_PERCENT = config("NOTIFY_REACHED_USAGE_PERCENT", default=90, cast=int)
 # sends a notification when there is n days left of their service
 NOTIFY_DAYS_LEFT = config("NOTIFY_DAYS_LEFT", default=3, cast=int)
 
@@ -122,7 +112,7 @@ DISABLE_RECORDING_USER_NODE_USAGE = config("DISABLE_RECORDING_USER_NODE_USAGE", 
 DISABLE_RECORDING_ADMIN_NODE_USAGE = config("DISABLE_RECORDING_ADMIN_NODE_USAGE", cast=bool, default=False)
 
 # headers: profile-update-interval, support-url, profile-title
-SUB_UPDATE_INTERVAL = config("SUB_UPDATE_INTERVAL", default="12")
+SUB_UPDATE_INTERVAL = config("SUB_UPDATE_INTERVAL", default="1")
 SUB_SUPPORT_URL = config("SUB_SUPPORT_URL", default="https://t.me/")
 SUB_PROFILE_TITLE = config("SUB_PROFILE_TITLE", default="Subscription")
 RANDOMIZE_SUBSCRIPTION_CONFIGS = config("RANDOMIZE_SUBSCRIPTION_CONFIGS", default=False, cast=bool)
