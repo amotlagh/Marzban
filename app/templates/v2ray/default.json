@@ -1,106 +1,221 @@
 {
 	"log": {
-		"loglevel": "warning"
+	  "loglevel": "warning"
 	},
 	"dns": {
-		"tag": "dns_out",
-		"servers": [
-			"https://8.8.8.8/dns-query",
-			"https://8.8.4.4/dns-query"
-		],
-		"queryStrategy": "UseIP"
+	  "tag": "dns_out",
+	  "servers": [
+	    "https://8.8.8.8/dns-query",
+	    "https://8.8.4.4/dns-query"
+	  ],
+	  "queryStrategy": "UseIP"
 	},
-	"inbounds": [{
-			"tag": "socks",
-			"port": 10808,
-			"listen": "0.0.0.0",
-			"protocol": "socks",
-			"sniffing": {
-				"enabled": true,
-				"destOverride": ["http", "tls", "quic", "fakedns"],
-				"routeOnly": false,
-				"metadataOnly": true
-			},
-			"settings": {
-				"auth": "noauth",
-				"udp": true,
-				"userLevel": 8
-			}
-		},
-		{
-			"tag": "http",
-			"port": 10809,
-			"listen": "0.0.0.0",
-			"protocol": "http",
-			"sniffing": {
-				"enabled": true,
-				"destOverride": ["http", "tls", "quic", "fakedns"],
-				"routeOnly": false,
-				"metadataOnly": true
-			},
-			"settings": {
-				"auth": "noauth",
-				"udp": true,
-				"userLevel": 8
-			}
-		}
+	"inbounds": [
+	  {
+	    "tag": "socks",
+	    "port": 10808,
+	    "listen": "0.0.0.0",
+	    "protocol": "socks",
+	    "sniffing": {
+		 "enabled": true,
+		 "destOverride": [
+		   "http",
+		   "tls",
+		   "quic",
+		   "fakedns"
+		 ],
+		 "routeOnly": false,
+		 "metadataOnly": true
+	    },
+	    "settings": {
+		 "auth": "noauth",
+		 "udp": true,
+		 "userLevel": 8
+	    }
+	  },
+	  {
+	    "tag": "http",
+	    "port": 10809,
+	    "listen": "0.0.0.0",
+	    "protocol": "http",
+	    "sniffing": {
+		 "enabled": true,
+		 "destOverride": [
+		   "http",
+		   "tls",
+		   "quic",
+		   "fakedns"
+		 ],
+		 "routeOnly": false,
+		 "metadataOnly": true
+	    },
+	    "settings": {
+		 "auth": "noauth",
+		 "udp": true,
+		 "userLevel": 8
+	    }
+	  }
 	],
-	"outbounds": [{
-			"tag": "direct",
-			"protocol": "freedom",
-			"settings": {}
-		},
-		{
-			"protocol": "blackhole",
-			"settings": {
-				"response": {
-					"type": "http"
-				}
-			},
-			"tag": "blackhole"
-		}
+	"outbounds": [
+	  {
+	    "tag": "direct",
+	    "protocol": "freedom",
+	    "settings": {}
+	  },
+	  {
+	    "protocol": "blackhole",
+	    "settings": {
+		 "response": {
+		   "type": "http"
+		 }
+	    },
+	    "tag": "blackhole"
+	  }
 	],
 	"policy": {
-		"system": {
-			"statsOutboundDownlink": true,
-			"statsOutboundUplink": true
-		}
+	  "system": {
+	    "statsOutboundDownlink": true,
+	    "statsOutboundUplink": true
+	  }
 	},
 	"routing": {
-		"domainStrategy": "IPIfNonMatch",
-		"rules": [{
-				"type": "field",
-				"outboundTag": "blackhole",
-				"domain": ["adivery", "kaprila", "najva", "sabavision", "evt.mxplay.com", "cdnst.net"]
-			},
-			{
-				"type": "field",
-				"outboundTag": "direct",
-				"domain": [
-					"regexp:.*\\.ir$", "regexp:.*\\.local$", "divar", "aparat", "flightio", "taaghche.com", "mrbilit", "estekhdam", "abrha", "arzex", "digiato.com", "namavid", "netafraz", "gisoom.com", "zarinexpress", "safarmarket.com", "dalfak", "datisnetwork", "eligasht.com", "ipnumberia", "iranserver", "mihanwebhost", "parsonline", "picofile", "pishgaman", "sarmayex", "basalam", "sarzamindownload", "skyroom", "smshooshmand", "yasdl", "khanoumi", "zhaket", "19kala", "arzdigital", "janebi", "banimode", "sahamyab", "istgah", "uploadboy", "upmusics", "iran-tejarat", "heyvagroup", "digistyle", "maktabkhooneh", "doostihaa", "mihanwp", "sheypoor", "niazerooz", "uptvs", "sanjesh", "music-fa", "abzarwp", "asanpardakht", "behpardakht", "mydigipay", "weswap", "asriran", "eghtesadnews", "fararu", "faradars", "motamem", "rtl-theme", "iranecar", "agah", "parspack", "hawzahnews", "iraneconomist", "mehrnews", "parsine", "qodsna", "sobhanehonline", "tasnimnews", "tejaratnews", "7sobh", "abrarnews", "zabannavid.com", "navidbook.com", "donya-e-eqtesad", "ebtekarnews", "ettelaat", "financialtribune", "cinematicket", "bimeh", "bimehasia", "bimeonline", "dana-insurance", "dayins", "hafezinsurance", "mellatinsurance", "novininsurance", "sinainsurance", "toplearn", "iranlms", "arman-ati", "bourseiness", "talarebourse", "abanbroker", "bahmanbroker", "bkisecurities", "bmibourse", "bt-broker", "danabroker", "emofid", "mofidonline", "etminansahm", "hafezbourse", "irfarabi", "maskanbourse", "mellatbroker", "novinbourse", "oibroker", "omidsahm", "saderatbourse", "samanbourse", "saderatbourse", "samanbourse", "sdbhouse", "sepahbourse", "sepahbourse", "tadbirgar", "abantether", "bit24", "exir", "farhad-exchange", "jibitex", "ok-ex", "ompfinex", "ramzinex", "tabdeal", "tetherland", "civilica", "gap.im", "gaplication.com", "niniban", "ninisite", "virasty", "neshan", "karnameh", "khodro45", "saipacorp", "jobinja", "beytoote", "setare", "ifilo", "tebyan", "paziresh24.com", "doctoreto", "agri-bank", "ansarbank", "blubank", "hibank24", "parsian-bank", "digikala", "speedtest", "telewebion", "varzesh3", "namnak.com", "namasha.com", "filimo", "tapsi", "eitaa", "snapp", "microsoft", "windows", "cafebazaar", "farsroid.com", "sb24.com", "torob", "tgju", "downloadha", "soft98", "p30download", "sanjesh", "intrack", "irancell", "mellat", "bsi", "zarinpal", "nobitex", "virgool", "bitpin", "bmi", "mci", "wikipedia", "tamasha", "freeserver", "coin2coin", "avidonline", "speedcheck.ir", "fast.com", "speedcheck.org", "speed.io", "bale", "rubika", "igap", "fonts.gstatic.com"
-				]
-			},
-			{
-				"type": "field",
-				"outboundTag": "direct",
-				"ip": [
-					"185.143.232.0/22",
-          "92.114.16.80/28",
-          "188.229.116.16/29",
-          "94.182.182.28/30",
-          "94.182.153.24/29",
-          "94.101.182.0/27",
-          "2.144.3.128/28",
-          "89.45.48.64/28",
-          "37.32.16.0/27",
-          "37.32.17.0/27",
-          "37.32.18.0/27",
-          "37.32.19.0/27",
-          "185.215.232.0/22",
-          "109.230.200.48/29"
-				]
-			}
-		]
+	  "domainStrategy": "IPIfNonMatch",
+	  "rules": [
+	    {
+		 "type": "field",
+		 "outboundTag": "blackhole",
+		 "domain": [
+		   "adivery",
+		   "kaprila",
+		   "najva",
+		   "sabavision",
+		   "evt.mxplay.com",
+		   "cdnst.net"
+		 ]
+	    },
+	    {
+		 "type": "field",
+		 "outboundTag": "direct",
+		 "domain": [
+		   "regexp:.*\\.ir$",
+		   "regexp:.*\\.local$",
+		   "divar",
+		   "aparat",
+		   "flightio",
+		   "taaghche.com",
+		   "mrbilit",
+		   "digikala",
+		   "digistyle",
+		   "namavid",
+		   "zarinexpress",
+		   "dalfak",
+		   "datisnetwork",
+		   "eligasht.com",
+		   "picofile",
+		   "basalam",
+		   "sarzamindownload",
+		   "skyroom",
+		   "yasdl",
+		   "khanoumi",
+		   "zhaket",
+		   "banimode",
+		   "uploadboy",
+		   "upmusics",
+		   "iran-tejarat",
+		   "maktabkhooneh",
+		   "sheypoor",
+		   "uptvs",
+		   "sanjesh",
+		   "music-fa",
+		   "abzarwp",
+		   "asanpardakht",
+		   "behpardakht",
+		   "mydigipay",
+		   "asriran",
+		   "iranecar",
+		   "agah",
+		   "zabannavid.com",
+		   "navidbook.com",
+		   "gap.im",
+		   "gaplication.com",
+		   "niniban",
+		   "ninisite",
+		   "virasty",
+		   "neshan",
+		   "karnameh",
+		   "khodro45",
+		   "saipacorp",
+		   "jobinja",
+		   "beytoote",
+		   "setare",
+		   "ifilo",
+		   "tebyan",
+		   "paziresh24.com",
+		   "doctoreto",
+		   "blubank",
+		   "hibank24",
+		   "parsian-bank",
+		   "speedtest",
+		   "telewebion",
+		   "varzesh3",
+		   "namnak.com",
+		   "namasha.com",
+		   "filimo",
+		   "tapsi",
+		   "eitaa",
+		   "snapp",
+		   "microsoft",
+		   "windows",
+		   "cafebazaar",
+		   "farsroid.com",
+		   "sb24.com",
+		   "torob",
+		   "tgju",
+		   "downloadha",
+		   "soft98",
+		   "p30download",
+		   "intrack",
+		   "irancell",
+		   "mellat",
+		   "bsi",
+		   "zarinpal",
+		   "nobitex",
+		   "virgool",
+		   "bitpin",
+		   "bmi",
+		   "mci",
+		   "tamasha",
+		   "freeserver",
+		   "coin2coin",
+		   "fast.com",
+		   "speedcheck.org",
+		   "speed.io",
+		   "bale",
+		   "rubika",
+		   "igap"
+		 ]
+	    },
+	    {
+		 "type": "field",
+		 "outboundTag": "direct",
+		 "ip": [
+		   "185.143.232.0/22",
+		   "92.114.16.80/28",
+		   "188.229.116.16/29",
+		   "94.182.182.28/30",
+		   "94.182.153.24/29",
+		   "94.101.182.0/27",
+		   "2.144.3.128/28",
+		   "89.45.48.64/28",
+		   "37.32.16.0/27",
+		   "37.32.17.0/27",
+		   "37.32.18.0/27",
+		   "37.32.19.0/27",
+		   "185.215.232.0/22",
+		   "109.230.200.48/29"
+		 ]
+	    }
+	  ]
 	},
 	"stats": {}
-}
+   }
