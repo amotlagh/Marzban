@@ -3,10 +3,14 @@
 	  "loglevel": "warning"
 	},
 	"dns": {
-	  "tag": "dns_out",
+	  "tag": "dns",
+	  "hosts": {
+	    "8.8.8.8": [
+		 "8.8.8.8"
+	    ]
+	  },
 	  "servers": [
-	    "https://8.8.8.8/dns-query",
-	    "https://8.8.4.4/dns-query"
+	    "https://8.8.8.8/dns-query"
 	  ],
 	  "queryStrategy": "UseIP"
 	},
@@ -21,8 +25,7 @@
 		 "destOverride": [
 		   "http",
 		   "tls",
-		   "quic",
-		   "fakedns"
+		   "quic"
 		 ],
 		 "routeOnly": false,
 		 "metadataOnly": true
@@ -38,20 +41,7 @@
 	    "port": 10809,
 	    "listen": "0.0.0.0",
 	    "protocol": "http",
-	    "sniffing": {
-		 "enabled": true,
-		 "destOverride": [
-		   "http",
-		   "tls",
-		   "quic",
-		   "fakedns"
-		 ],
-		 "routeOnly": false,
-		 "metadataOnly": true
-	    },
 	    "settings": {
-		 "auth": "noauth",
-		 "udp": true,
 		 "userLevel": 8
 	    }
 	  }
@@ -70,6 +60,10 @@
 		 }
 	    },
 	    "tag": "blackhole"
+	  },
+	  {
+	    "protocol": "dns",
+	    "tag": "dns_out"
 	  }
 	],
 	"policy": {
@@ -82,6 +76,20 @@
 	  "domainStrategy": "IPIfNonMatch",
 	  "rules": [
 	    {
+		 "ip": [
+		   "8.8.8.8",
+		   "1.1.1.1"
+		 ],
+		 "port": "53",
+		 "outboundTag": "proxy"
+	    },
+	    {
+		 "domain": [
+		   "8.8.8.8"
+		 ],
+		 "outboundTag": "proxy"
+	    },
+	    {
 		 "type": "field",
 		 "outboundTag": "blackhole",
 		 "domain": [
@@ -90,7 +98,8 @@
 		   "najva",
 		   "sabavision",
 		   "evt.mxplay.com",
-		   "cdnst.net"
+		   "cdnst.net",
+		   "yektanet"
 		 ]
 	    },
 	    {
@@ -104,61 +113,53 @@
 		   "flightio",
 		   "taaghche.com",
 		   "mrbilit",
-		   "digikala",
-		   "digistyle",
 		   "namavid",
-		   "zarinexpress",
 		   "dalfak",
-		   "datisnetwork",
-		   "eligasht.com",
+		   "ipnumberia",
 		   "picofile",
 		   "basalam",
 		   "sarzamindownload",
 		   "skyroom",
 		   "yasdl",
 		   "khanoumi",
-		   "zhaket",
+		   "janebi",
 		   "banimode",
 		   "uploadboy",
-		   "upmusics",
-		   "iran-tejarat",
+		   "digistyle",
 		   "maktabkhooneh",
 		   "sheypoor",
 		   "uptvs",
 		   "sanjesh",
 		   "music-fa",
-		   "abzarwp",
 		   "asanpardakht",
 		   "behpardakht",
 		   "mydigipay",
-		   "asriran",
+		   "faradars",
+		   "motamem",
 		   "iranecar",
-		   "agah",
 		   "zabannavid.com",
 		   "navidbook.com",
-		   "gap.im",
-		   "gaplication.com",
-		   "niniban",
-		   "ninisite",
-		   "virasty",
+		   "cinematicket",
+		   "bimeh",
+		   "bimehasia",
+		   "bimeonline",
+		   "insurance",
+		   "dayins",
+		   "toplearn",
+		   "iranlms",
+		   "civilica",
 		   "neshan",
 		   "karnameh",
 		   "khodro45",
 		   "saipacorp",
-		   "jobinja",
-		   "beytoote",
-		   "setare",
 		   "ifilo",
-		   "tebyan",
 		   "paziresh24.com",
 		   "doctoreto",
+		   "goftino",
 		   "blubank",
-		   "hibank24",
-		   "parsian-bank",
+		   "digikala",
 		   "speedtest",
 		   "telewebion",
-		   "varzesh3",
-		   "namnak.com",
 		   "namasha.com",
 		   "filimo",
 		   "tapsi",
@@ -174,16 +175,9 @@
 		   "downloadha",
 		   "soft98",
 		   "p30download",
-		   "intrack",
 		   "irancell",
-		   "mellat",
-		   "bsi",
 		   "zarinpal",
-		   "nobitex",
 		   "virgool",
-		   "bitpin",
-		   "bmi",
-		   "mci",
 		   "tamasha",
 		   "freeserver",
 		   "coin2coin",
@@ -212,8 +206,74 @@
 		   "37.32.18.0/27",
 		   "37.32.19.0/27",
 		   "185.215.232.0/22",
-		   "109.230.200.48/29"
+		   "109.230.200.48/29",
+		   "185.166.106.0/24",
+		   "185.166.104.0/24",
+		   "194.34.163.0/24",
+		   "91.228.132.0/24",
+		   "91.228.133.0/24",
+		   "91.229.46.0/24",
+		   "91.229.47.0/24",
+		   "185.80.198.0/24",
+		   "185.80.198.0/23",
+		   "185.147.176.0/24",
+		   "185.147.176.0/22",
+		   "185.147.177.0/24",
+		   "185.147.178.0/24",
+		   "185.147.179.0/24",
+		   "188.209.116.0/24",
+		   "188.209.116.0/22",
+		   "185.80.199.0/24",
+		   "188.209.117.0/24",
+		   "188.209.118.0/24",
+		   "188.209.119.0/24",
+		   "185.188.104.0/24",
+		   "185.188.107.0/24",
+		   "185.188.105.0/24",
+		   "185.188.106.0/24",
+		   "91.232.64.0/24",
+		   "91.232.65.0/24",
+		   "91.232.66.0/24",
+		   "91.232.67.0/24",
+		   "91.232.68.0/24",
+		   "91.232.69.0/24",
+		   "185.210.200.0/24",
+		   "185.210.201.0/24",
+		   "185.210.202.0/24",
+		   "185.210.203.0/24",
+		   "82.99.224.0/24",
+		   "185.120.171.0/24",
+		   "89.235.64.0/22",
+		   "89.235.64.0/24",
+		   "89.235.65.0/24",
+		   "89.235.66.0/24",
+		   "89.235.67.0/24",
+		   "185.135.28.0/22",
+		   "185.135.28.0/24",
+		   "185.135.29.0/24",
+		   "185.135.30.0/24",
+		   "185.135.31.0/24",
+		   "79.127.46.0/24",
+		   "87.107.93.0/24",
+		   "176.56.156.0/23",
+		   "176.56.156.0/24",
+		   "176.56.156.0/22",
+		   "176.56.157.0/24",
+		   "176.56.158.0/24",
+		   "185.185.240.0/24",
+		   "185.185.240.0/22",
+		   "185.185.241.0/24",
+		   "185.185.242.0/24",
+		   "185.185.243.0/24",
+		   "185.223.47.0/24",
+		   "185.223.44.0/24",
+		   "185.223.45.0/24",
+		   "185.223.46.0/24"
 		 ]
+	    },
+	    {
+		 "outboundTag": "proxy",
+		 "port": "1-65535"
 	    }
 	  ]
 	},
