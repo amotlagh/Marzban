@@ -1,4 +1,19 @@
-// @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+.bg-blue-animate {
+  animation: blur-animate 200ms ease-in;
+  backdrop-filter: blur(10px);
+}
+
+@keyframes blur-animate {
+  from {
+    backdrop-filter: blur(1px);
+  }
+
+  to {
+    backdrop-filter: blur(10px);
+  }
+}
 
 .animate-spin {
   animation: spin 1s linear infinite;
@@ -199,6 +214,10 @@ table thead {
 
 .orange {
   background: #fbd38d;
+}
+
+.bx-shadow {
+  box-shadow: 0px 0px 8px 3px rgb(230 221 221 / 10%);
 }
 
 .circle {

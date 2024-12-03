@@ -1,1393 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="robots" content="noindex, nofollow, noarchive" />
-    <title>{{ user.username }}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script>
-      const userlinks = {{ user.links }};
-      const userlinksC = userlinks.join('\n');
-      const userlinksCEncoded = btoa(userlinksC);
-    </script>
+<html>
+
+<head>
+    <title>Subscription Information</title>
     <style>
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        background: #fff;
-        line-height: normal;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        direction: ltr;
-        font-family: "Inter", "Vazirmatn", sans-serif;
-        font-optical-sizing: auto;
-        font-style: normal;
-        direction: rtl;
-      }
-      img{
-        width:100% !important;
-      }
-      canvas{
-        width:100% !important;
-      }
-      code{
-        font-family: monospace;
-    background: #081211;
-    border-radius: 10px;
-    display: block;
-    direction: ltr;
-    text-align: left;
-    padding: 1em;
-    color: #22cad3;
-      }
-      .profile-card {
-        position: relative;
-        border-radius: 1rem;
-        background: #fff;
-        width: 20rem;
-        margin-top: 35px;
-        margin-bottom: 130px;
-        box-shadow: 0px 13px 14px -2px #00000036;
-      }
-      .profile-card__avatar {
-        width: 80px;
-        height: 80px;
-        position: absolute;
-        border: 2px solid #000;
-        -o-object-fit: cover;
-        object-fit: cover;
-        box-shadow: 0 2px 0 #000;
-        top: 0;
-        left: 50%;
-        transform: translate(-50%, -80%);
-        border-radius: 1rem;
-        display: none;
-      }
-      .profile-card__bio {
-        background: #081211;
-        padding: 2rem 2rem 3rem;
-        text-align: center;
-        border-radius: 1rem;
-        overflow: hidden;
-      }
-      .profile-card__bio-name {
-        font-size: 1.25em;
-        font-weight: 200;
-        margin-bottom: 0.8rem;
-        color: #bdccd3;
-      }
-      .profile-card__bio-name>span{
-        font-weight: 500;
-        display: block;
-        margin-top: 4px;
-      }
-      .sdgsdogshoi {
-    display: inline-block;
-    border-radius: 10px;
-    padding: 2px 10px;
-    font-weight: 300;
-      }
-      {% if user.status.value == 'active' %}
-      .sdgsdogshoi{color: #1de9b6;}
-      {% elif user.status.value == 'on_hold' %}
-      .sdgsdogshoi{color: #e9d8fd;} 
-      {% elif user.status.value == 'limited' %} 
-      .sdgsdogshoi{color: #FC8181;}
-      {% elif user.status.value == 'expired' %}
-      .sdgsdogshoi{color: #d3bc41;}
-      {% elif user.status.value == 'disabled' %}
-      .sdgsdogshoi{color: #bdccd3;}
-      {% endif %}
-      .profile-card__bio-title {
-        font-size: 0.875em;
-        font-weight: 500;
-        margin-bottom: 0.6rem;
-        color: #1DE9B6;
-      }
-      .profile-card__links {
-        padding: 0.5em;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        overflow: hidden;
-      }
-      .profile-card__header {
-        text-align: left;
-    font-size: 1em;
-    font-weight: 600;
-    color: #1de9b6;
-    display: flex;
-    -webkit-box-pack: justify;
-    cursor: pointer;
-    position: relative;
-    background: #081211;
-    padding: 0.7em 1em;
-    border-radius: 1em;
-
-      }
-      .profile-card__header::after {
-        content: "\00BB";
-        width: 1rem;
-        height: 1rem;
-        text-align: center;
-        -webkit-transition: all 0.3s;
-        transition: all 0.3s;
-        margin-left: 1em;
-        font-weight: 300;
-        position: relative;
-      }
-      input {
-        position: absolute;
-        opacity: 0;
-        z-index: -1;
-      }
-      .accordion {
-        width: 100%;
-        overflow: hidden;
-      }
-      .accordion:last-child {
-        margin-bottom: 0;
-      }
-      .accordion-content {
-        max-height: 0;
-        padding: 0 ;
-        -webkit-transition: all 0.3s;
-        transition: all 0.3s;
-      }
-      input:checked+.profile-card__header{
-        /* color: #1de9b6; */
-    /* background linear-gradient(182deg, #022b20, #0d5140); */
-    box-shadow: 0px 0px 5px 3px rgb(0 0 0 / 15%);
-      } 
-      input:checked+.profile-card__header::after {
-        -webkit-transform: rotate(90deg);
-        transform: rotate(90deg);
-      }
-      input:checked~.accordion-content {
-        max-height: 600px;
-        padding-top: 30px;
-      }
-      .profile-card__separator {
-    border-bottom: 2px dashed #000;
-    border-radius: 1rem 1rem 0 0;
-    overflow: hidden;
-    max-width: 90%;
-    margin: auto;
-      }
-      .profile-card__links-button {
-        padding: 1rem;
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    border-radius: 7em;
-    transition: box-shadow 200ms ease;
-    text-decoration: none;
-    margin-bottom: 0.5rem;
-    color: #22cad3;
-    background: #000538;
-    font-size: 15px;
-    box-shadow: 0px 0px 10px 4px rgb(0 0 0 / 15%);
-      }
-      .profile-card__links-button:hover {
-        box-shadow: 0 0 0 #0000002e;
-      }
-      .progressBarContainer {
-        margin-top: 15px;
-        position: relative;
-        direction: ltr;
-      }
-      .progressBar {
-        width: 100%;
-        height: 16px;
-        padding: 2px;
-        border-radius: 50px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        border: 2px solid;
-        background: #1c2429;
-        color: #2df0bc45;
-      }
-      .progressBarRect {
-        background-image: linear-gradient(270deg, #1DE9B6 0%, #0d5140 100%);
-        height: 100%;
-        border-radius: inherit;
-        -webkit-animation: progressLineTransmission 2.5s 0.3s ease-in-out both;
-        animation: progressLineTransmission 2.5s 0.3s ease-in-out both;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-      }
-      .progressBarCircle {
-        /* background-color: #000000; */
-        height: calc(14px - 4px);
-        width: calc(14px - 4px);
-        border-radius: 50%;
-        /* box-shadow: 0 0 0 rgb(180 139 28 / 40%); */
-        /* animation: limitincomingPulse 3s infinite; */
-      }
-      .progressBarPoint {
-        color: #1DE9B6;
-        margin-top: 8px;
-        font-size: 12px;
-        font-weight: 500;
-        position: absolute;
-      }
-      .progressBarPoint--start {
-        left: 0;
-      }
-      .progressBarPoint--end {
-        right: 0;
-      }
-      @-webkit-keyframes progressLineTransmission {
-        from {
-          width: 5%;
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
         }
-        to {
-          width: {% if user.data_limit %}{{ [(user.used_traffic / user.data_limit) * 100, 5] | max }}%{% else %}100%{% endif %};
+
+        h1 {
+            margin-top: 0;
         }
-      }
-      @keyframes progressLineTransmission {
-        from {
-          width: 5%;
+
+        .link-input {
+            margin-bottom: 10px;
         }
-        to {
-          width: {% if user.data_limit %}{{ [(user.used_traffic / user.data_limit) * 100, 5] | max }}%{% else %}100%{% endif %};
+
+        .copy-button {
+            margin-left: 10px;
         }
-      }
 
-      .support-div{
-        position: fixed;
-        bottom: 20px;
-      }
-
-      .support-divar{
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        background: white;
-        height: 100px;
-        box-shadow: 0 0 7px 0 #0000005e;
-      }
-      .support-a{
-        text-decoration: none;
-        color: #fff;
-        /* background-image: linear-gradient(100deg, #2df0bc 0%, #22cad3 100%); */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 56px;
-        padding: 10px 15px;
-        border: 2px dashed #000538;
-        box-shadow: 0 0 0px 3px #000000;
-        width: 290px;
-        height: 60px;
-        background-color: #000;
-        border: 3px solid #fff;
-      }
-      .support-svg{
-        fill: #fff;
-        width: 35px;
-      }
-      .support-svg svg{
-        fill: #000;
-      }
-      .support-text{
-        margin-right: 10px;
-        color:#fff;
-        font-weight: 700;
-      }
-
-      .configs-add{
-        margin: 0;
-        padding: 16px 0px 0px 5px;
-      }
-      .configs-add li{
-        margin-bottom: 10px;
-        list-style: decimal;
-      }
-      .configs-add li::marker{
-        font-weight: 600;
-        color: #002729;
-      }
-      .configs-add li input{
-        z-index: 0;
-        opacity: 1;
-        position: relative;
-        margin-left: 0px;
-        background: #9efbff;
-        border-radius: 8px;
-        padding: 10px 10px;
-        color: #002729;
-        font-weight: 550;
-        border: none;
-        /* box-shadow: 2px 2px 0 0 #00272926; */
-        width: 65%;
-      }
-      .configs-add .link-input {
-        margin-bottom: 10px;
-      }
-      .configs-add .copy-button {
-        padding: 8px 12px;
-        font-weight: 600;
-        display: inline-block;
-        text-align: center;
-        border: 2px solid #002729;
-        border-radius: 0.5rem;
-        color: #000;
-        transition: box-shadow 200ms ease;
-        text-decoration: none;
-        margin-bottom: 0.5rem;
-        background-color: #ffe3f9;
-        width: calc(35% - 5px);
-        font-family: "Vazirmatn", sans-serif;
-        direction: rtl;
-      }
-      .Click-here{
-        cursor: pointer;
-      }
-      .custom-model-main {
-        text-align: center;
-        overflow: hidden;
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0; /* z-index: 1050; */
-        -webkit-overflow-scrolling: touch;
-        outline: 0;
-        opacity: 0;
-        -webkit-transition: opacity 0.15s linear, z-index 0.15;
-        -o-transition: opacity 0.15s linear, z-index 0.15;
-        transition: opacity 0.15s linear, z-index 0.15;
-        z-index: -1;
-        overflow-x: hidden;
-        overflow-y: auto;
-      }
-
-      .model-open {
-        z-index: 99999;
-        opacity: 1;
-        overflow: hidden;
-      }
-      .custom-model-inner {
-        -webkit-transform: translate(0, -25%);
-        -ms-transform: translate(0, -25%);
-        transform: translate(0, -25%);
-        -webkit-transition: -webkit-transform 0.3s ease-out;
-        -o-transition: -o-transform 0.3s ease-out;
-        transition: -webkit-transform 0.3s ease-out;
-        -o-transition: transform 0.3s ease-out;
-        transition: transform 0.3s ease-out;
-        transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
-        display: inline-block;
-        vertical-align: middle;
-        width: 600px;
-        margin: 30px auto;
-        max-width: 97%;
-      }
-      .ipv6ol{
-        list-style-position: inside;
-    text-align: right;
-    padding-inline-start: 0;
-    line-height: 2;
-      }
-      .ipv6ol li{
-        margin-bottom: 1em;
-      }
-      .ipv6ol li::marker{
-        color: blue;
-        font-weight: 900;
-      }
-      .custom-model-wrap {
-        display: block;
-        width: 100%;
-        position: relative;
-        background-color: #fff;
-        border: 1px solid #999;
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        border-radius: 1em;
-        -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-        box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-        background-clip: padding-box;
-        outline: 0;
-        padding: 20px;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        max-height: calc(100vh - 70px);
-        overflow-y: auto;
-      }
-      .model-open .custom-model-inner {
-        -webkit-transform: translate(0, 0);
-        -ms-transform: translate(0, 0);
-        transform: translate(0, 0);
-        position: relative;
-        z-index: 999;
-      }
-      .model-open .bg-overlay {
-        background: rgba(0, 0, 0, 0.6);
-        z-index: 99;
-      }
-      .bg-overlay {
-        background: rgba(0, 0, 0, 0);
-        height: 100vh;
-        width: 100%;
-        position: fixed;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 0;
-        -webkit-transition: background 0.15s linear;
-        -o-transition: background 0.15s linear;
-        transition: background 0.15s linear;
-      }
-      .close-btn {
-        position: absolute;
-        right: 0;
-        top: -25px;
-        cursor: pointer;
-        z-index: 99;
-        font-size: 37px;
-        color: #2df0bc;
-    background: #000538;
-        border-radius: 50px;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        border: 4px dotted;
-        box-shadow: 0 0 10px 2px #00000061;
-        line-height: 37px;
-        animation: rotateBorder 2s infinite ;
-      }
-
-      @keyframes rotateBorder {
-    0% {
-      transform: rotate(0);
-      /* border-style: dotted; */
-    }
-    100% {
-      transform: rotate(360deg);
-      /* border-style: solid; */
-    }
-  }
-
-      @media screen and (min-width:800px){
-        .custom-model-main:before {
-          content: "";
-          display: inline-block;
-          height: auto;
-          vertical-align: middle;
-          margin-right: -0px;
-          height: 100%;
+        .status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 1;
         }
-      }
-      @media screen and (max-width:799px){
-        .custom-model-inner{margin-top: 45px;}
-      }
 
-      .pop-up-content-wrap{
-        display: none;
-        text-align: right;
-      }
+        .active {
+            background-color: #4CAF50;
+            color: white;
+        }
 
-      .dlapp{
-        border: 2px solid #f0f2f5;
-        border-radius: 10px;
-        padding: 20px;
-        margin: 0 0 15px 0;
-        direction: ltr;
-        text-align: center;
-        font-size: 1.2em;
-        font-weight: 700;
-        padding-bottom: 10px;
-      }
+        .limited {
+            background-color: #F44336;
+            color: white;
+        }
 
-      video{
-        max-width: 100%;
-        max-height: 75vh;
-        margin: auto;
-        display: block;
-        margin: 20px auto;
-        border-radius: 1em;
-      }
-      .divcopyLinkC{
-        padding: 1.5rem 2rem 1rem;
-      }
-      .copyLinkC{
-        padding: 1rem;
-        display: inline-block;
-        width: 100%;
-        text-align: center;
-        border: 2px solid #ffffff;
-        border-radius: 0.5rem;
-        color: #ffffff;
-        transition: box-shadow 200ms ease;
-        text-decoration: none;
-        margin-bottom: 0.5rem;
-        background-color: #000000;
-        font-family: "Vazirmatn", sans-serif;
-        font-size: 17px;
-        font-weight: 400;
-        box-shadow: 0 0 0px 2px #000000;
-      }
+        .expired {
+            background-color: #FF9800;
+            color: white;
+        }
 
-.faq-ol li{
-  margin-bottom: 15px;
-    font-size: 15px;
-    background: #f0f2f5;
-    border-radius: 1em;
-    padding: 1em;
-}
-.faq-ol li::marker{
-  color: blue;
-  font-weight: 900;
-}
+        .disabled {
+            background-color: #9E9E9E;
+            color: white;
+        }
 
-.apps{
-  padding: 1em;
-  text-align: center;
-  margin-bottom: 1em;
-  border-radius: 1em;
-  background: #f0f0f0;
-  border: 2px solid #e1e1e1;
-}
-.apps h2{
-  font-size: 18px;
-}
-.faq-help button{
-  position: fixed;
-    bottom: 20px;
-    right: 50%;
-    transform: translateX(50%);
-    font-family: 'Inter', 'Vazirmatn';
-    padding: 1em;
-    background: #2df0bc;
-    color: black;
-    border-radius: 1em;
-    border: 0;
-    box-shadow: 0px 0px 10px 4px rgb(0 0 0 / 15%);
-    width: 310px;
-  font-weight: 500;
-  font-size: 1em;
+        .qr-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 10px 25px 25px 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 9999;
+        }
 
-}
-
-
-.container {
-  position: relative;
-  text-align: center;
-  color: white;
-}
-.centered {
-  position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #e91d1d;
-    padding: 5px;
-    background: #0000006b;
-    font-weight: 900;
-    border-radius: 1em;
-}
-
-.img-v2 img{
-  border-radius: 5px;
-}
-
-.ipv6{
-  padding: 1em;
-    text-align: center;
-    margin-bottom: 1em;
-    border-radius: 1em;
-    border: 2px solid #e1e1e1;
-}
-
-.ipv6 h2{
-font-size: 18px;
-}
-.profiledl{
-  display: flex;
-  gap: 1em;
-  justify-content: center;
-  align-content: center;
-}
-.profiledl button{
-  width: 145px;
-    font-size: 15px;
-    font-family: inter, 'Vazirmatn';
-    border-radius: 1em;
-    border: none;
-    background: #007bff;
-    height: 40px;
-    color: white;
-    font-weight: 400;
-}
+        .qr-close-button {
+            text-align: right;
+            margin-bottom: 5px;
+            margin-right: -15px;
+        }
     </style>
-  </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
 
-  <body>
-    <div class="profile-card">
-      <div class="profile-card__bio">
-        <h1 class="profile-card__bio-name">نام‌کاربری:<span>{{ user.username }}</span></h1>
-        <h1 class="sdgsdogshoi profile-card__bio-name">
-          {% if user.status.value == 'active' %}فعال{% elif user.status.value ==
-          'on_hold' %}در انتظار اولین اتصال{% elif user.status.value == 'limited' %}حجم تمام
-          شده{% elif user.status.value == 'expired' %}زمان منقضی شده{% elif
-          user.status.value == 'disabled' %}غیر فعال{% endif %}
-        </h1>
-        {% if user.status.value == 'active' or user.status.value == 'on_hold' or
-        user.status.value == 'limited' %}
-        <h2 class="profile-card__bio-title">
-          {% if not user.expire and not user.on_hold_expire_duration %}
-            ∞
-          {% else %}
-            {% if user.status.value == 'on_hold' %}
-              {% set remaining_seconds = [user.on_hold_expire_duration, 0] | max %}
-            {% else %}
-              {% set current_timestamp = now().timestamp() %}
-              {% if user.expire %}
-                {% set remaining_seconds = [user.expire - current_timestamp, 0] | max %}
-              {% else %}
-                {% set remaining_seconds = 0 %}
-              {% endif %}
-            {% endif %}
-            {% set remaining_days = remaining_seconds // (24 * 3600) %}
-            {% set remaining_hours = (remaining_seconds % (24 * 3600)) // 3600 %}
-            {% set remaining_minutes = (remaining_seconds % 3600) // 60 %}
+<body>
+    <h1>User Information</h1>
+    <p>Username: {{ user.username }}</p>
+    <p>Status: <span
+            class="status {% if user.status.value == 'active' %}active{% elif user.status.value == 'limited' %}limited{% elif user.status.value == 'expired' %}expired{% elif user.status.value == 'disabled' %}disabled{% endif %}">{{
+            user.status.value }}</span></p>
+    <p>Data Limit: {% if not user.data_limit %}∞{% else %}{{ user.data_limit | bytesformat }}{% endif %}</p>
+    <p>Data Used: {{ user.used_traffic | bytesformat }}{% if user.data_limit_reset_strategy != 'no_reset' %} (resets
+        every {{ user.data_limit_reset_strategy.value }}){% endif %}</p>
+    <p>Expiration Date:
+        {% if not user.expire %}
+        ∞
+        {% else %}
+        {% set current_timestamp = now().timestamp() %}
+        {% set remaining_days = ((user.expire - current_timestamp) // (24 * 3600)) %}
+        {{ user.expire | datetime }} ({{ remaining_days | int }} days
+        remaining)
+        {% endif %}</p>
 
-          {% if remaining_days >= 1 %} {{ remaining_days | int }}
-            روز باقی‌مانده
-          {% else %} {{( remaining_hours ) | int }} ساعت باقیمانده {% endif %} {% endif %}
-        </h2>
-        {% endif %}
-        <div class="progressBarContainer">
-          <div class="progressBar">
-            <div class="progressBarRect">
-              <span class="progressBarCircle"></span>
-            </div>
-          </div>
-          <span class="progressBarPoint progressBarPoint--start"
-            >{{ user.used_traffic | bytesformat }}</span
-          >
-          <span class="progressBarPoint progressBarPoint--end"
-            >{% if not user.data_limit %}∞{% else %}{{ user.data_limit |
-            bytesformat }}{% endif %}</span
-          >
+    {% if user.status == 'active' %}
+    <h2>Links:</h2>
+    <ul>
+        {% for link in user.links %}
+        <li>
+            <input type="text" value="{{ link }}" readonly>
+            <button class="copy-button" onclick="copyLink('{{ link }}', this)">Copy</button>
+            <button class="qr-button" data-link="{{ link }}">QR Code</button>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="qr-popup" id="qrPopup">
+        <div class="qr-close-button">
+            <button onclick="closeQrPopup()">X</button>
         </div>
-      </div>
-      {% if user.status == 'active' or user.status == 'on_hold' %}
-      
-      <!-- <div class="profile-card__separator"></div> -->
-      <div class="profile-card__links">
-        <div class="accordion">
-          <input type="checkbox" name="option" class="single-checkbox" id="windows" />
-          <label class="profile-card__header" for="windows">
-              اتصال با اندروید
-          </label>
-          <div class="accordion-content">
-
-            <div class="apps">
-              <h2>V2rayNG</h2>
-              <a
-                class="profile-card__links-button"
-                href="#"
-                rel="noopener noreferrer"
-                target="_blank"
-                id="v2rayNGv8a">
-                دریافت آخرین نسخه v2rayNG
-              </a>
-              <div class="Click-here profile-card__links-button" app="v2ray">
-                آموزش کامل V2rayNG
-              </div>
-              <a
-                class="profile-card__links-button"
-                href="v2rayng://install-config?url={{ user.subscription_url }}&name={{ user.username | urlencode }}"
-                rel="noopener noreferrer"
-                target="_blank">
-                افزودن سریع به V2rayNG
-              </a>
-              <p style="font-size: 0.9em; text-align: right;">
-                برای آپدیت وی پی ان:
-              </p>
-              <div class="img-v2" style="display: grid;grid-template-columns: 1fr 1fr;column-gap: 5px;">
-                <div class="container">
-                  <img src="https://raw.githubusercontent.com/x0sina/marzban-sub/main/1.jpg" alt="">
-                  <div class="centered">1</div>
-                </div>
-
-                <div class="container">
-                  <img src="https://raw.githubusercontent.com/x0sina/marzban-sub/main/2.jpg" alt="">
-                  <div class="centered">2</div>
-                </div>
-
-              </div>
-            </div>  
-
-            <!-- <div class="apps">
-              <h2>sing-box</h2>
-              <a
-                class="profile-card__links-button"
-                href="#"
-                rel="noopener noreferrer"
-                target="_blank"
-                id="SFA">
-                دریافت آخرین نسخه sing-box
-              </a>
-              <div class="Click-here profile-card__links-button" app="SFA">
-                آموزش sing-box
-              </div>
-              <a
-                class="profile-card__links-button"
-                href="sing-box://import-remote-profile?url={{ user.subscription_url | urlencode }}#{{ user.username | urlencode }}"
-                rel="noopener noreferrer"
-                target="_blank">
-                افزودن سریع به sing-box
-              </a>
-              <a
-                class="profile-card__links-button"
-                href="https://mcx.vipstream.cloud/"
-                rel="noopener noreferrer"
-                target="_blank">
-                METACUBE UI
-              </a>
-            </div>   -->
-
-    
-          </div>
-        </div>
-      </div>
-      <div class="profile-card__separator"></div>
-      <div class="profile-card__links">
-        <div class="accordion">
-          <input type="checkbox" name="option" class="single-checkbox" id="iphone" />
-          <label class="profile-card__header" for="iphone">
-            اتصال با آیفون و مک
-          </label>
-          <div class="accordion-content">
-
-            <div class="apps">
-              <h2>Streisand</h2>
-              <a
-                class="profile-card__links-button"
-                href="https://apps.apple.com/us/app/streisand/id6450534064"
-                rel="noopener noreferrer"
-                target="_blank">
-                دریافت آخرین نسخه Streisand
-              </a>
-              <div class="Click-here profile-card__links-button" app="ipv6">
-                نصب تنظیمات وی‌پی‌ان V6
-              </div>
-              <div class="Click-here profile-card__links-button" app="streisand">
-                آموزش Streisand
-              </div>
-              <a
-                class="profile-card__links-button"
-                href="streisand://import/{{ user.subscription_url }}#{{ user.username | urlencode }}"
-                rel="noopener noreferrer"
-                target="_blank">
-                افزودن سریع به Streisand
-              </a>
-            </div>
-            
-            <!-- <div class="apps">
-              <h2>sing-box</h2>
-              <a
-                class="profile-card__links-button"
-                href="https://apps.apple.com/us/app/sing-box/id6451272673"
-                rel="noopener noreferrer"
-                target="_blank"
-                >
-                دریافت آخرین نسخه sing-box
-              </a>
-              <div class="Click-here profile-card__links-button" app="ipv6">
-                نصب تنظیمات وی‌پی‌ان V6
-              </div>
-              <div class="Click-here profile-card__links-button" app="SFA">
-                آموزش sing-box
-              </div>
-              <a
-                class="profile-card__links-button"
-                href="sing-box://import-remote-profile?url={{ user.subscription_url | urlencode }}#{{ user.username | urlencode }}"
-                rel="noopener noreferrer"
-                target="_blank">
-                افزودن سریع به sing-box
-              </a>
-              <a
-                class="profile-card__links-button"
-                href="https://mcx.vipstream.cloud/"
-                rel="noopener noreferrer"
-                target="_blank">
-                METACUBE UI
-              </a>
-            </div>   -->
-    
-          </div>
-        </div>
-      </div>
-      <div class="profile-card__separator"></div>
-      <div class="profile-card__links">
-        <div class="accordion">
-          <input type="checkbox" name="option" class="single-checkbox" id="Android" />
-          <label class="profile-card__header" for="Android">
-            اتصال با ویندوز
-          </label>
-          <div class="accordion-content">
-
-            <div class="apps">
-              <h2>V2rayN</h2>
-              <a
-                class="profile-card__links-button"
-                href="#"
-                rel="noopener noreferrer"
-                target="_blank"
-                id="v2rayN">
-                دریافت آخرین نسخه v2rayN
-              </a>
-              <div class="Click-here profile-card__links-button" app="v2rayn">
-                آموزش V2rayN
-              </div>
-              <a class="profile-card__links-button copy-button"
-                  onclick="copyLink('{{ user.subscription_url }}', this)">
-                کپی لینک اشتراک هوشمند
-              </a>
-            </div>  
-    
-
-          </div>
-        </div>
-      </div>
-      <div class="profile-card__separator"></div>
-
-      <div class="profile-card__links">
-        <div class="accordion">
-          <input type="checkbox" name="option" class="single-checkbox" id="share" />
-          <label class="profile-card__header" for="share">
-            اشتراک گذاری
-          </label>
-          <div class="accordion-content">
-
-            <div class="apps">
-              <h2>QR Code</h2>
-              <div style="margin-bottom: 2em;
-              background: white;
-              padding: 1em;
-              border-radius: 1em;" id="qrcode"></div>
-
-
-              <a class="profile-card__links-button copy-button"
-                  onclick="copyLink('{{ user.subscription_url }}', this)">
-                کپی لینک اشتراک هوشمند
-              </a>
-            </div>  
-    
-
-          </div>
-        </div>
-      </div>
-
-
-      {% endif %}
-      
+        <div id="qrCodeContainer"></div>
     </div>
-
-    <div class="faq-help">
-      <button app="faq">
-        وی‌پی‌ان وصل نمی‌شه یا سرعت کمه؟
-      </button>
-    </div>
-    
-
-    <!-- <div class="support-divar"></div>
-
-    <div class="support-div">
-      <div>
-        <a class="support-a" href="https://t.me/VPNCrypto_bot">
-          <svg
-            class="support-svg"
-            xmlns="http://www.w3.org/2000/svg"
-            x="0px"
-            y="0px"
-            class="w-6 h-6 fill-white support-svg"
-            viewBox="0 0 50 50"
-          >
-            <path
-              d="M25,2c12.703,0,23,10.297,23,23S37.703,48,25,48S2,37.703,2,25S12.297,2,25,2z M32.934,34.375	c0.423-1.298,2.405-14.234,2.65-16.783c0.074-0.772-0.17-1.285-0.648-1.514c-0.578-0.278-1.434-0.139-2.427,0.219	c-1.362,0.491-18.774,7.884-19.78,8.312c-0.954,0.405-1.856,0.847-1.856,1.487c0,0.45,0.267,0.703,1.003,0.966	c0.766,0.273,2.695,0.858,3.834,1.172c1.097,0.303,2.346,0.04,3.046-0.395c0.742-0.461,9.305-6.191,9.92-6.693	c0.614-0.502,1.104,0.141,0.602,0.644c-0.502,0.502-6.38,6.207-7.155,6.997c-0.941,0.959-0.273,1.953,0.358,2.351	c0.721,0.454,5.906,3.932,6.687,4.49c0.781,0.558,1.573,0.811,2.298,0.811C32.191,36.439,32.573,35.484,32.934,34.375z"
-            ></path>
-          </svg>
-  
-          <span class="support-text">خرید یا تمدید اشتراک</span>
-        </a>
-  
-      </div>
-    </div> -->
-
-    <div class="custom-model-main">
-      <div class="custom-model-inner">
-        <div class="close-btn">×</div>
-        <div class="custom-model-wrap">
-
-          <div class="help pop-up-content-wrap" app="faq">
-
-            <p style="margin: 0;font-size: 15px;line-height: 1.8;">
-              لطفا متن زیر رو تا انتها بخونید؛
-            </p>
-            <ol class="faq-ol" style="list-style-position: inside;padding-inline-start: 0;line-height: 1.8;">
-              <li>قبل از هر چیز از طریق همین صفحه بررسی کنید که اشتراک‌تون تموم نشده باشه. همینطور آموزش اتصال با لینک اشتراک رو از توی صفحه اصلی رو حتما ببینید.</li>
-              <li>
-                همه کانفیگ‌های توی لینک اشتراک فقط روی نرم‌افزارهای V2rayNG، V2rayN، Streisand و sing-box جواب میده؛ ممکنه مثلا با V2box یکی دو تا از کانفیگ ها وصل نشه.
-              </li>
-              <li>
-                نسخه بروز از نرم‌افزارهای بالا رو نصب داشته باشید. ‌وی‌پی‌ان‌های ما روی نسخه های قدیمی  نرم‌افزارها دچار محدودیت سرعت میشه. (توی همین صفحه لینک دانلودشون هست.)
-              </li>
-              <li>ساعت گوشی یا سیستم‌عامل باید روی حالت اتوماتیک باشه؛ اگه بصورت دستی ساعت دستگاهتون رو تغییر دادید، ۲ تا از پرسرعت‌ترین وی‌پی‌ان‌های لینک اشتراک رو از دست می‌دید.</li>
-              <li>توی لینک اشتراک چند تا ‌وی‌پی‌ان قرار دادیم. اگه احیانا اولی وصل نشد دومی رو امتحان کنید. اگه آیتم‌های بالا رو انجام دادید و هیچکدوم از ‌وی‌پی‌ان‌های توی لینک اشتراک متصل نشد؛ بروزرسانی اشتراک رو بزنید (آموزشش توی بخش "آموزش اتصال با لینک اشتراک" توی همین صفحه هست)</li>
-              <li>اگه بازم همه موارد بالا رو بررسی کردید و متصل نشدید به پشتیبان‌تون پیام بدید. توی پیام؛ نام کاربری‌تون، اپراتور سیم‌کارتی که باهاش متصل هستید و خطایی که دریافت میکنید رو ارسال کنید تا سریع‌تر موردتون رو بررسی کنیم. هم میتونید اسکرین‌شات بفرستید هم متن.</li>
-              <li>
-                اگه نمی‌تونید  به وی‌پی‌ان پر سرعت V6 متصل بشید، باید؛
-                <ol style="padding-inline-start: 0px; list-style-type: disclosure-closed;">
-                  <li>
-                    <strong>برای اندروید:</strong>
-                    <ul style="padding-inline-start: 0px;">
-                      <li>
-                        <strong>اندروید لاتین (انگلیسی):</strong>
-                        </br>
-                        توی settings عبارت «Mobile networks» رو جستجو کنید و روی اون ضربه بزنید.
-                        اینجا اگه دو سیم‌کارت دارید، سیم کارتی رو که باهاش به اینترنت متصل‌ید انتخاب کنید و دنبال «Access Points Names» یا «APN» بگردید و روی اون ضربه بزنید.
-                        اینجا‌ به اون آیتمی که انتخاب شده ورود کنید.
-                        اگر توی بخش proxy و port چیزی نوشته شده بود پاکشون کنید. پایین‌تر «APN protocol» و «APN roaming protocol» رو مطمئن بشید «IPv4/IPv6» انتخاب شده.‌
-                        حالا از گوشه صفحه روی ፧ ضربه بزنید و save رو بزنید. بعد گوشیتون رو خاموش و روشن کنید. تمام 
-                      </li>
-                      <li>
-                        <strong>
-                          اندروید فارسی:
-                        </strong>
-                        </br>
-                        توی تنظیمات گوشی عبارت «شبکه تلفن همراه» رو جستجو کنید و روی اون ضربه بزنید.
-                        اینجا اگه دو سیم‌کارت دارید، سیم کارتی رو که باهاش به اینترنت متصل‌ید انتخاب کنید و دنبال «نام‌های نقاط دسترسی» یا «APN» بگردید و روی اون ضربه بزنید.
-                        اینجا‌ به اون آیتمی که انتخاب شده ورود کنید.
-                        اگر توی بخش پروکسی و درگاه چیزی نوشته شده بود پاکشون کنید. پایین‌تر «پروتکل نام نقطه دستیابی» و «پروتکل رومینگ نام نقطه دستیابی» رو مطمئن بشید «IPv4/IPv6» انتخاب شده.‌
-                        حالا از گوشه صفحه روی ፧ ضربه بزنید و ذخیره رو کنید. بعد گوشیتون رو خاموش و روشن کنید. تمام
-                      </li>
-
-                    </ul>
-                  </br>
-                  </li>
-                  <li>
-                    <strong>برای آیفون:</strong>
-                    </br>
-                    برای گوشی های آیفون کافیه پروفایل ورژن 6 رو از بخش "اتصال با آیفون و مک" نصب کنید.
-                  </li>
-                </ol>
-              </li>
-            </ol>
-
-
-          </div>
-
-
-          <div class="pop-up-content-wrap" app="v2ray">
-            <div style="direction: rtl; text-align: justify; line-height: 2">
-              <h3>⚙️ آموزش برنامه V2rayNG اندروید:&nbsp;</h3>
-              <ol style="
-              color: blueviolet;
-              font-weight: bold;
-          ">
-                          <li>
-                            مطمئن بشید آخرین نسخه V2rayNG رو نصب دارید. (باید ورژن 1.8.20 و بالاتر باشد)
-                          </li>
-                          <li>
-                            ساعت گوشی باید روی حالت اتوماتیک باشد
-                          </li>
-                        </ol>
-              <video src="https://ipv6-7jf.pages.dev/v2rayNG.webm" type="video/webm" controls>
-
-                <p>
-                  1️⃣ توی همین صفحه از قسمت اتصال با لینک اشتراک؛ دکمه «افزودن
-                  به V2rayNG» رو بزنید.
-                </p>
-                <p>
-                  2️⃣ بعد توی V2rayNG روی "سه تا نقطه" کلیک کنید و update
-                  subscription (آخرین آیتم) رو بزنید تا کانفیگ‌هاتون در V2rayNG
-                  ببنید.&nbsp;
-                </p>
-                </p>
-                <p>
-                  🔸برای پاک کردن اشتراک از توی گوشیتون؛ با کلیک روی سه خط موازیی
-                  بالا، وارد subscription group setting بشید و روی مداد روبروی
-                  اشتراک کلیک کنید.
-                </p>
-
-              </video>
-
-              <p>
-                ♻️ هر روز حداقل یک بار یا وقتایی که کانفیگ‌ها کار نمیکنن update subscription رو بزنید تا اشتراکتون بروز بشه.
-              </p>
-
-            </div>
-          </div>
-
-          <div class="pop-up-content-wrap" app="SFA">
-            <div style="direction: rtl; text-align: justify; line-height: 2">
-              <h3>⚙️ آموزش برنامه sing-box:</h3>
-              <b style="color: blueviolet;">
-                 مطمئن بشید آخرین نسخه sing-box رو نصب دارید. و ساعت گوشیتون روی حالت اتوماتیک است.
-                </b>
-                <ul>
-                  <li>
-                    توی sing-box وارد settings بشید و در بخش Core فیلد Memory Limit رو Disable کنید.
-                  </li>
-                  <li>
-                    توی sing-box وارد settings بشید و در بخش Background permission روی گزینه Ignore Battery Optimizations ضربه بزنید تا وقتی که صفحه گوشیتون خاموش میشه، sing-box بسته نشه.
-                  </li>
-                </ul>
-              <p style="font-weight: bold;color: rgb(5, 85, 99);">
-                 توی همین صفحه «افزودن سریع به sing-box» رو بزنید.
-              </p>
-              <video src="https://ipv6-7jf.pages.dev/sing-box.webm" type="video/webm" controls>
-
-            </div>
-          </div>
-
-          <div class="pop-up-content-wrap" app="streisand">
-            <div style="direction: rtl; text-align: justify; line-height: 2">
-              <h3>⚙️ آموزش برنامه Streisand آیفون:</h3>
-              <b style="color: blueviolet;">
-                0️⃣ مطمئن بشید آخرین نسخه Streisand رو نصب دارید. و ساعت گوشیتون روی حالت اتوماتیک است.
-                </b>
-              <p>
-                1️⃣ توی همین صفحه از قسمت اتصال با لینک اشتراک؛ &nbsp;دکمه
-                «افزودن به Streisand» رو بزنید.
-              </p>
-              <p>
-                ♻️ هر روز حداقل یک بار یا وقتایی که کانفیگ‌ها کار نمیکنن، توی Streisand دستتون رو روی نام‌کاربری نگه دارید و Update رو بزنید تا اشتراکتون بروز بشه.
-              </p>
-            </div>
-          </div>
-
-          <div class="pop-up-content-wrap" app="ipv6">
-            <div class="ipv6">
-              <h2>نصب پروفایل IPv6</h2>
-              <div class="profiledl">
-                <button onclick="irancell()">
-              تنظیمات ایرانسل
-                </button>
-                <button onclick="mci()">
-                  تنظیمات همراه‌اول
-                </button>
-              </div>
-              <div style="margin-top: 1em;">
-                <div style="text-align: right;">بعد از نصب پروفایل، مراحل زیر را انجام دهید:</div>
-                <video src="https://ipv6-7jf.pages.dev/ipv6.webm" type="video/webm" controls></video>
-                <ol class="ipv6ol">
-                  <li>
-                    روی تنظیمات همراه‌اول  یا ایرانسل کلیک کنید و بعد ALLOW کنید
-                  </li>
-                  <li>
-                    به بخش
-                    <code>
-                      Settings > General > VPN & Device Management > Downloaded Profile
-                    </code>
-                    رفته و پروفایل را از بالا با زدن Install نصب کنید و در انتها Done رو بزنید.
-                  </li>
-                  <li>
-                    به تنظیمات Settings برگردید و روی Cellular ضربه بزنید.
-                  </li>
-                  <li>
-                    از قسمت SIMs، سیمکارت را انتخاب کنید.
-                  </li>
-                  <li>
-                    به Cellular Data Network رفته و به پایین صفحه اسکرول کنید.
-                  </li>
-                  <li>
-                    روی Reset Settings ضربه بزنید تا تنظیمات IPv6 فعال شوند.
-                  </li>
-                </ol>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="pop-up-content-wrap" app="nekoray">
-            <div style="direction: rtl; text-align: justify; line-height: 2">
-
-              <h2>آموزش اتصال با nekoray</h2>
-              <p>ایتدا تنظیمات صحیح nekoray را مطابق تصاویر زیر انجام دهید:</p>
-              <img
-                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-1.jpg"
-                loading="lazy"
-              />
-              <img
-                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-2.jpg"
-                loading="lazy"
-              />
-              <img
-                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-3.jpg"
-                loading="lazy"
-              />
-              <img
-                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-4.jpg"
-                loading="lazy"
-              />
-              <img
-                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-5.jpg"
-                loading="lazy"
-              />
-              <p>
-                روی دکمه ok کلیلک کنید و بعد از آن طبق تصویر پایین روی
-                <code>Groups</code>
-                کلیک کنید:
-              </p>
-              <img
-                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-6.jpg"
-                loading="lazy"
-              />
-              <img
-                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-7.jpg"
-                loading="lazy"
-              />
-              <img
-                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-8.jpg"
-                loading="lazy"
-              />
-              <img
-                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-9.jpg"
-                loading="lazy"
-              />
-              <img
-                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-10.jpg"
-                loading="lazy"
-              />
-              <p>
-                بعد از اینکه روی
-                <code>Update Subscription</code>
-                کلیک کردید، تنظیمات فیلترشکن به شکل زیر بصورت تب جدید اضافه
-                میگردد. برای اتصال تیک
-                <code>System Proxy</code>
-                را مطابق تصویر زیر بزنید و با کلیلک روی کانفیگ‌های ظاهر شده رو
-                قسمت شماره ۲ کلید
-                <code>Enter</code>
-                کیبورد را بفشارید تا بعد از ۱۰ ثانیه فیلترشکن متصل گردد.
-              </p>
-              <img
-                src="https://raw.githubusercontent.com/amotlagh/marzban-template/master/subscription-fa/amoozesh-etesal/nekoray-11.jpg"
-                loading="lazy"
-              />
-
-            </div>
-          </div>
-
-
-          <div class="pop-up-content-wrap" app="v2box">
-            <div style="direction: rtl; text-align: justify; line-height: 2">
-              <h3>⚙️ آموزش برنامه V2Box اندروید و آیفون:</h3>
-              <b>0️⃣ مطمئن بشید آخرین نسخه V2Box رو نصب دارید.</b>
-              <p>
-                1️⃣ وارد برنامه V2Box بشید. از سه تا گزینه پایین، Configs رو
-                انتخاب کنید و حالا از بالا + رو‌ انتخاب کنید. بعدش Add
-                subscription رو بزنید؛ توی این قسمت، اسم دلخواه رو توی remarks
-                تایپ کنید و توی URL هم لینک اشتراکتون رو قرار بدید و add
-                subscription رو بزنید و به اونی که پینگ کمتری داره وصل بشید.
-              </p>
-              <p>
-                ✅ هر روز حداقل یک بار انگشتتونو روی قسمت Subscription نگه دارید
-                و Update رو بزنید تا اشتراکتون بروز باشه.
-              </p>
-            </div>
-          </div>
-
-          <div class="pop-up-content-wrap" app="v2rayn">
-            <div style="direction: rtl; text-align: justify; line-height: 2">
-              <h3>⚙️ آموزش برنامه V2rayN ویندوز:</h3>
-              <b
-                >0️⃣ مطمئن بشید آخرین نسخه V2rayN رو نصب دارید. (باید ورژن 6.43 و
-                بالاتر باشد)</b
-              >
-              <p>
-                1️⃣ وارد برنامه V2rayN بشید. از بالا دومین گزینه روی
-                Subscription group کلیک کنید. بعد روی Subscription group setting
-                کلیک کنید. و حالا روی Add کلیک کنید.
-              </p>
-              <p>
-                2️⃣ توی این قسمت؛ در remarks اسم دلخواه تایپ کنید. برای URL لینک
-                اشتراک رو قرار بدید و enable update رو هم فعال کنید. حالا روی
-                confirm کلیک کنید.
-              </p>
-              <p>
-                3️⃣ توی صفحه اصلی برنامه V2rayN دوباره از بالا دومین گزینه روی
-                Subscription group کلیک کنید. بعد روی Update subscription
-                without proxy &nbsp;کلیک کنید. حالا کانفیگ‌هاتون رو توی تب کنار
-                All میتونید ببینید.
-              </p>
-              <p>
-                ♻️ هر روز حداقل یک بار یا وقتایی که کانفیگ‌ها کار نمیکنن Update subscription without proxy رو بزنید تا اشتراکتون بروز بشه.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="bg-overlay"></div>
-    </div>
+    {% endif %}
 
     <script>
+        function copyLink(link, button) {
+            const tempInput = document.createElement('input');
+            tempInput.setAttribute('value', link);
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
 
-      function copyLinkC(link, button) {
-        const tempInput = document.createElement("textarea");
-        tempInput.value = link;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempInput);
+            button.textContent = 'Copied!';
+            setTimeout(function () {
+                button.textContent = 'Copy';
+            }, 1500);
+        }
 
-        button.textContent = "کپی شد!";
-        setTimeout(function () {
-          button.textContent = "کپی همه کانفیگ‌ها";
-        }, 1500);
-      }
+        const qrButtons = document.querySelectorAll('.qr-button');
+        const qrPopup = document.getElementById('qrPopup');
 
-      function copyLink(link, button) {
-        const tempInput = document.createElement("input");
-        tempInput.setAttribute("value", link);
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempInput);
-
-        button.textContent = "کپی شد!";
-        setTimeout(function () {
-          button.textContent = "کپی لینک اشتراک هوشمند";
-        }, 1500);
-      }
-
-      function copyOldLink(link, button) {
-        const tempInput = document.createElement("input");
-        tempInput.setAttribute("value", link);
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempInput);
-
-        button.textContent = "کپی شد!";
-        setTimeout(function () {
-          button.textContent = "کپی لینک اشتراک ساده";
-        }, 1500);
-      }
-
-      document.addEventListener("click", (button) => {
-  const app = button.target.getAttribute("app");
-  if (app) {
-    document.querySelector(".custom-model-main").classList.add("model-open");
-    document.querySelectorAll(".pop-up-content-wrap").forEach((element) => {
-      if (element.getAttribute("app") === app) {
-        element.style.display = "block";
-      } else {
-        element.style.display = "none";
-      }
-    });
-  }
-});
-
-document.querySelector(".close-btn").addEventListener("click", () => {
-  document.querySelector(".custom-model-main").classList.remove("model-open");
-});
-
-document.querySelector(".bg-overlay").addEventListener("click", () => {
-  document.querySelector(".custom-model-main").classList.remove("model-open");
-});
-
+        qrButtons.forEach((qrButton) => {
+            qrButton.addEventListener('click', () => {
+                const link = qrButton.dataset.link;
+                while (qrCodeContainer.firstChild) {
+                    qrCodeContainer.removeChild(qrCodeContainer.firstChild);
+                }
+                const qrCode = new QRCode(qrCodeContainer, {
+                    text: link,
+                    width: 256,
+                    height: 256,
+                    correctLevel: QRCode.CorrectLevel.L
+                });
+                qrPopup.style.display = 'block';
+            });
+        });
+        function closeQrPopup() {
+            document.getElementById('qrPopup').style.display = 'none';
+        }
     </script>
+</body>
 
-<script>
-  const checkboxes = document.querySelectorAll('.single-checkbox');
-  checkboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', function() {
-          checkboxes.forEach(otherCheckbox => {
-              if (otherCheckbox !== checkbox && otherCheckbox.checked) {
-                  otherCheckbox.checked = false;
-              }
-          });
-      });
-  });
-
-
-        function irancell() {
-            window.location.href = 'https://ipv6-7jf.pages.dev/irancell.mobileconfig';
-        }
-
-        function mci() {
-            window.location.href = 'https://ipv6-7jf.pages.dev/mci.mobileconfig';
-        }
-</script>
-
-    
-    <script type="text/javascript">
-      var qrcode = new QRCode(document.getElementById("qrcode"), {
-        text: "{{ user.subscription_url }}",
-        width: 504,
-        height: 504,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.M
-      });
-    </script>
-
-    <script>
-      async function getLatestReleaseName(url) {
-        if (!url || typeof url !== 'string') {
-          throw new Error('A valid URL must be provided.');
-        }
-
-        try {
-          const response = await fetch(url);
-
-          if (!response.ok) {
-            throw new Error(`Network response was not ok: ${response.statusText}`);
-          }
-
-          const latest = await response.json();
-
-          if ((!latest || !latest.tag_name) && (!latest || !latest.name)) {
-            throw new Error('The response does not contain the expected data.');
-          }
-
-          return latest.name || latest.tag_name;
-        } catch (error) {
-          console.error('Error fetching the latest release name:', error);
-          throw error;
-        }
-      }
-      //const singbox = 'https://api.github.com/repos/SagerNet/sing-box/releases/latest';
-      const v2rayng = 'https://api.github.com/repos/2dust/v2rayNG/releases/latest';
-      const v2rayn = 'https://api.github.com/repos/2dust/v2rayN/releases/latest';
-
-      document.addEventListener('DOMContentLoaded', async () => {
-        try {
-
-          // const sfaName = await getLatestReleaseName(singbox);
-          // const sfa = document.getElementById('SFA');
-          // sfa.href = `https://github.com/SagerNet/sing-box/releases/download/v${sfaName}/SFA-${sfaName}-arm64-v8a.apk`;
-          
-          const v2rayngName = await getLatestReleaseName(v2rayng);
-          const v2rayngv8a = document.getElementById('v2rayNGv8a');
-          v2rayngv8a.href = `https://github.com/2dust/v2rayNG/releases/download/${v2rayngName}/v2rayNG_${v2rayngName}_arm64-v8a.apk`;
-
-          const v2raynName = await getLatestReleaseName(v2rayn);
-          const v2rayN = document.getElementById('v2rayN');
-          v2rayN.href = `https://github.com/2dust/v2rayN/releases/download/${v2raynName}/zz_v2rayN-With-Core-SelfContained.7z`;
-          
-        } catch (error) {
-          console.error('Failed to update link:', error);
-        }
-      });
-    </script>
-  </body>
 </html>

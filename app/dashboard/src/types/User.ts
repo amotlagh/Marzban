@@ -50,8 +50,6 @@ export type User = {
   inbounds: UserInbounds;
   note: string;
   online_at: string;
-  sub_updated_at: string | null;
-  sub_last_user_agent: string;
 };
 
 export type UserCreate = Pick<
@@ -65,6 +63,19 @@ export type UserCreate = Pick<
   | "username"
   | "status"
   | "note"
-  | "sub_updated_at"
-  | "sub_last_user_agent"
 >;
+
+export type UserApi = {
+  discord_webook: string;
+  is_sudo: boolean;
+  telegram_id: number | string;
+  username: string;
+}
+
+export type UseGetUserReturn = {
+  userData: UserApi;
+  getUserIsPending: boolean;
+  getUserIsSuccess: boolean;
+  getUserIsError: boolean;
+  getUserError: Error | null;
+}
