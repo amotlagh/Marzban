@@ -1,5 +1,4 @@
 import time
-import jwt
 from base64 import b64decode, b64encode
 from datetime import datetime, timedelta
 from functools import lru_cache
@@ -7,6 +6,7 @@ from hashlib import sha256
 from math import ceil
 from typing import Union
 
+from jose import JWTError, jwt
 
 from config import JWT_ACCESS_TOKEN_EXPIRE_MINUTES
 
@@ -40,7 +40,7 @@ def get_admin_payload(token: str) -> Union[dict, None]:
             created_at = None
 
         return {"username": username, "is_sudo": access == "sudo", "created_at": created_at}
-    except jwt.exceptions.PyJWTError:
+    except JWTError:
         return
 
 
@@ -86,5 +86,5 @@ def get_subscription_payload(token: str) -> Union[dict, None]:
                 return {"username": u_username, "created_at": datetime.utcfromtimestamp(u_created_at)}
             else:
                 return
-    except jwt.exceptions.PyJWTError:
+    except JWTError:
         return

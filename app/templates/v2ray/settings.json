@@ -27,11 +27,7 @@
   },
   "tcpSettings": {
     "header": {
-      "type": "none"
-    }
-  },
-  "tcphttpSettings": {
-    "header": {
+      "type": "http",
       "request": {
         "headers": {
           "Accept-Encoding": [
@@ -53,11 +49,6 @@
     }
   },
   "h2Settings": {
-    "headers": {
-      "Pragma": "no-cache"
-    }
-  },
-  "h3Settings": {
     "headers": {
       "Pragma": "no-cache"
     }

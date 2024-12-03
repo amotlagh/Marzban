@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from typing import Dict, List, Optional, Union
 import random
@@ -48,14 +48,6 @@ class UserDataLimitResetStrategy(str, Enum):
     month = "month"
     year = "year"
 
-class NextPlanModel(BaseModel):
-    data_limit: Optional[int]
-    expire: Optional[int]
-    add_remaining_traffic: bool = False
-    fire_on_either: bool = True
-    
-    class Config:
-        orm_mode = True
 
 class User(BaseModel):
     proxies: Dict[ProxyTypes, ProxySettings] = {}
@@ -73,11 +65,9 @@ class User(BaseModel):
     online_at: Optional[datetime] = Field(None, nullable=True)
     on_hold_expire_duration: Optional[int] = Field(None, nullable=True)
     on_hold_timeout: Optional[Union[datetime, None]] = Field(None, nullable=True)
-
+    admin: Optional[Admin]
     auto_delete_in_days: Optional[int] = Field(None, nullable=True)
-    
-    next_plan: Optional[NextPlanModel] = Field(None, nullable=True)
-        
+
     @validator("proxies", pre=True, always=True)
     def validate_proxies(cls, v, values, **kwargs):
         if not v:
@@ -113,6 +103,10 @@ class User(BaseModel):
 class UserCreate(User):
     username: str
     status: UserStatusCreate = None
+    on_hold_timeout: Optional[datetime] = Field(
+        default_factory=lambda: datetime.now() + timedelta(days=60),
+        nullable=True
+    )
 
     class Config:
         schema_extra = {
@@ -125,12 +119,6 @@ class UserCreate(User):
                 "inbounds": {
                     "vmess": ["VMess TCP", "VMess Websocket"],
                     "vless": ["VLESS TCP REALITY", "VLESS GRPC REALITY"],
-                },
-                "next_plan": {
-                    "data_limit": 0,
-                    "expire": 0,
-                    "add_remaining_traffic": False,
-                    "fire_on_either": True
                 },
                 "expire": 0,
                 "data_limit": 0,
@@ -215,12 +203,6 @@ class UserModify(User):
                     "vmess": ["VMess TCP", "VMess Websocket"],
                     "vless": ["VLESS TCP REALITY", "VLESS GRPC REALITY"],
                 },
-                "next_plan": {
-                    "data_limit": 0,
-                    "expire": 0,
-                    "add_remaining_traffic": False,
-                    "fire_on_either": True
-                },
                 "expire": 0,
                 "data_limit": 0,
                 "data_limit_reset_strategy": "no_reset",
@@ -289,16 +271,19 @@ class UserResponse(User):
     proxies: dict
     excluded_inbounds: Dict[ProxyTypes, List[str]] = {}
 
-    admin: Optional[Admin]
-
     class Config:
         orm_mode = True
 
     @validator("links", pre=False, always=True)
     def validate_links(cls, v, values, **kwargs):
         if not v:
+            admin = values.get("admin")
+            if admin is None or admin.is_sudo:
+                admin = 'admin'
+            else:
+                admin = admin.username
             return generate_v2ray_links(
-                values.get("proxies", {}), values.get("inbounds", {}), extra_data=values, reverse=False,
+                values.get("proxies", {}), values.get("inbounds", {}), extra_data=values, admin=admin, reverse=False,
             )
         return v
 
@@ -356,7 +341,4 @@ class UserUsageResponse(BaseModel):
 
 class UserUsagesResponse(BaseModel):
     username: str
-    usages: List[UserUsageResponse]
-
-class UsersUsagesResponse(BaseModel):
     usages: List[UserUsageResponse]

@@ -1,3 +1,166 @@
+# Install:
+
+```bash
+apt update && apt upgrade -y
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
+cd ~
+git clone https://github.com/amotlagh/Marzban.git
+cd Marzban
+python3 -m pip install virtualenv
+python3 -m virtualenv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+cp .env.example .env
+cp xray_config.json.example xray_config.json
+cp /root/Marzban/geoip.dat /usr/local/share/xray/geoip.dat
+pip install --upgrade pip
+alembic upgrade head
+deactivate
+sudo ln -s $(pwd)/marzban-cli.py /usr/bin/marzban-cli
+sudo chmod +x /usr/bin/marzban-cli
+marzban-cli completion install
+sudo chmod +x install_service.sh
+sudo ./install_service.sh
+sudo systemctl enable --now marzban.service
+marzban-cli admin create --sudo
+```
+
+# Update:
+
+```bash
+sudo systemctl stop --now marzban.service
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+cd ~
+rm -rf ~/temp/
+git clone https://github.com/amotlagh/Marzban.git temp
+rm -rf ~/Marzban/app/
+rm -rf ~/Marzban/cli/
+rm -rf ~/Marzban/xray_api/
+cp -r ~/temp/* ~/Marzban/
+cd Marzban
+cp /root/Marzban/geoip.dat /usr/local/share/xray/geoip.dat
+python3 -m pip install virtualenv
+python3 -m virtualenv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+pip install --upgrade pip
+alembic upgrade head
+deactivate
+sudo systemctl enable --now marzban.service
+```
+
+---
+
+## Change to mysql:
+
+```
+apt install mysql-server sqlite3
+```
+
+```
+sudo mysql_secure_installation
+```
+
+```
+mysql
+```
+
+```
+SET GLOBAL validate_password.policy = LOW;
+```
+
+```
+CREATE DATABASE db_name;
+```
+
+```
+CREATE USER 'db_user'@'%' IDENTIFIED WITH mysql_native_password BY 'db_password';
+```
+
+```
+GRANT ALL ON db_name.* TO 'db_user'@'%';
+```
+
+```
+exit
+```
+
+```
+nano ~/Marzban/.env
+```
+
+```
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://DB_USER:DB_PASS@127.0.0.1/DB_NAME"
+MYSQL_ROOT_PASSWORD = "DB_PASS"
+```
+
+```
+sqlite3 /root/Marzban/db.sqlite3 '.dump --data-only' | sed "s/INSERT INTO \([^ ]*\)/REPLACE INTO \`\\1\`/g" > /tmp/dump.sql
+```
+
+```
+systemctl restart marzban
+```
+
+```
+cd ~/Marzban/
+alembic upgrade head
+```
+
+```
+mysql -u db_user -p -h 127.0.0.1 marzban -e "SET FOREIGN_KEY_CHECKS = 0; SET NAMES utf8mb4; SOURCE /tmp/dump.sql;"
+```
+
+```
+rm /tmp/dump.sql
+```
+
+---
+
+## Optimize server:
+
+### Open the sysctl configuration file:
+
+```
+sudo nano /etc/sysctl.conf
+```
+
+### Add the following lines at the end of the file:
+
+```
+net.ipv4.tcp_syncookies = 0
+net.core.default_qdisc=fq_codel
+net.ipv4.tcp_congestion_control=bbr
+net.mptcp.enabled=1
+```
+
+### Apply the changes:
+
+```
+sudo sysctl -p
+```
+
+## Block Iran Network:
+
+```json
+{
+   "type":"field",
+   "source":[
+      "geoip:iran-mci",
+      "geoip:iran-tci",
+      "geoip:iran-shatel",
+      "geoip:iran-rightel",
+      "geoip:iran-asiatech"
+   ],
+   "inboundTag":[
+      
+   ],
+   "outboundTag":"blackhole"
+}
+```
+
+
 <p align="center">
   <a href="https://github.com/gozargah/marzban" target="_blank" rel="noopener noreferrer">
     <picture>
@@ -209,7 +372,7 @@ server {
     ssl_certificate      /etc/letsencrypt/live/example.com/fullchain.pem;
     ssl_certificate_key  /etc/letsencrypt/live/example.com/privkey.pem;
 
-    location ~* /(dashboard|statics|sub|api|docs|redoc|openapi.json) {
+    location ~* /(dashboard|api|docs|redoc|openapi.json) {
         proxy_pass http://0.0.0.0:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -264,7 +427,7 @@ By default the app will be run on `http://localhost:8000/dashboard`. You can con
 > You can set settings below using environment variables or placing them in `.env` file.
 
 | Variable                                 | Description                                                                                                              |
-| ---------------------------------------- |--------------------------------------------------------------------------------------------------------------------------|
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | SUDO_USERNAME                            | Superuser's username                                                                                                     |
 | SUDO_PASSWORD                            | Superuser's password                                                                                                     |
 | SQLALCHEMY_DATABASE_URL                  | Database URL ([SQLAlchemy's docs](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls))                    |
@@ -273,7 +436,6 @@ By default the app will be run on `http://localhost:8000/dashboard`. You can con
 | UVICORN_UDS                              | Bind application to a UNIX domain socket                                                                                 |
 | UVICORN_SSL_CERTFILE                     | SSL certificate file to have application on https                                                                        |
 | UVICORN_SSL_KEYFILE                      | SSL key file to have application on https                                                                                |
-| UVICORN_SSL_CA_TYPE                      | Type of authority SSL certificate. Use `private` for testing self-signed CA (default: `public`)                          |
 | XRAY_JSON                                | Path of Xray's json config file (default: `xray_config.json`)                                                            |
 | XRAY_EXECUTABLE_PATH                     | Path of Xray binary (default: `/usr/local/bin/xray`)                                                                     |
 | XRAY_ASSETS_PATH                         | Path of Xray assets (default: `/usr/local/share/xray`)                                                                   |

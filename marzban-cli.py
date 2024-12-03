@@ -3,6 +3,11 @@ import os  # noqa
 import readline  # noqa
 import sys  # noqa
 
+# Activate the virtual environment
+activate_this = os.path.expanduser("~/Marzban/.venv/bin/activate_this.py")
+with open(activate_this) as f:
+    exec(f.read(), {'__file__': activate_this})
+
 sys.path.insert(0, os.getcwd())  # noqa
 
 import typer

@@ -64,7 +64,7 @@ export const RevokeSubscriptionModal: FC<RevokeSubscriptionModalProps> = () => {
   };
   return (
     <Modal isCentered isOpen={!!user} onClose={onClose} size="sm">
-      <ModalOverlay bg="blackAlpha.300"  />
+      <ModalOverlay bg="blackAlpha.300" />
       <ModalContent mx="3">
         <ModalHeader pt={6}>
           <Icon color="blue">
