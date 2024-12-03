@@ -1,7 +1,9 @@
 """Add Support Random User-Agent
+
 Revision ID: 31f92220c0d0
-Revises: dee0fc70572a
+Revises: 4f045f53bef8
 Create Date: 2024-06-01 21:28:33.310627
+
 """
 from alembic import op
 import sqlalchemy as sa
@@ -9,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '31f92220c0d0'
-down_revision = 'dee0fc70572a'
+down_revision = '4f045f53bef8'
 branch_labels = None
 depends_on = None
 

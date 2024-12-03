@@ -5,7 +5,6 @@ SERVICE_DESCRIPTION="Marzban Service"
 SERVICE_DOCUMENTATION="https://github.com/gozargah/marzban"
 MAIN_PY_PATH="$PWD/main.py"
 SERVICE_FILE="/etc/systemd/system/$SERVICE_NAME.service"
-VENV_PATH="$PWD/.venv/bin/activate"
 
 # Create the service file
 cat > $SERVICE_FILE <<EOF
@@ -15,7 +14,7 @@ Documentation=$SERVICE_DOCUMENTATION
 After=network.target nss-lookup.target
 
 [Service]
-ExecStart=/bin/bash -c 'source $VENV_PATH && exec python3 $MAIN_PY_PATH'
+ExecStart=/usr/bin/env python3 $MAIN_PY_PATH
 Restart=on-failure
 WorkingDirectory=$PWD
 

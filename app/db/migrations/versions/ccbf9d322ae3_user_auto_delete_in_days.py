@@ -1,7 +1,7 @@
 """user_auto_delete_in_days
 
 Revision ID: ccbf9d322ae3
-Revises: 305943d779c4
+Revises: 4f045f53bef8
 Create Date: 2024-04-22 12:37:35.439501
 
 """
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = 'ccbf9d322ae3'
-down_revision = '305943d779c4'
+down_revision = '4f045f53bef8'
 branch_labels = None
 depends_on = None
 
