@@ -1,6 +1,6 @@
 from datetime import datetime as dt
 from itertools import islice
-from typing import Dict, List, Literal
+from typing import Literal, Dict, List
 
 from telebot import types  # noqa
 
@@ -28,12 +28,9 @@ class BotKeyboard:
         keyboard.add(
             types.InlineKeyboardButton(text='➕ Create User From Template', callback_data='template_add_user'))
         keyboard.add(
-            types.InlineKeyboardButton(text='➕ Bulk User From Template', callback_data='template_add_bulk_user'))
-        keyboard.add(
             types.InlineKeyboardButton(text='➕ Create User', callback_data='add_user'))
-        keyboard.add(
-            types.InlineKeyboardButton(text='➕ Create Bulk User', callback_data='add_bulk_user'))
         return keyboard
+
 
     @staticmethod
     def edit_all_menu():
@@ -44,11 +41,9 @@ class BotKeyboard:
         keyboard.add(
             types.InlineKeyboardButton(text='🔋 Data (➕|➖)', callback_data='add_data'),
             types.InlineKeyboardButton(text='📅 Time (➕|➖)', callback_data='add_time'))
-        keyboard.add(
-            types.InlineKeyboardButton(text='➕ Add Inbound', callback_data='inbound_add'),
-            types.InlineKeyboardButton(text='➖ Remove Inbound', callback_data='inbound_remove'))
         keyboard.add(types.InlineKeyboardButton(text='🔙 Back', callback_data='cancel'))
         return keyboard
+
 
     @staticmethod
     def inbounds_menu(action, inbounds):
@@ -57,6 +52,7 @@ class BotKeyboard:
             keyboard.add(types.InlineKeyboardButton(text=inbound, callback_data=f'confirm_{action}:{inbound}'))
         keyboard.add(types.InlineKeyboardButton(text='🔙 Back', callback_data='cancel'))
         return keyboard
+
 
     @staticmethod
     def templates_menu(templates: Dict[str, int], username: str = None):
@@ -77,20 +73,22 @@ class BotKeyboard:
                 callback_data=f'user:{username}' if username else 'cancel'))
         return keyboard
 
+
     @staticmethod
     def random_username(template_id: str = ''):
         keyboard = types.InlineKeyboardMarkup()
 
         keyboard.add(types.InlineKeyboardButton(
-            text='🔡 Random Username',
-            callback_data=f'random:{template_id}'))
+                text='🔡 Random Username',
+                callback_data=f'random:{template_id}'))
         keyboard.add(types.InlineKeyboardButton(
-            text='🔙 Cancel',
-            callback_data='cancel'))
+                text='🔙 Cancel',
+                callback_data='cancel'))
         return keyboard
 
+
     @staticmethod
-    def user_menu(user_info, with_back: bool = True, page: int = 1):
+    def user_menu(user_info, with_back: bool = True, page: int = 1, note: bool = False):
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(
             types.InlineKeyboardButton(
@@ -102,20 +100,29 @@ class BotKeyboard:
                 callback_data=f"delete:{user_info['username']}"
             ),
         )
-        keyboard.add(
-            types.InlineKeyboardButton(
-                text='🚫 Revoke Sub',
-                callback_data=f"revoke_sub:{user_info['username']}"),
-            types.InlineKeyboardButton(
-                text='✏️ Edit',
-                callback_data=f"edit:{user_info['username']}"))
-        keyboard.add(
-            types.InlineKeyboardButton(
-                text='📝 Edit Note',
-                callback_data=f"edit_note:{user_info['username']}"),
-            types.InlineKeyboardButton(
-                text='📡 Links',
-                callback_data=f"links:{user_info['username']}"))
+        if note:
+            keyboard.add(
+                types.InlineKeyboardButton(
+                    text='🚫 Revoke Sub',
+                    callback_data=f"revoke_sub:{user_info['username']}"),
+                types.InlineKeyboardButton(
+                    text='✏️ Edit',
+                    callback_data=f"edit:{user_info['username']}"))
+            keyboard.add(
+                types.InlineKeyboardButton(
+                    text='📝 Edit Note',
+                    callback_data=f"edit_note:{user_info['username']}"),
+                types.InlineKeyboardButton(
+                    text='📡 Links',
+                    callback_data=f"links:{user_info['username']}"))
+        else:
+            keyboard.add(
+                types.InlineKeyboardButton(
+                    text='📡 Links',
+                    callback_data=f"links:{user_info['username']}"),
+                types.InlineKeyboardButton(
+                    text='✏️ Edit',
+                    callback_data=f"edit:{user_info['username']}"))
         keyboard.add(
             types.InlineKeyboardButton(
                 text='🔁 Reset usage',
@@ -155,7 +162,7 @@ class BotKeyboard:
                 callback_data='cancel'
             )
         )
-        return keyboard
+        return keyboard        
 
     @staticmethod
     def show_links(username: str):
@@ -179,6 +186,7 @@ class BotKeyboard:
         )
         return keyboard
 
+
     @staticmethod
     def subscription_page(sub_url: str):
         keyboard = types.InlineKeyboardMarkup()
@@ -187,6 +195,7 @@ class BotKeyboard:
                 text='🚀 Subscription Page',
                 url=sub_url))
         return keyboard
+
 
     @staticmethod
     def confirm_action(action: str, username: str = None):
@@ -222,6 +231,7 @@ class BotKeyboard:
             )
         )
         return keyboard
+
 
     @staticmethod
     def inline_cancel_action(callback_data: str = "cancel"):
@@ -282,57 +292,46 @@ class BotKeyboard:
         return keyboard
 
     @staticmethod
-    def select_protocols(
-            selected_protocols: Dict[str, List[str]],
-            action: Literal["edit", "create", "create_from_template"],
-            username: str = None,
-            data_limit: float = None,
-            expire_date: dt = None,
-            expire_on_hold_duration: int = None,
-            expire_on_hold_timeout: dt = None
-    ):
+    def select_protocols(selected_protocols: Dict[str, List[str]],
+                         action: Literal["edit", "create", "create_from_template"],
+                         username: str = None,
+                         data_limit: float = None,
+                         expire_date: dt = None):
         keyboard = types.InlineKeyboardMarkup()
 
         if action == "edit":
-            keyboard.add(types.InlineKeyboardButton(text="⚠️ Data Limit:", callback_data=f"help_edit"))
+            keyboard.add(
+                types.InlineKeyboardButton(
+                    text="⚠️ Data Limit:",
+                    callback_data=f"help_edit"
+                )
+            )
             keyboard.add(
                 types.InlineKeyboardButton(
                     text=f"{readable_size(data_limit) if data_limit else 'Unlimited'}",
                     callback_data=f"help_edit"
                 ),
-                types.InlineKeyboardButton(text="✏️ Edit", callback_data=f"edit_user:{username}:data"))
-            if expire_on_hold_duration:
-                keyboard.add(types.InlineKeyboardButton(text="⏳ Duration:", callback_data=f"edit_user:{username}:expire"))
-                keyboard.add(
-                    types.InlineKeyboardButton(
-                        text=f"{int(expire_on_hold_duration / 24 / 60 / 60)} روز",
-                        callback_data=f"edit_user:{username}:expire"
-                    ),
-                    types.InlineKeyboardButton(text="✏️ Edit", callback_data=f"edit_user:{username}:expire"))
-
-                keyboard.add(
-                    types.InlineKeyboardButton(
-                        text="🌀 Auto enable at:",
-                        callback_data=f"edit_user:{username}:expire_on_hold_timeout"
-                    )
+                types.InlineKeyboardButton(
+                    text="✏️ Edit",
+                    callback_data=f"edit_user:{username}:data"
                 )
-                keyboard.add(
-                    types.InlineKeyboardButton(
-                        text=f"{expire_on_hold_timeout.strftime('%Y-%m-%d') if expire_on_hold_timeout else 'Never'}",
-                        callback_data=f"edit_user:{username}:expire_on_hold_timeout"),
-                    types.InlineKeyboardButton(
-                        text="✏️ Edit",
-                        callback_data=f"edit_user:{username}:expire_on_hold_timeout"
-                    )
+            )
+            keyboard.add(
+                types.InlineKeyboardButton(
+                    text="📅 Expire Date:",
+                    callback_data=f"help_edit"
                 )
-            else:
-                keyboard.add(types.InlineKeyboardButton(text="📅 Expire Date:", callback_data=f"help_edit"))
-                keyboard.add(
-                    types.InlineKeyboardButton(
-                        text=f"{expire_date.strftime('%Y-%m-%d') if expire_date else 'Never'}",
-                        callback_data=f"help_edit"
-                    ),
-                    types.InlineKeyboardButton(text="✏️ Edit", callback_data=f"edit_user:{username}:expire"))
+            )
+            keyboard.add(
+                types.InlineKeyboardButton(
+                    text=f"{expire_date.strftime('%Y-%m-%d') if expire_date else 'Never'}",
+                    callback_data=f"help_edit"
+                ),
+                types.InlineKeyboardButton(
+                    text="✏️ Edit",
+                    callback_data=f"edit_user:{username}:expire"
+                )
+            )
 
         if action != 'create_from_template':
             for protocol, inbounds in xray.config.inbounds_by_protocol.items():
@@ -342,14 +341,6 @@ class BotKeyboard:
                         callback_data=f'select_protocol:{protocol}:{action}'
                     )
                 )
-                if protocol in selected_protocols:
-                    for inbound in inbounds:
-                        keyboard.add(
-                            types.InlineKeyboardButton(
-                                text=f"«{inbound['tag']}» {'✅' if inbound['tag'] in selected_protocols[protocol] else '❌'}",
-                                callback_data=f'select_inbound:{inbound["tag"]}:{action}'
-                            )
-                        )
 
         keyboard.add(
             types.InlineKeyboardButton(

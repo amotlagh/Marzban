@@ -23,7 +23,6 @@ class Admin(BaseModel):
     is_sudo: bool
     telegram_id: Optional[int]
     discord_webhook: Optional[str]
-    users_usage: Optional[int]
 
     class Config:
         orm_mode = True
@@ -63,23 +62,6 @@ class Admin(BaseModel):
 
         return admin
 
-    @classmethod
-    def check_sudo_admin(cls,
-                        db: Session = Depends(get_db),
-                        token: str = Depends(oauth2_scheme)):
-        admin = cls.get_admin(token, db)
-        if not admin:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Could not validate credentials",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        if not admin.is_sudo:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="You're not allowed"
-            )
-        return admin
 
 class AdminCreate(Admin):
     password: str
@@ -125,7 +107,3 @@ class AdminInDB(Admin):
 
     def verify_password(self, plain_password):
         return pwd_context.verify(plain_password, self.hashed_password)
-
-class AdminValidationResult(BaseModel):
-    username: str
-    is_sudo: bool

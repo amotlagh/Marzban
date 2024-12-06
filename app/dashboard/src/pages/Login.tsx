@@ -21,21 +21,11 @@ import { Footer } from "components/Footer";
 import { Input } from "components/Input";
 import { fetch } from "service/http";
 import { removeAuthToken, setAuthToken } from "utils/authStorage";
-import { ReactComponent as Logo } from "assets/logo.svg";
 import { useTranslation } from "react-i18next";
-import { Language } from "components/Language";
 
 const schema = z.object({
   username: z.string().min(1, "login.fieldRequired"),
   password: z.string().min(1, "login.fieldRequired"),
-});
-
-export const LogoIcon = chakra(Logo, {
-  baseStyle: {
-    strokeWidth: "10px",
-    w: 12,
-    h: 12,
-  },
 });
 
 const LoginIcon = chakra(ArrowRightOnRectangleIcon, {
@@ -86,12 +76,10 @@ export const Login: FC = () => {
     <VStack justifyContent="space-between" minH="100vh" p="6" w="full">
       <Box w="full">
         <HStack justifyContent="end" w="full">
-          <Language />
         </HStack>
         <HStack w="full" justifyContent="center" alignItems="center">
           <Box w="full" maxW="340px" mt="6">
             <VStack alignItems="center" w="full">
-              <LogoIcon />
               <Text fontSize="2xl" fontWeight="semibold">
                 {t("login.loginYourAccount")}
               </Text>

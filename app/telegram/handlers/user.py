@@ -2,6 +2,7 @@ from datetime import datetime
 from app.db import GetDB, crud
 from app.models.user import UserResponse
 from app.telegram import bot
+from pytz import UTC
 from telebot.custom_filters import ChatFilter
 from telebot.util import extract_arguments
 
@@ -27,7 +28,8 @@ def usage_command(message):
             'active': '✅',
             'expired': '🕰',
             'limited': '📵',
-            'disabled': '❌'}
+            'disabled': '❌',
+            'on_hold': '🔌'}
 
         text = f'''\
 ┌─{statuses[user.status]} <b>Status:</b> <code>{user.status.title()}</code>

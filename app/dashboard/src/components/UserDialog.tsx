@@ -35,6 +35,7 @@ import {
   ChartPieIcon,
   PencilIcon,
   UserPlusIcon,
+  InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resetStrategy } from "constants/UserSettings";
@@ -59,10 +60,15 @@ import { Icon } from "./Icon";
 import { Input } from "./Input";
 import { RadioGroup } from "./RadioGroup";
 import { UsageFilter, createUsageConfig } from "./UsageFilter";
-import { ReloadIcon } from "./Filters";
-import classNames from "classnames";
 
 const AddUserIcon = chakra(UserPlusIcon, {
+  baseStyle: {
+    w: 5,
+    h: 5,
+  },
+});
+
+const MoreDetailsIcon = chakra(InformationCircleIcon, {
   baseStyle: {
     w: 5,
     h: 5,
@@ -116,9 +122,11 @@ const getDefaultValues = (): FormType => {
     status: "active",
     on_hold_expire_duration: null,
     note: "",
+    sub_updated_at: null,
+    sub_last_user_agent: "",
     inbounds,
     proxies: {
-      vless: { id: "", flow: "" },
+      vless: { id: "", flow: "xtls-rprx-vision" },
       vmess: { id: "" },
       trojan: { password: "" },
       shadowsocks: { password: "", method: "chacha20-ietf-poly1305" },
@@ -149,6 +157,8 @@ const baseSchema = {
     message: "userDialog.selectOneProtocol",
   }),
   note: z.string().nullable(),
+  sub_updated_at: z.string().nullable(),
+  sub_last_user_agent: z.string().nullable(),
   proxies: z
     .record(z.string(), z.record(z.string(), z.any()))
     .transform((ins) => {
@@ -234,6 +244,8 @@ export const UserDialog: FC<UserDialogProps> = () => {
   const { colorMode } = useColorMode();
 
   const [usageVisible, setUsageVisible] = useState(false);
+  const [isDetailsVisible, setIsDetailsVisible] = useState(false);
+
   const handleUsageToggle = () => {
     setUsageVisible((current) => !current);
   };
@@ -350,6 +362,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
     setError(null);
     setUsageVisible(false);
     setUsageFilter("1m");
+    setIsDetailsVisible(false);
   };
 
   const handleResetUsage = () => {
@@ -363,25 +376,9 @@ export const UserDialog: FC<UserDialogProps> = () => {
   const disabled = loading;
   const isOnHold = userStatus === "on_hold";
 
-  const [randomUsernameLoading, setrandomUsernameLoading] = useState(false);
-
-  const createRandomUsername = (): string => {
-    setrandomUsernameLoading(true);
-    let result = "";
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < 6) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
-    }
-    return result;
-  };
-
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
+      <ModalOverlay bg="blackAlpha.300" />
       <FormProvider {...form}>
         <ModalContent mx="3">
           <form onSubmit={form.handleSubmit(submit)}>
@@ -419,27 +416,7 @@ export const UserDialog: FC<UserDialogProps> = () => {
                     >
                       <Flex flexDirection="row" w="full" gap={2}>
                         <FormControl mb={"10px"}>
-                          <FormLabel>
-                            <Flex gap={2} alignItems={"center"}>
-                              {t("username")}
-                              {!isEditing && (
-                                <ReloadIcon
-                                  cursor={"pointer"}
-                                  className={classNames({
-                                    "animate-spin": randomUsernameLoading,
-                                  })}
-                                  onClick={() => {
-                                    const randomUsername =
-                                      createRandomUsername();
-                                    form.setValue("username", randomUsername);
-                                    setTimeout(() => {
-                                      setrandomUsernameLoading(false);
-                                    }, 350);
-                                  }}
-                                />
-                              )}
-                            </Flex>
-                          </FormLabel>
+                          <FormLabel>{t("username")}</FormLabel>
                           <HStack>
                             <Input
                               size="sm"
@@ -703,6 +680,36 @@ export const UserDialog: FC<UserDialogProps> = () => {
                           {form.formState.errors?.note?.message}
                         </FormErrorMessage>
                       </FormControl>
+                      {isEditing && isDetailsVisible && (
+                        <>
+                          <FormLabel style={{ marginTop: "10px" }}>
+                            {t("userDialog.subUpdatedAt")}
+                          </FormLabel>
+                          <Input
+                            size="sm"
+                            type="text"
+                            borderRadius="6px"
+                            error={
+                              form.formState.errors.sub_updated_at?.message
+                            }
+                            disabled={true}
+                            {...form.register("sub_updated_at")}
+                          />
+                          <FormLabel style={{ marginTop: "10px" }}>
+                            {t("userDialog.subLastUserAgent")}
+                          </FormLabel>
+                          <Input
+                            size="sm"
+                            type="text"
+                            borderRadius="6px"
+                            error={
+                              form.formState.errors.sub_last_user_agent?.message
+                            }
+                            disabled={true}
+                            {...form.register("sub_last_user_agent")}
+                          />
+                        </>
+                      )}
                     </Flex>
                     {error && (
                       <Alert
@@ -833,6 +840,18 @@ export const UserDialog: FC<UserDialogProps> = () => {
                           onClick={handleUsageToggle}
                         >
                           <UserUsageIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip
+                        label={t("userDialog.moreDetails")}
+                        placement="top"
+                      >
+                        <IconButton
+                          aria-label="more details"
+                          size="sm"
+                          onClick={() => setIsDetailsVisible(!isDetailsVisible)}
+                        >
+                          <MoreDetailsIcon />
                         </IconButton>
                       </Tooltip>
                       <Button onClick={handleResetUsage} size="sm">
