@@ -69,9 +69,6 @@ class V2rayShareLink(str):
                 ais=inbound.get("ais", ""),
                 fs=inbound.get("fragment_setting", ""),
                 multiMode=multi_mode,
-                max_upload_size=inbound.get('max_upload_size', 1000000),
-                max_concurrent_uploads=inbound.get(
-                    'max_concurrent_uploads', 10),
             )
 
         elif inbound["protocol"] == "vless":
@@ -94,9 +91,6 @@ class V2rayShareLink(str):
                 ais=inbound.get("ais", ""),
                 fs=inbound.get("fragment_setting", ""),
                 multiMode=multi_mode,
-                max_upload_size=inbound.get('max_upload_size', 1000000),
-                max_concurrent_uploads=inbound.get(
-                    'max_concurrent_uploads', 10),
             )
 
         elif inbound["protocol"] == "trojan":
@@ -119,9 +113,6 @@ class V2rayShareLink(str):
                 ais=inbound.get("ais", ""),
                 fs=inbound.get("fragment_setting", ""),
                 multiMode=multi_mode,
-                max_upload_size=inbound.get('max_upload_size', 1000000),
-                max_concurrent_uploads=inbound.get(
-                    'max_concurrent_uploads', 10),
             )
 
         elif inbound["protocol"] == "shadowsocks":
@@ -155,8 +146,6 @@ class V2rayShareLink(str):
         ais="",
         fs="",
         multiMode: bool = False,
-        max_upload_size: int = 1000000,
-        max_concurrent_uploads: int = 10,
     ):
         payload = {
             "add": address,
@@ -199,10 +188,6 @@ class V2rayShareLink(str):
             else:
                 payload["mode"] = "gun"
 
-        elif net == "splithttp":
-            payload["maxUploadSize"] = max_upload_size
-            payload["maxConcurrentUploads"] = max_concurrent_uploads
-
         return (
             "vmess://"
             + base64.b64encode(
@@ -230,8 +215,6 @@ class V2rayShareLink(str):
               ais='',
               fs="",
               multiMode: bool = False,
-              max_upload_size: int = 1000000,
-              max_concurrent_uploads: int = 10,
               ):
 
         payload = {
@@ -239,7 +222,7 @@ class V2rayShareLink(str):
             "type": net,
             "headerType": type
         }
-        if flow and (tls in ('tls', 'reality') and net in ('tcp', 'kcp') and type != 'http'):
+        if flow and (tls in ('tls', 'reality') and net in ('tcp', 'raw', 'kcp') and type != 'http'):
             payload['flow'] = flow
 
         if net == 'grpc':
@@ -254,11 +237,9 @@ class V2rayShareLink(str):
             payload['key'] = path
             payload["quicSecurity"] = host
 
-        elif net == "splithttp":
+        elif net in ("splithttp", "xhttp"):
             payload["path"] = path
             payload["host"] = host
-            payload["maxUploadSize"] = max_upload_size
-            payload["maxConcurrentUploads"] = max_concurrent_uploads
 
         elif net == 'kcp':
             payload['seed'] = path
@@ -289,7 +270,7 @@ class V2rayShareLink(str):
             "vless://"
             + f"{id}@{address}:{port}?"
             + urlparse.urlencode(payload)
-            + f"#{( urlparse.quote(remark))}"
+            + f"#{(urlparse.quote(remark))}"
         )
 
     @classmethod
@@ -312,8 +293,6 @@ class V2rayShareLink(str):
                ais='',
                fs="",
                multiMode: bool = False,
-               max_upload_size: int = 1000000,
-               max_concurrent_uploads: int = 10,
                ):
 
         payload = {
@@ -321,7 +300,7 @@ class V2rayShareLink(str):
             "type": net,
             "headerType": type
         }
-        if flow and (tls in ('tls', 'reality') and net in ('tcp', 'kcp') and type != 'http'):
+        if flow and (tls in ('tls', 'reality') and net in ('tcp', 'raw', 'kcp') and type != 'http'):
             payload['flow'] = flow
 
         if net == 'grpc':
@@ -332,11 +311,9 @@ class V2rayShareLink(str):
             else:
                 payload["mode"] = "gun"
 
-        elif net == "splithttp":
+        elif net in ("splithttp", "xhttp"):
             payload["path"] = path
             payload["host"] = host
-            payload["maxUploadSize"] = max_upload_size
-            payload["maxConcurrentUploads"] = max_concurrent_uploads
 
         elif net == 'quic':
             payload['key'] = path
@@ -484,10 +461,7 @@ class V2rayJsonConfig(str):
 
         return httpupgradeSettings
 
-    def splithttp_config(self, path=None, host=None, random_user_agent=None,
-                         max_upload_size: int = 1000000,
-                         max_concurrent_uploads: int = 10,
-                         ):
+    def splithttp_config(self, path=None, host=None, random_user_agent=None):
 
         splithttpSettings = {}
         splithttpSettings["headers"] = {}
@@ -498,8 +472,6 @@ class V2rayJsonConfig(str):
         if random_user_agent:
             splithttpSettings["headers"]["User-Agent"] = choice(
                 self.user_agent_list)
-        splithttpSettings["maxUploadSize"] = max_upload_size
-        splithttpSettings["maxConcurrentUploads"] = max_concurrent_uploads
 
         return splithttpSettings
 
@@ -646,8 +618,8 @@ class V2rayJsonConfig(str):
             streamSettings["quicSettings"] = network_setting
         elif network == "httpupgrade":
             streamSettings["httpupgradeSettings"] = network_setting
-        elif network == "splithttp":
-            streamSettings["splithttpSettings"] = network_setting
+        elif network == "xhttp":
+            streamSettings["xhttpSettings"] = network_setting
 
         if sockopt:
             streamSettings['sockopt'] = sockopt
@@ -753,8 +725,6 @@ class V2rayJsonConfig(str):
                             dialer_proxy='',
                             multiMode: bool = False,
                             random_user_agent: bool = False,
-                            max_upload_size: int = 1,
-                            max_concurrent_uploads: int = 10,
                             ):
 
         if net == "ws":
@@ -778,10 +748,8 @@ class V2rayJsonConfig(str):
         elif net == "httpupgrade":
             network_setting = self.httpupgrade_config(
                 path=path, host=host, random_user_agent=random_user_agent)
-        elif net == "splithttp":
-            network_setting = self.splithttp_config(path=path, host=host, random_user_agent=random_user_agent,
-                                                    max_upload_size=max_upload_size,
-                                                    max_concurrent_uploads=max_concurrent_uploads)
+        elif net in ("splithttp", "xhttp"):
+            network_setting = self.splithttp_config(path=path, host=host, random_user_agent=random_user_agent)
 
         if tls == "tls":
             tls_settings = self.tls_config(sni=sni, fp=fp, alpn=alpn, ais=ais)
@@ -793,21 +761,10 @@ class V2rayJsonConfig(str):
 
         if dialer_proxy:
             sockopt = {
-                "dialerProxy": dialer_proxy,
-                "mark": 255,
-                "tcpcongestion": "bbr",
-                "interface": "wg0",
-                "tcpMptcp": True,
-                "tcpNoDelay": True,
+                "dialerProxy": dialer_proxy
             }
         else:
-            sockopt = {
-                "mark": 255,
-                "tcpcongestion": "bbr",
-                "interface": "wg0",
-                "tcpMptcp": True,
-                "tcpNoDelay": True,
-            }
+            sockopt = None
 
         streamSettings = self.stream_setting_config(network=net, security=tls,
                                                     network_setting=network_setting,
@@ -895,8 +852,6 @@ class V2rayJsonConfig(str):
             dialer_proxy=dialer_proxy,
             multiMode=multi_mode,
             random_user_agent=inbound.get('random_user_agent', False),
-            max_upload_size=inbound.get('max_upload_size', 1000000),
-            max_concurrent_uploads=inbound.get('max_concurrent_uploads', 10),
         )
 
         mux_json = json.loads(self.mux_template)
